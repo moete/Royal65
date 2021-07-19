@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv' ;
-
+import mongoose from "mongoose"
 dotenv.config();
 
 // Set the NODE_ENV to 'development' by default
@@ -15,6 +15,7 @@ export default {
     /**
      * Your  port
      */
-     port: process.env.PORT
-   
+     port: process.env.PORT,
+    databaseURL: process.env.MONGODB_URI,
+    
   };
