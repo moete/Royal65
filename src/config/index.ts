@@ -16,5 +16,5 @@ export default {
      * Your  port
      */
      port: process.env.PORT,
-     DATABASE_URL:"mongodb+srv://taz:B967C73C@royal65.s4azd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+     DATABASE_URL:process.env.DATABASE_URL
   };
