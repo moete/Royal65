@@ -3,9 +3,8 @@ import mongoose from 'mongoose'
 const User = mongoose.model(
     "User",
     new mongoose.Schema({
-        fullName: String,
+        name: String,
         address: String,
-        username: String,
         email: String,
         password: String,
         roles: [

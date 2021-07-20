@@ -11,10 +11,15 @@ if (!envFound) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
+
 export default {
     /**
      * Your  port
      */
      port: process.env.PORT,
-     DATABASE_URL:process.env.DATABASE_URL
+     DATABASE_URL:process.env.DATABASE_URL,
+     SECRET:process.env.SECRET,
+     api: {
+      prefix: '/api',
+    },
   };
