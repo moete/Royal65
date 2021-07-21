@@ -10,11 +10,26 @@ if (!envFound) {
   // This error should crash whole process
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
+ //const databaseURL: any = process.env.MONGODB_URI 
 
 export default {
+
+  
+  
+       
     /**
      * Your  port
      */
-     port: process.env.PORT
-   
+     port: process.env.PORT,
+       /**
+
+     * Mongodb URI
+     */
+        databaseURL: process.env.DATABASE_URI,
+  /**
+   * Used by winston logger
+   */
+   logs: {
+    level: process.env.LOG_LEVEL || 'silly',
+  },   
   };
