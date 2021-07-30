@@ -13,14 +13,10 @@ export default function(app:Router) {
   });
   app.use('/user', route);
 
-  route.get("/test/all", userController.allAccess);
+  route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.count);
+  route.get("/getLastRegistred",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getLastRegistred);
+  route.get("/getAllUsers/:page",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsers);
 
-  route.get("/test/user", [middlewares.authJwt.verifyToken], userController.userBoard);
-
-
-  route.get(
-    "/test/admin",
-    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-    userController.adminBoard
-  );
 };

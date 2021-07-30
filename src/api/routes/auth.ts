@@ -16,7 +16,7 @@ export default  function(app:Router) {
   route.post(
     "/signup",
     [
-        middlewares.verifySignUp.checkDuplicateEmail,
+        middlewares.verifySignUp.checkDuplicateUsernameOrEmail,
         middlewares.verifySignUp.checkRolesExisted
     ],
     authController.signup

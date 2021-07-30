@@ -6,9 +6,9 @@ const db = require("../../models");
 const ROLES = db.ROLES;
 const userService:any=Container.get(UserService)
 const roleService:any=Container.get(RoleService)
-const checkDuplicateEmail = async (req:any, res:any, next:any) => {
+const checkDuplicateUsernameOrEmail  = async (req:any, res:any, next:any) => {
     const userDTO = req.body;
-    const user=await userService.getByEmail(userDTO.email);
+    const user=await userService.checkDuplicate(userDTO.email,userDTO.username);
 
     if(user)
     return   res.status(400).send({ message: "Failed! Username or Email is already in use!" });
@@ -29,7 +29,7 @@ const checkRolesExisted =(req:any, res:any, next:any) => {
 };
 
 module.exports = {
-    checkDuplicateEmail,
+  checkDuplicateUsernameOrEmail ,
     checkRolesExisted
   };
   

@@ -4,7 +4,9 @@ const User = mongoose.model(
     "User",
     new mongoose.Schema({
         name: String,
+        username: String,
         address: String,
+        active: Boolean,
         email: String,
         password: String,
         roles: [
@@ -13,7 +15,7 @@ const User = mongoose.model(
             ref: "Role"
             }
         ]
-    })
+    }, { timestamps: true })
   );
   
   module.exports = User;

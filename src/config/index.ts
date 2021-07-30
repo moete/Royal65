@@ -21,5 +21,6 @@ export default {
      SECRET:process.env.SECRET,
      api: {
       prefix: '/api',
-    },
+      },
+      userNbPerPage:10
   };

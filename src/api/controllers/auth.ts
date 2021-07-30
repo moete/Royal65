@@ -13,6 +13,8 @@ const signup = (req:Request, res:Response) => {
     const user = userService.save({
       email: req.body.email,
       name: req.body.name,
+      username: req.body.username,
+      active: 1,
       address: req.body.address,
       password: req.body.password
     });
