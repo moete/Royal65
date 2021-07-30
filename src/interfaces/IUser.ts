@@ -4,6 +4,8 @@ export interface IUser {
     email: string;
     address: string;
     password: string;
+    country: string;
+    username: string;
     salt: string;
   }
   

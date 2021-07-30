@@ -16,8 +16,14 @@ const getAllUsers= async (req:Request, res:Response) => {
 const count=  async (req:Request, res:Response) => {
   res.status(200).send({count:await userService.count()});
 };
-  export default {
+
+const statistcsByCountry= async (req:Request, res:Response) => {
+  res.status(200).send({stat:await userService.statistcsByCountry()});
+};
+
+export default {
     count,
     getLastRegistred,
-    getAllUsers
+    getAllUsers,
+    statistcsByCountry
   }

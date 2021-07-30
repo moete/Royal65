@@ -23,6 +23,8 @@ export default class UserService {
             email: userBody.email,
             name: userBody.name,
             address: userBody.address,
+            country: userBody.country,
+            username: userBody.username,
             password: bcrypt.hashSync(userBody.password, 8)
           });
         
@@ -57,4 +59,14 @@ export default class UserService {
       return  last;
     }
 
+    
+    async statistcsByCountry(){
+      const stat =await UserModel.aggregate([{
+        $group: {
+            "_id": "$country",
+            "count": { $sum: 1 }
+        }
+    }])
+      return  stat;
+    }
 }

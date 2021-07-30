@@ -12,7 +12,8 @@ export default function(app:Router) {
     next();
   });
   app.use('/user', route);
-
+  
+  route.get("/statistcsByCountry",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.statistcsByCountry);
   route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.count);
   route.get("/getLastRegistred",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getLastRegistred);

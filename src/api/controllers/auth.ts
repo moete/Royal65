@@ -10,12 +10,20 @@ const roleService:any=Container.get(RoleService)
 var bcrypt = require("bcryptjs");
 
 const signup = (req:Request, res:Response) => {
+  console.log({
+    email: req.body.email,
+    name: req.body.name,
+    username: req.body.username,
+    address: req.body.address,
+    country: req.body.country,
+    password: req.body.password
+  })
     const user = userService.save({
       email: req.body.email,
       name: req.body.name,
-      username: req.body.username,
-      active: 1,
+      username: "req.body.username",
       address: req.body.address,
+      country: req.body.country,
       password: req.body.password
     });
     user.then(
@@ -52,7 +60,7 @@ const signup = (req:Request, res:Response) => {
       }
     ).catch((err:any)=>{
 
-      console.log(err);res.status(500).send({ message: "Something went wrong!" });
+      console.log(err,req.body.country);res.status(500).send({ message: "Please Verify your information!" });
     })
   
   };
