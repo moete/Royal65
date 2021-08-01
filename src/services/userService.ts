@@ -4,7 +4,7 @@ import config from '../config';
 import { IUser } from "../interfaces/IUser";
 const db = require("../models");
 var bcrypt = require("bcryptjs");
-const userNbPerPage:number=config.userNbPerPage
+const nbPerPage:number=config.nbPerPage
 const UserModel = db.user;
 const RoleModel = db.role;
 @Service()
@@ -54,8 +54,8 @@ export default class UserService {
     
     async getAllUsers(page:number){
       const role=await RoleModel.findOne({name:"user"})
-      const last =await UserModel.find({roles:role._id}).sort( '-createdAt' ).skip(userNbPerPage*page)
-      .limit(userNbPerPage)
+      const last =await UserModel.find({roles:role._id}).sort( '-createdAt' ).skip(nbPerPage*page)
+      .limit(nbPerPage)
       return  last;
     }
 
