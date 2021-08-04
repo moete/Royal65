@@ -1,9 +1,9 @@
 
 import {  Request, Response } from 'express';
 import { Container } from 'typedi';
-import  UserService from "../../services/userService"
+import  Services from "../../services/"
 
-const userService:any=Container.get(UserService)
+const userService:any=Container.get(Services.UserService)
 
 const getLastRegistred= async (req:Request, res:Response) => {
   res.status(200).send({data:await userService.getLastRegistred()});
@@ -14,11 +14,11 @@ const getAllUsers= async (req:Request, res:Response) => {
     res.status(200).send({data:await userService.getAllUsers(page)});
 };
 const count=  async (req:Request, res:Response) => {
-  res.status(200).send({count:await userService.count()});
+  res.status(200).send({data:await userService.count()});
 };
 
 const statistcsByCountry= async (req:Request, res:Response) => {
-  res.status(200).send({stat:await userService.statistcsByCountry()});
+  res.status(200).send({data:await userService.statistcsByCountry()});
 };
 
 export default {

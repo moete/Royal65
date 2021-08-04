@@ -8,6 +8,7 @@ db.mongoose = mongoose;
 db.user = require("./user");
 db.role = require("./role");
 db.game = require("./game");
+db.score = require("./score");
 
 db.ROLES = ["user", "admin"];
 

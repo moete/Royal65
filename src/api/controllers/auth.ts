@@ -2,26 +2,17 @@ import { Container } from 'typedi';
 import config from '../../config';
 import {  Request, Response } from 'express';
 var jwt = require("jsonwebtoken");
-import  UserService from "../../services/userService"
-import  RoleService from "../../services/roleService"
+import  Services from "../../services/"
 
-const userService:any=Container.get(UserService)
-const roleService:any=Container.get(RoleService)
+const userService:any=Container.get(Services.UserService)
+const roleService:any=Container.get(Services.RoleService)
 var bcrypt = require("bcryptjs");
 
 const signup = (req:Request, res:Response) => {
-  console.log({
-    email: req.body.email,
-    name: req.body.name,
-    username: req.body.username,
-    address: req.body.address,
-    country: req.body.country,
-    password: req.body.password
-  })
     const user = userService.save({
       email: req.body.email,
       name: req.body.name,
-      username: "req.body.username",
+      username: req.body.username,
       address: req.body.address,
       country: req.body.country,
       password: req.body.password
@@ -60,7 +51,7 @@ const signup = (req:Request, res:Response) => {
       }
     ).catch((err:any)=>{
 
-      console.log(err,req.body.country);res.status(500).send({ message: "Please Verify your information!" });
+      console.log(err);res.status(500).send({ message: "Please Verify your information!" });
     })
   
   };

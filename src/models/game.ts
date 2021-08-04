@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import config from '../config';
 const db = require("../models");
-const gameStatus=db.gameStatus
+const gameStatus=config.gameStatus
 
 const Game = mongoose.model(
     "Game",
@@ -31,7 +32,8 @@ const Game = mongoose.model(
         players: [
             {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
             }
         ]
     }, { timestamps: true })

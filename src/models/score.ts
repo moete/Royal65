@@ -14,19 +14,22 @@ const Score = mongoose.model(
         team2: [
             {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
             }
         ],
         team1: [
             {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
             }
         ],
         game: 
             {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "Game",
+            required: true
             }
     }, { timestamps: true })
   );
