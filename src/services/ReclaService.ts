@@ -5,6 +5,7 @@ const ReclaModel = db.Recla;
 
 @Service()
 export default class ReclaService {
+  static getAllReclas: any;
   save(ReclaBody: IRecla) {
     const recla = new ReclaModel({
       username: ReclaBody.username,
