@@ -1,5 +1,6 @@
+import 'reflect-metadata'; 
 import loadersInit from "./loaders";
-import express from 'express';
+import express  = require('express');
 import config from './config';
 
 async function startServer() {

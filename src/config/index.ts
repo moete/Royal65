@@ -12,24 +12,20 @@ if (!envFound) {
 }
  //const databaseURL: any = process.env.MONGODB_URI 
 
-export default {
+export default {   
+        /**
+        * Your  port
+        */
+        port: process.env.PORT,
+        /**
 
-  
-  
-       
-    /**
-     * Your  port
-     */
-     port: process.env.PORT,
-       /**
-
-     * Mongodb URI
-     */
+        * Mongodb URI
+        */
         databaseURL: process.env.DATABASE_URI,
-  /**
-   * Used by winston logger
-   */
-   logs: {
-    level: process.env.LOG_LEVEL || 'silly',
-  },   
+        /**
+         * Used by winston logger
+        */
+        logs: {
+        level: process.env.LOG_LEVEL || 'silly',
+        },   
   };
