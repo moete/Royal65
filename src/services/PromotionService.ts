@@ -17,8 +17,21 @@ export default class PromotionService {
             return promo.save() ;
         }
         async getAllPromos() {
-            return await PromoModel.find();
+            return await PromoModel.find({status : true});
           }
+        /*update the status from true to false */
+          async updateStatus(data : any) {
+            const all = await PromoModel.findOne({status : true}) ;
+            if(all) {
+                    data = new PromoModel ({
+                            ...data,
+                            status :false
+                    })
+            }
+            return all.save()
+        }
+
+
 
 
 }

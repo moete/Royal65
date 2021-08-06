@@ -1,6 +1,7 @@
 export interface IPromotion {
     title : String,
     description : String ,
-    image ?: Object
+    image ?: Object,
+    status :boolean
 
 }

@@ -33,6 +33,7 @@ export default function (app: Router) {
     next();
   });
   app.use("/promo", route);
-  route.post("/addRecla", upload.array("images", 5), PromoController.addPromo);
+  route.post("/addpromo", upload.array("images", 5), PromoController.addPromo);
   route.get('',PromoController.getAllPromos);
+  route.delete('/deletepromo',PromoController.deletePromo);
 }

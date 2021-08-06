@@ -25,8 +25,20 @@ const getAllPromos= async (req:Request, res:Response) => {
     res.status(200).send({data:await PromotionService.getAllPromos() });
   };
 
+const deletePromo = async (req:Request , res : Response) => {
+    try {
+        res.status(200).send({data: await PromotionService.deletePromotion(req.params.id)})
+    }
+    catch(err:any) {
+        res.status(500).send({ message: "An error has occurred!" } )
+    }
+    
+}
+
+
 
 export default {
     addPromo,
     getAllPromos,
+    deletePromo,
 }

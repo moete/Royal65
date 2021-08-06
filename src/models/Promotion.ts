@@ -15,8 +15,13 @@ const Promotion = new mongoose.Schema(
 
         },
         image : {
-            type :File,
+            type :Object,
+            required: true
 
+        },
+        showing : {
+            type : Number,
+            default : true
         }
     },
         { timestamps: true },
