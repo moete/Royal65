@@ -16,7 +16,7 @@ export default function(app:Router) {
   route.post("/save",
   [middlewares.authJwt.verifyToken], gameController.save);
   
-  route.get("/getAll/:page",
+  route.get("/getAll",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAll);
 
   
@@ -28,7 +28,7 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken], gameController.unJoin);
 
   
-  route.get("/getOpen/:page",
+  route.get("/getOpen",
   [middlewares.authJwt.verifyToken], gameController.getOpen);
 
   

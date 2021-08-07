@@ -35,8 +35,8 @@ const gameService:any=Container.get(Services.GameService)
     const getAll= async (req:Request, res:Response) => {
             
         try{
-            const page=req.params.page
-            res.status(200).send({data:await gameService.getAll(page)});
+            
+            res.status(200).send({data:await gameService.getAll()});
         }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
        
     };
@@ -79,8 +79,8 @@ const gameService:any=Container.get(Services.GameService)
             
         try{
 
-            const page=req.params.page
-            res.status(200).send({data:await gameService.getOpen(page)});
+            
+            res.status(200).send({data:await gameService.getOpen()});
         }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
 
     };

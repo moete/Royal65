@@ -17,7 +17,7 @@ export default function(app:Router) {
   route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.count);
   route.get("/getLastRegistred",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getLastRegistred);
-  route.get("/getAllUsers/:page",
+  route.get("/getAllUsers",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsers);
 
 };

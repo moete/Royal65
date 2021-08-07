@@ -6,6 +6,7 @@ import  Services from "../../services/"
 
 const userService:any=Container.get(Services.UserService)
 const roleService:any=Container.get(Services.RoleService)
+const expiresIn=86400;
 var bcrypt = require("bcryptjs");
 
 const signup = (req:Request, res:Response) => {
@@ -57,7 +58,7 @@ const signup = (req:Request, res:Response) => {
   };
   
   const signin = (req:Request, res:Response) => {
-    userService.findOneByEmail(req.body.email)
+    userService.findOneByEmailOrUsername(req.body.username)
       .exec((err:any, user:any) => {
         if (err) {
           console.log(err);res.status(500).send({ message: "Something went wrong!" });
@@ -81,7 +82,7 @@ const signup = (req:Request, res:Response) => {
         }
   
         var token = jwt.sign({ id: user.id }, config.SECRET, {
-          expiresIn: 86400 // 24 hours
+          expiresIn // 24 hours
         });
   
         var authorities = [];
@@ -94,7 +95,8 @@ const signup = (req:Request, res:Response) => {
           username: user.username,
           email: user.email,
           roles: authorities,
-          accessToken: token
+          accessToken: token,
+          expiresIn
         });
       });
   };

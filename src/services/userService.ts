@@ -1,10 +1,8 @@
 
 import { Service } from 'typedi';
-import config from '../config';
 import { IUser } from "../interfaces/IUser";
 const db = require("../models");
 var bcrypt = require("bcryptjs");
-const nbPerPage:number=config.nbPerPage
 const UserModel = db.user;
 const RoleModel = db.role;
 @Service()
@@ -31,10 +29,9 @@ export default class UserService {
         return user.save()
     }
 
-    findOneByEmail(email:string){
-        return UserModel.findOne({
-            email
-          })
+    findOneByEmailOrUsername(param:string){
+        return UserModel.findOne(
+          {$or:[ {'email':param}, {'username':param}]})
             .populate("roles", "-__v")
     }
 
@@ -52,10 +49,9 @@ export default class UserService {
       return  last;
     }
     
-    async getAllUsers(page:number){
+    async getAllUsers(){
       const role=await RoleModel.findOne({name:"user"})
-      const last =await UserModel.find({roles:role._id}).sort( '-createdAt' ).skip(nbPerPage*page)
-      .limit(nbPerPage)
+      const last =await UserModel.find({roles:role._id}).sort( '-createdAt' )
       return  last;
     }
 

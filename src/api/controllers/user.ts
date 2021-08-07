@@ -9,9 +9,7 @@ const getLastRegistred= async (req:Request, res:Response) => {
   res.status(200).send({data:await userService.getLastRegistred()});
 };
 const getAllUsers= async (req:Request, res:Response) => {
-    const page:number=parseInt(req.params.page)
-    console.log(10*page)
-    res.status(200).send({data:await userService.getAllUsers(page)});
+    res.status(200).send({data:await userService.getAllUsers()});
 };
 const count=  async (req:Request, res:Response) => {
   res.status(200).send({data:await userService.count()});

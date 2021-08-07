@@ -1,8 +1,6 @@
 
 import { Service } from 'typedi';
-import config from '../config';
 const db = require("../models");
-const nbPerPage:number=config.nbPerPage
 const gameStatus=db.gameStatus
 const UserModel = db.user;
 const GameModel = db.game;
@@ -25,9 +23,8 @@ export default class GameService {
     }
     
     
-    async getAll(page:number=0){
-      const all =await GameModel.find({}).sort( '-createdAt' ).skip(nbPerPage*page)
-      .limit(nbPerPage)
+    async getAll(){
+      const all =await GameModel.find({}).sort( '-createdAt' )
       return  all;
     }
 
@@ -58,9 +55,8 @@ export default class GameService {
     }
     
     
-    async getOpen(page:number){
-        const all =await GameModel.find({private:false,status:gameStatus.open}).sort( '-createdAt' ).skip(nbPerPage*page)
-        .limit(nbPerPage)
+    async getOpen(){
+        const all =await GameModel.find({private:false,status:gameStatus.open}).sort( '-createdAt' )
         return  all;
     }
 

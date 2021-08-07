@@ -22,7 +22,6 @@ export default {
      api: {
       prefix: '/api',
       },
-      nbPerPage:20,
       gameStatus:{
         process:1,
         finished:2,
