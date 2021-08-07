@@ -31,6 +31,12 @@ const User = mongoose.model(
             type: String,
             required: true
           },
+          // Att added
+          wallet: {
+            type: Number,
+            required: true
+          },
+           // Att added
         roles: [
             {
             type: mongoose.Schema.Types.ObjectId,
