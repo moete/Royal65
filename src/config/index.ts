@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv' ;
-import mongoose from "mongoose"
+
 dotenv.config();
 
 // Set the NODE_ENV to 'development' by default
@@ -11,11 +11,20 @@ if (!envFound) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
+
 export default {
     /**
      * Your  port
      */
      port: process.env.PORT,
-    databaseURL: process.env.MONGODB_URI,
-    
+     DATABASE_URL:process.env.DATABASE_URL,
+     SECRET:process.env.SECRET,
+     api: {
+      prefix: '/api',
+      },
+      gameStatus:{
+        process:1,
+        finished:2,
+        open:0
+      }
   };
