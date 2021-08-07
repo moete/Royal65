@@ -12,7 +12,7 @@ export default function(app:Router) {
         next();
       });
       app.use('/transaction', route);
-
+      route.post("/savetransaction",[middlewares.authJwt.verifyToken], transactionController.transact);
       route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], transactionController.count);
       route.get("/getAllTransactions",
       [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], transactionController.getAllTransactions);
