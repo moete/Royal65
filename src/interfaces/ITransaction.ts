@@ -1,4 +1,4 @@
-export interface IUser {
+export interface ITransaction {
     _id: string;
     Date: string;
     User: string;
@@ -6,7 +6,7 @@ export interface IUser {
     Coins: string;
   }
   
-  export interface IUserInputDTO {
+  export interface ITransactionDTO {
     Date: string;
     User: string;
     Coins: string;
