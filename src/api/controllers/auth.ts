@@ -77,7 +77,7 @@ const signup = (req:Request, res:Response) => {
         if (!passwordIsValid) {
           return res.status(401).send({
             accessToken: null,
-            message: "Invalid Password!"
+            message: "Invalid Info!"
           });
         }
   
