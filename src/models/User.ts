@@ -15,9 +15,18 @@ const User = mongoose.model(
             type: String,
             required: true
           },
+          photo: {
+              type: String,
+              dafault:"uploads/userImages/default.jpg"
+
+            },
+        verified:{
+              type: Boolean,
+              default: false
+          } ,
         active:{
             type: Boolean,
-            default: true
+            default: false
           } ,
         email: {
             type: String,

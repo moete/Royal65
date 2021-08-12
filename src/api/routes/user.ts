@@ -19,5 +19,6 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getLastRegistred);
   route.get("/getAllUsers",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsers);
+  route.get("/verifyEmail/:email/:token", userController.findEmailVerification);
 
 };

@@ -1,20 +1,24 @@
 
 import {  Request, Response } from 'express';
-import { Container } from 'typedi';
+
 import  Services from "../../services/"
-const gameService:any=Container.get(Services.GameService)
+const gameService:any=new Services.GameService()
 
 
-    const save= async (req:Request, res:Response) => {
+    const save= async (req:any, res:Response) => {
         try{
             const game=gameService.save({
                 amount: req.body.amount,
-                players: req.body.players,
+                userId: req.userId,
                 free: req.body.free,
                 status: req.body.status,
                 password: req.body.password,
                 capacity: req.body.capacity
             })
+            if(game.message){
+                
+               return res.status(400).send(game);
+            }
         
             game.then(
                 (succ:any)=>{
@@ -42,30 +46,30 @@ const gameService:any=Container.get(Services.GameService)
     };
     
   
-    const join= async (req:Request, res:Response) => {
+    const join= async (req:any, res:Response) => {
         
         try{
             const game=await gameService.join({
                 _id:req.body._id,
                 password:req.body.password,
-                userId:req.body.userId,
+                userId:req.userId,
             })
             if(game)
                 res.status(200).send({message:"You Are successfully joined"});
             else
                 res.status(400).send({message:"Please Verify your information!"});
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
        
 
     };
 
-    const unJoin= async (req:Request, res:Response) => {
+    const unJoin= async (req:any, res:Response) => {
             
         try{
 
             const game=await gameService.join({
                 _id:req.body._id,
-                userId:req.body.userId,
+                userId:req.userId,
             })
             if(game)
                 res.status(200).send({message:"You Are successfully joined"});

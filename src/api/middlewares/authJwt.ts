@@ -51,8 +51,22 @@ const isAdmin = (req:any, res:any, next:any) => {
   });
 };
 
+
+const isUserExist = async (req:any, res:any, next:any) => {
+
+  const user=await User.findById(req.userId)
+  if(!user){
+    res.status(400).send({ message: "User doesn't exist" });
+    return;
+  }
+  next();
+  return;
+
+};
+
 const authJwt = {
   verifyToken,
   isAdmin
+  
 };
 module.exports = authJwt;

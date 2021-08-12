@@ -13,6 +13,7 @@ export default function(app:Router) {
   });
   app.use('/game', route);
   
+  //create a game for the connected user
   route.post("/save",
   [middlewares.authJwt.verifyToken], gameController.save);
   

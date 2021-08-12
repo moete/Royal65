@@ -1,19 +1,24 @@
 
 import { Service } from 'typedi';
+import config from '../config';
 const db = require("../models");
-const gameStatus=db.gameStatus
+const gameStatus=config.gameStatus
 const UserModel = db.user;
 const GameModel = db.game;
 const ScoreModel = db.score;
+//TODO handel message error
 @Service()
 export default class GameService {
 
 
-    save(gameBody:any){
+    async save(gameBody:any){
+        const isExists=await GameModel.find({status:{$ne:gameStatus.finished},players:gameBody.userId})
+        if(isExists.length !=0){
+            return {message:"You are arealdy in game"};
+        }
         const game = new GameModel({
             free: gameBody.free,
             amount: gameBody.amount,
-            status: gameBody.status,
             private: gameBody.private,
             password: gameBody.password,
             players: [gameBody.userId]
@@ -32,7 +37,7 @@ export default class GameService {
         const game=await GameModel.findById(details._id)
         if(!game)
             return null;
-        if(((game.private && game.password==details.password) || !game.private) && game.players.length!=game.capacity)
+        if(((game.private && game.password==details.password) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
         {
                 game.players=[...game.players,details.userId]
                 if(game.players.length==game.capacity)

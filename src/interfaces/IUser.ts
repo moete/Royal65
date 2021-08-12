@@ -6,6 +6,7 @@ export interface IUser {
     password: string;
     country: string;
     username: string;
+    photo:string;
   }
   
   export interface IUserInputDTO {

@@ -4,6 +4,7 @@ import { IUser } from "../interfaces/IUser";
 const db = require("../models");
 var bcrypt = require("bcryptjs");
 const UserModel = db.user;
+const EmailModel = db.emailVerification;
 const RoleModel = db.role;
 @Service()
 export default class UserService {
@@ -16,17 +17,27 @@ export default class UserService {
         return user;
     }
 
-    save(userBody:IUser){
-        const user = new UserModel({
+    async save(userBody:IUser){
+        let user = new UserModel({
             email: userBody.email,
             name: userBody.name,
             address: userBody.address,
             country: userBody.country,
             username: userBody.username,
+            photo: userBody.photo,
             password: bcrypt.hashSync(userBody.password, 8)
           });
+
+        user=await user.save()
+        if(user){
+          const email=new EmailModel({
+            email:user.email,
+            token:Math.random().toString(36).substr(2)+Math.random().toString(36).substr(2)
+          })
+          email.save()
+        }
         
-        return user.save()
+        return user
     }
 
     findOneByEmailOrUsername(param:string){
@@ -34,6 +45,10 @@ export default class UserService {
           {$or:[ {'email':param}, {'username':param}]})
             .populate("roles", "-__v")
     }
+    
+    findOneByEmail(param:string){
+      return UserModel.findOne({'email':param})
+  }
 
     async count(){
       const count:Number =await UserModel.countDocuments({})
@@ -65,4 +80,20 @@ export default class UserService {
     }])
       return  stat;
     }
+
+    async getEmailVerfication(email:string,token:string){
+      const val =await EmailModel.findOne({email,token})
+      return  val;
+    }
+
+  
+    async delteEmailVerfication(_id:any){
+      const val =await EmailModel.deleteOne({ _id }, function (err:any) {
+        if (err) return console.log(err);
+        // deleted at most one tank document
+      });
+    }
+
+
+  
 }
