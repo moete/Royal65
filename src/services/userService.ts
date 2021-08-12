@@ -77,7 +77,9 @@ export default class UserService {
             "_id": "$country",
             "count": { $sum: 1 }
         }
-    }])
+    },
+    { $sort: { count: -1 }},
+    { $limit : 3 }])
       return  stat;
     }
 
