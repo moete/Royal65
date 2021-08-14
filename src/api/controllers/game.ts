@@ -34,6 +34,30 @@ const gameService:any=new Services.GameService()
    
     };
 
+        
+
+    const deleteGame=async (req:any, res:Response) => {
+
+        try{
+
+            const _id=req.params.id;
+            
+            const game = gameService.deleteUser(_id);
+            game.then(
+            async (game:any)=>{
+
+                res.send({ message: "Game was deleted successfully!" });
+            }
+            ).catch((err:any)=>{
+                console.log(err);res.status(500).send({ message: "Please Verify your information!" });
+            })
+
+        }catch(err:any){
+            res.status(500).send({ message: "An error has occurred!" });
+        }
+
+    }
+
 
   
     const getAll= async (req:Request, res:Response) => {
@@ -148,5 +172,6 @@ export default {
     getOpen,
     addUpdateScore,
     getScoreByGameId,
-    getScoresByUserId
+    getScoresByUserId,
+    deleteGame
   }

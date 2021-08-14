@@ -46,5 +46,8 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken], gameController.getScoresByUserId);
 
   
+  route.delete("/delete/:id",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.deleteGame);
+
 
 };

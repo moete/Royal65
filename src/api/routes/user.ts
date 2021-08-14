@@ -21,4 +21,11 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsers);
   route.get("/verifyEmail/:email/:token", userController.findEmailVerification);
 
+  route.post("/update",[middlewares.authJwt.verifyToken], userController.update);
+
+  route.post("/blockUnblock",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.blockUnblock);
+
+  
+  route.delete("/delete/:id",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.deleteUser);
+
 };

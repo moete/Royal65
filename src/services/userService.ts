@@ -40,6 +40,13 @@ export default class UserService {
         return user
     }
 
+    
+    async update(_id:any,userBody:IUser){
+      return UserModel.findOneAndUpdate({_id},userBody, {
+        new: true
+      })
+    }
+  
     findOneByEmailOrUsername(param:string){
         return UserModel.findOne(
           {$or:[ {'email':param}, {'username':param}]})
@@ -89,7 +96,11 @@ export default class UserService {
     }
 
   
-    async delteEmailVerfication(_id:any){
+    deleteUser(_id:any){
+      return UserModel.deleteOne({ _id });
+    }
+  
+    async deleteEmailVerfication(_id:any){
       const val =await EmailModel.deleteOne({ _id }, function (err:any) {
         if (err) return console.log(err);
         // deleted at most one tank document

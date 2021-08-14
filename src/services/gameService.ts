@@ -95,4 +95,10 @@ export default class GameService {
         .or([{ team1: id}, { team2: id }]);
     }
 
+    
+    delete(_id:any){
+        return GameModel.deleteOne({ _id });
+    }
+    
+
 }
