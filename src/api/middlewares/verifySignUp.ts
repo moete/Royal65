@@ -1,11 +1,11 @@
 import { Container } from 'typedi';
-import  UserService from "../../services/userService"
-import  RoleService from "../../services/roleService"
+import  Services from "../../services/"
+
 
 const db = require("../../models");
 const ROLES = db.ROLES;
-const userService:any=Container.get(UserService)
-const roleService:any=Container.get(RoleService)
+const userService:any=new Services.UserService()
+const roleService:any=new Services.RoleService()
 const checkDuplicateUsernameOrEmail  = async (req:any, res:any, next:any) => {
     const userDTO = req.body;
     const user=await userService.checkDuplicate(userDTO.email,userDTO.username);

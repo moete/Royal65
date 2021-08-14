@@ -3,7 +3,7 @@ import {  Request, Response } from 'express';
 import { Container } from 'typedi';
 import  Services from "../../services/"
 
-const userService:any=Container.get(Services.UserService)
+const userService:any=new Services.UserService()
 
 const getLastRegistred= async (req:Request, res:Response) => {
   res.status(200).send({data:await userService.getLastRegistred()});

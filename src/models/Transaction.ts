@@ -21,7 +21,7 @@ const Transaction = mongoose.model(
             type: Number,
             required: true
           } ,
-     timestamps: true })
+        },{timestamps: true })
   );
   
   module.exports = Transaction;

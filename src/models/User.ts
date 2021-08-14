@@ -34,7 +34,7 @@ const User = mongoose.model(
           // Att added
           wallet: {
             type: Number,
-            required: true
+            default : 0
           },
            // Att added
         roles: [

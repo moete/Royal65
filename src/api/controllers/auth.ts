@@ -4,8 +4,8 @@ import {  Request, Response } from 'express';
 var jwt = require("jsonwebtoken");
 import  Services from "../../services/"
 
-const userService:any=Container.get(Services.UserService)
-const roleService:any=Container.get(Services.RoleService)
+const userService:any=new Services.UserService()
+const roleService:any=new Services.RoleService()
 const expiresIn=86400;
 var bcrypt = require("bcryptjs");
 
@@ -16,7 +16,7 @@ const signup = (req:Request, res:Response) => {
       username: req.body.username,
       address: req.body.address,
       country: req.body.country,
-      password: req.body.password
+      password: req.body.password,
     });
     user.then(
       async (user:any)=>{

@@ -22,8 +22,8 @@ export default class TransactionService {
   }
 
   async getAllTransactions() {
-    const transactions = await TransactionModel.findAll();
-    return transactions;
+    const all =await TransactionModel.find({}).sort( '-createdAt' );
+    return all;
   }
 
   
