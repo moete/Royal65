@@ -30,7 +30,7 @@ const gameService:any=new Services.GameService()
                 console.log(err);
                 res.status(500).send({ message: "Please Verify your information!" });
             })
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
    
     };
 
@@ -42,7 +42,7 @@ const gameService:any=new Services.GameService()
 
             const _id=req.params.id;
             
-            const game = gameService.deleteUser(_id);
+            const game = gameService.deleteGame(_id);
             game.then(
             async (game:any)=>{
 
@@ -53,6 +53,7 @@ const gameService:any=new Services.GameService()
             })
 
         }catch(err:any){
+            console.log(err);
             res.status(500).send({ message: "An error has occurred!" });
         }
 
@@ -65,7 +66,7 @@ const gameService:any=new Services.GameService()
         try{
             
             res.status(200).send({data:await gameService.getAll()});
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
        
     };
     
@@ -99,7 +100,7 @@ const gameService:any=new Services.GameService()
                 res.status(200).send({message:"You Are successfully joined"});
             else
                 res.status(400).send({message:"Please Verify your information!"});
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
     };
     
@@ -109,7 +110,7 @@ const gameService:any=new Services.GameService()
 
             
             res.status(200).send({data:await gameService.getOpen()});
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
     };
     
@@ -129,7 +130,7 @@ const gameService:any=new Services.GameService()
                 res.status(200).send({message:"Updated successfully"});
             else
                 res.status(400).send({message:"Please Verify your information!"});
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
         
         
 
@@ -146,7 +147,7 @@ const gameService:any=new Services.GameService()
             else
                 res.status(400).send({message:"Please Verify your information!"});
 
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
     };
 
@@ -160,7 +161,7 @@ const gameService:any=new Services.GameService()
                 res.status(200);
             else
                 res.status(400).send({message:"Please Verify your information!"});
-        }catch(err:any){res.status(500).send({ message: "An error has occurred!" });}
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
     };
     

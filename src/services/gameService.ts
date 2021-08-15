@@ -96,7 +96,7 @@ export default class GameService {
     }
 
     
-    delete(_id:any){
+    deleteGame(_id:any){
         return GameModel.deleteOne({ _id });
     }
     
