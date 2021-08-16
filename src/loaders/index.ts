@@ -1,5 +1,6 @@
 import expressLoader from './express';
 import mongooseLoader from './mongoose';
+import paypaLoader from './paypal';
 
 export default async ({ expressApp }:any) => {
   const mongoConnection = await mongooseLoader();
@@ -22,6 +23,11 @@ export default async ({ expressApp }:any) => {
 
   // ... more loaders can be here
 
-  // ... Initialize agenda
-  // ... or Redis, or whatever you want
+  const paypalConnection = await paypaLoader();
+  console.log(paypalConnection); 
+
+  
+
+
+
 }

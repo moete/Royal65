@@ -19,8 +19,8 @@ const Promotion = new mongoose.Schema(
             required: true
 
         },
-        showing : {
-            type : Number,
+        status : {
+            type : Boolean,
             default : true
         }
     },

@@ -30,9 +30,9 @@ export default class PromotionService {
             }
             return all.save()
         }
-
-
-
+        async deletePromotion(id:any) {
+            return await PromoModel.findByIdAndRemove(id) ;
+        }
 
 }
 

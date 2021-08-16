@@ -9,7 +9,7 @@ const addPromo = (req:Request,res:Response) => {
     const promo = PromotionService.save({
         title : req.body.title,
         description : req.body.description,
-        image : req.files
+        image : req.body.files
     }) ; 
     promo.save((err:any) => {
         if (err) {
