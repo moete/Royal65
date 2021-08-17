@@ -8,6 +8,7 @@ db.mongoose = mongoose;
 db.user = require("./user");
 db.role = require("./role");
 db.transaction = require("./transaction")
+db.reference = require("./Reference")
 db.ROLES = ["user", "admin"];
 
 module.exports = db;
