@@ -11,6 +11,7 @@ export default function(app:Router) {
         );
         next();
       });
+      // add auth validation
       app.use('/reference', route);
       route.post("/saverefernce", refernceController.referencesave);
       route.get("/count", refernceController.count);

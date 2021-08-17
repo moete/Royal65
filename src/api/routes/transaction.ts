@@ -11,6 +11,7 @@ export default function(app:Router) {
         );
         next();
       });
+       // add auth validation
       app.use('/transaction', route);
       route.post("/savetransaction", transactionController.transact);
       route.get("/count", transactionController.count);

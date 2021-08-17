@@ -7,7 +7,7 @@ const TransactionModel = db.transaction;
 export default class TransactionService {
   save(transactionBody: ITransaction) {
     const transaction = new TransactionModel({
-      Date: transactionBody.Date,
+      Type: transactionBody.Type,
       User: transactionBody.User,
       Credit: transactionBody.Credit,
       Coins: transactionBody.Coins,

@@ -7,7 +7,7 @@ const transactionService:any= new Services.TransactionService();
 
 const transact = (req:Request, res:Response) => {
     const user = transactionService.save({
-      Date: req.body.Date,
+      Type: req.body.Type,
       User: req.body.User,
       Credit: req.body.Credit,
       Coins: req.body.Coins,

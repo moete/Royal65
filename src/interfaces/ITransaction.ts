@@ -1,6 +1,6 @@
 export interface ITransaction {
     _id: string;
-    Date: string;
+    Type: string;
     User: string;
     Credit: string;
     Coins: string;
@@ -10,4 +10,5 @@ export interface ITransaction {
     Date: string;
     User: string;
     Coins: string;
+    Type: string;
   }
