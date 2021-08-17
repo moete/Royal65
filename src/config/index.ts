@@ -27,5 +27,16 @@ export default {
         */
         logs: {
         level: process.env.LOG_LEVEL || 'silly',
+
+        /**
+         * mode sandbox paypal
+         */
+     
+
         },   
+        paypal : {
+          mode : process.env.MODE ,
+          client_id : process.env.CLIENT_ID,
+          client_secret : process.env.SECRET  
+        }
   };
