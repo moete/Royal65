@@ -11,7 +11,7 @@ export default class TransactionService {
     const reference = new ReferenceModel({
         ReferenceFrom: referenceBody.ReferenceFrom,
         ReferenceTo: referenceBody.ReferenceTo,
-        Code: shortid.generate(),
+       
         Bonus: referenceBody.Bonus,
     });
 

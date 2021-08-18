@@ -6,6 +6,7 @@ export interface IUser {
   password: string;
   country: string;
   username: string;
+  Code: string;
 }
 
 export interface IUserInputDTO {
@@ -14,4 +15,5 @@ export interface IUserInputDTO {
   address: string;
   country: string;
   username: string;
+  Code: string;
 }

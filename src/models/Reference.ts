@@ -15,10 +15,7 @@ const Reference = mongoose.model(
             ref: "User"
             }
         ],
-        Code: {
-            type: String,
-            required: true
-          },
+     
         Bonus:{
             type: Number,
             required: true

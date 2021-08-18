@@ -4,6 +4,7 @@ const db = require("../models");
 var bcrypt = require("bcryptjs");
 const UserModel = db.user;
 const RoleModel = db.role;
+var shortid = require("shortid");
 @Service()
 export default class UserService {
 
@@ -22,7 +23,8 @@ export default class UserService {
             address: userBody.address,
             country: userBody.country,
             username: userBody.username,
-            password: bcrypt.hashSync(userBody.password, 8)
+            password: bcrypt.hashSync(userBody.password, 8),
+            Code: shortid.generate(),
           });
         
         return user.save()

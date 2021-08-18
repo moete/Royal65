@@ -36,7 +36,11 @@ const User = mongoose.model(
             type: Number,
             default : 0
           },
-           // Att added
+            // changed code attribute into user
+           Code: {
+            type: String,
+            required: true
+          },
         roles: [
             {
             type: mongoose.Schema.Types.ObjectId,

@@ -8,6 +8,7 @@ const userService:any=new Services.UserService()
 const roleService:any=new Services.RoleService()
 const expiresIn=86400;
 var bcrypt = require("bcryptjs");
+var shortid = require("shortid");
 
 const signup = (req:Request, res:Response) => {
     const user = userService.save({
@@ -17,6 +18,7 @@ const signup = (req:Request, res:Response) => {
       address: req.body.address,
       country: req.body.country,
       password: req.body.password,
+      Code: shortid.generate()
     });
     user.then(
       async (user:any)=>{
