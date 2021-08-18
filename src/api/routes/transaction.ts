@@ -13,9 +13,9 @@ export default function(app:Router) {
       });
        // add auth validation
       app.use('/transaction', route);
-      route.post("/savetransaction",[middlewares.authJwt.verifyToken], transactionController.transact);
+      route.post("/savetransaction",middlewares.authJwt.verifyToken, transactionController.transact);
       route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], transactionController.count);
-      route.get("/getAllTransactions",[middlewares.authJwt.verifyToken],
+      route.get("/getAllTransactions",middlewares.authJwt.verifyToken,
       transactionController.getAllTransactions);
 
 };
