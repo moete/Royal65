@@ -41,7 +41,8 @@ export default class UserService {
     }
 
     
-    async update(_id:any,userBody:IUser){
+    async update(_id:any,userBody:any){
+
       return UserModel.findOneAndUpdate({_id},userBody, {
         new: true
       })

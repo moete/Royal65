@@ -49,7 +49,7 @@ const blockUnblock=async (req:any, res:Response) => {
   try{
 
     const userDTO=req.body;
-    const user = userService.update(userDTO._id,{active:userDTO.active});
+    const user = userService.update(userDTO._id,{active:!userDTO.active});
     user.then(
       async (user:any)=>{
         res.send({ message: "User was updated successfully!" });
@@ -70,11 +70,13 @@ const update=async (req:any, res:Response) => {
   try{
   
     const userDTO=req.body;
+    return console.log(userDTO)
     console.log(userDTO)
     const userInfo:any={
       name: userDTO.name,
       address: userDTO.address,
       country: userDTO.country,
+      email: userDTO.email,
     }
     if(req.file)
       userInfo.photo=req.file.path
