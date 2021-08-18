@@ -1,4 +1,4 @@
-export interface ITransaction {
+export interface IReference {
     _id: string;
     ReferenceFrom: string;
     ReferenceTo: string;
@@ -6,7 +6,7 @@ export interface ITransaction {
     Bonus: string;
   }
   
-  export interface ITransactionDTO {
+  export interface IReferenceDTO {
     ReferenceFrom: string;
     ReferenceTo: string;
     Code: string;

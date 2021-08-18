@@ -1,16 +1,18 @@
 import { Service } from "typedi";
-import { ITransaction } from "../interfaces/IReference";
+import { IReference } from "../interfaces/IReference";
+var shortid = require("shortid");
+
 const db = require("../models");
 var bcrypt = require("bcryptjs");
 const ReferenceModel = db.reference;
 @Service()
 export default class TransactionService {
-  save(transactionBody: ITransaction) {
+  save(referenceBody: IReference) {
     const reference = new ReferenceModel({
-        ReferenceFrom: transactionBody.ReferenceFrom,
-        ReferenceTo: transactionBody.ReferenceTo,
-        Code: transactionBody.Code,
-        Bonus: transactionBody.Bonus,
+        ReferenceFrom: referenceBody.ReferenceFrom,
+        ReferenceTo: referenceBody.ReferenceTo,
+        Code: shortid.generate(),
+        Bonus: referenceBody.Bonus,
     });
 
     return reference.save();
