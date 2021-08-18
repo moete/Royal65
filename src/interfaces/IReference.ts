@@ -2,7 +2,7 @@ export interface IReference {
     _id: string;
     ReferenceFrom: string;
     ReferenceTo: string;
-    Code: string;
+    
     Bonus: string;
   }
   

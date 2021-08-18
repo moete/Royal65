@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { IReference } from "../interfaces/IReference";
-var shortid = require("shortid");
+
 
 const db = require("../models");
 var bcrypt = require("bcryptjs");
@@ -11,7 +11,6 @@ export default class TransactionService {
     const reference = new ReferenceModel({
         ReferenceFrom: referenceBody.ReferenceFrom,
         ReferenceTo: referenceBody.ReferenceTo,
-       
         Bonus: referenceBody.Bonus,
     });
 

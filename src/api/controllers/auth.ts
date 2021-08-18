@@ -18,6 +18,7 @@ const signup = (req:Request, res:Response) => {
       address: req.body.address,
       country: req.body.country,
       password: req.body.password,
+      // changed code attribute into user
       Code: shortid.generate()
     });
     user.then(
