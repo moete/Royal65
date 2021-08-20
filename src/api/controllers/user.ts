@@ -1,10 +1,11 @@
 
 import {  Request, Response } from 'express';
 import { IUser } from '../../interfaces/IUser';
-
 import  Services from "../../services/"
-
+const nodemailer = require("nodemailer");
+const mailerService:any=new Services.MailerService()
 const userService:any=new Services.UserService()
+
 
 const getLastRegistred= async (req:Request, res:Response) => {
 
@@ -19,6 +20,15 @@ const getAllUsers= async (req:Request, res:Response) => {
 
   try{
     res.status(200).send({data:await userService.getAllUsers()});
+  }catch(err:any){
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+
+};
+const getAllUsersEmails= async (req:Request, res:Response) => {
+
+  try{
+    res.status(200).send({data:await userService.getAllUsersEmails()});
   }catch(err:any){
     res.status(500).send({ message: "An error has occurred!" });
   }
@@ -69,9 +79,7 @@ const update=async (req:any, res:Response) => {
 
   try{
   
-    const userDTO=req.body;
-    return console.log(userDTO)
-    console.log(userDTO)
+    const userDTO=req.body;    
     const userInfo:any={
       name: userDTO.name,
       address: userDTO.address,
@@ -144,6 +152,38 @@ const findEmailVerification= async (req:Request, res:Response) => {
 };
 
 
+
+const send= async (req:any, res:Response) => {
+  try{
+      const body=req.body,to:any=[];
+      if(body.to==1)
+        to.push(...userService.getAllUsersEmails().map((val:any)=>val.email))
+      else if(body.to==2)
+        to.push(...userService.getVerfiedUsersEmails().map((val:any)=>val.email))
+      else
+        to.push(body.individualValue)
+      const mailOption={
+          from: '"Royal65 Contact 👻" <contact@boitesetmoteurs.com>', // sender address
+          to, // list of receivers
+          subject:  body.subject, // Subject line
+          html:  body.message, // html body
+        }
+      mailerService.send(mailOption)
+      .then((error: Error, info: any) => {
+          if (error) {
+              res.status(500).send({ message: "An error has occurred while sending!" })  
+            return console.log(error);
+          }
+          console.log("Message sent: %s", info.messageId);
+          console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+          res.status(200).send({ message: "Successfully sent email" })
+        })
+      
+  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+
+};
+
+
 export default {
     count,
     getLastRegistred,
@@ -152,5 +192,7 @@ export default {
     findEmailVerification,
     update,
     deleteUser,
-    blockUnblock
+    blockUnblock,
+    getAllUsersEmails,
+    send
   }

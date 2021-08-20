@@ -79,6 +79,20 @@ export default class UserService {
     }
 
     
+    async getAllUsersEmails(){
+      const role=await RoleModel.findOne({name:"user"})
+      const last =await UserModel.find({roles:role._id},'email').sort( '-createdAt' )
+      return  last;
+    }
+
+    
+    async getVerfiedUsersEmails(){
+      const role=await RoleModel.findOne({name:"user"})
+      const last =await UserModel.find({roles:role._id,verified:true},'email').sort( '-createdAt' )
+      return  last;
+    }
+
+    
     async statistcsByCountry(){
       const stat =await UserModel.aggregate([{
         $group: {
