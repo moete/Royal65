@@ -10,7 +10,6 @@ const referencesave = (req: Request, res: Response) => {
     const reference = referenceService.save({
       ReferenceFrom: req.body.ReferenceFrom,
       ReferenceTo: req.body.ReferenceTo,
-      Code: shortid.generate(),
       Bonus: req.body.Bonus,
     });
     if (reference.message) {
