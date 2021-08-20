@@ -80,6 +80,7 @@ const update=async (req:any, res:Response) => {
   try{
   
     const userDTO=req.body;    
+    console.log(userDTO)
     const userInfo:any={
       name: userDTO.name,
       address: userDTO.address,
@@ -156,10 +157,15 @@ const findEmailVerification= async (req:Request, res:Response) => {
 const send= async (req:any, res:Response) => {
   try{
       const body=req.body,to:any=[];
-      if(body.to==1)
-        to.push(...userService.getAllUsersEmails().map((val:any)=>val.email))
-      else if(body.to==2)
-        to.push(...userService.getVerfiedUsersEmails().map((val:any)=>val.email))
+      if(body.to==1){
+        const emails=await userService.getAllUsersEmails()
+        console.log(emails)
+        to.push(...emails.map((val:any)=>val.email))
+      }
+      else if(body.to==2){
+        const emails=await userService.getVerfiedUsersEmails()
+        to.push(...emails.map((val:any)=>val.email))
+      }
       else
         to.push(body.individualValue)
       const mailOption={
@@ -168,11 +174,12 @@ const send= async (req:any, res:Response) => {
           subject:  body.subject, // Subject line
           html:  body.message, // html body
         }
+
       mailerService.send(mailOption)
       .then((error: Error, info: any) => {
           if (error) {
               res.status(500).send({ message: "An error has occurred while sending!" })  
-            return console.log(error);
+            return console.log(error,"*********************");
           }
           console.log("Message sent: %s", info.messageId);
           console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
