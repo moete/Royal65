@@ -18,6 +18,8 @@ export default function(app:Router) {
       route.get("/getAllTransactions",middlewares.authJwt.verifyToken,
       transactionController.getAllTransactions);
       route.get("/getalltodaytransaction",transactionController.getAllTodayTransactions);
-      route.get("/getAllDeposit",transactionController.getAllDeposit)
+      route.get("/getAllDeposit",transactionController.getAllDeposit);
+      route.get("/getallwithdrawal",transactionController.getallwithdrawal);
+      route.get("/getallBonus",transactionController.getallBonus);
 
 };

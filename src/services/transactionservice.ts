@@ -41,7 +41,7 @@ export default class TransactionService {
       {
         $group: {
           "_id": "$Type",
-          "TotalAmount": { $sum: "$Coins"}
+          "TotalAmount": { $sum: "$Credit"}
         }},
       
       ]
@@ -60,7 +60,7 @@ export default class TransactionService {
       {
         $group: {
           "_id": "$Type",
-          "TotalAmount": { $sum: "$Coins"}
+          "TotalAmount": { $sum: "$Credit"}
         }},
       
       ]
@@ -78,9 +78,8 @@ export default class TransactionService {
       {
         $group: {
           "_id": "$Type",
-          "TotalAmount": { $sum: "$Coins"}
+          "TotalAmount": { $sum: "$Credit"}
         }},
-      
       ]
     );
     return all;

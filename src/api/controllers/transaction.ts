@@ -55,6 +55,16 @@ const count= async (req:Request, res:Response) => {
     res.status(200).send({data:await transactionService.getAllDeposit()});
   }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
   };
+  const getallwithdrawal= async (req:Request, res:Response) => {
+    try{
+    res.status(200).send({data:await transactionService.getallwithdrawal()});
+  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+  };
+  const getallBonus= async (req:Request, res:Response) => {
+    try{
+    res.status(200).send({data:await transactionService.getallBonus()});
+  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+  };
 
 
 
@@ -63,5 +73,7 @@ export default {
       count,
       getAllTransactions,
       getAllTodayTransactions,
-      getAllDeposit
+      getAllDeposit,
+      getallwithdrawal,
+      getallBonus
 }
