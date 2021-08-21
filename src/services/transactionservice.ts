@@ -31,6 +31,63 @@ export default class TransactionService {
     return all;
   }
 
+  async getAllDeposit() {
+    //const all =await TransactionModel.find({}).sort( '-createdAt' );
+    const all =await TransactionModel.aggregate(
+    [
+      { $match: {
+        Type: "Deposit"
+    }},
+      {
+        $group: {
+          "_id": "$Type",
+          "TotalAmount": { $sum: "$Coins"}
+        }},
+      
+      ]
+    );
+    return all;
+  }
+
+  
+  async getallwithdrawal() {
+    //const all =await TransactionModel.find({}).sort( '-createdAt' );
+    const all =await TransactionModel.aggregate(
+    [
+      { $match: {
+        Type: "Withdrawal"
+    }},
+      {
+        $group: {
+          "_id": "$Type",
+          "TotalAmount": { $sum: "$Coins"}
+        }},
+      
+      ]
+    );
+    return all;
+  }
+
+  async getallBonus() {
+    //const all =await TransactionModel.find({}).sort( '-createdAt' );
+    const all =await TransactionModel.aggregate(
+    [
+      { $match: {
+        Type: "Bonus"
+    }},
+      {
+        $group: {
+          "_id": "$Type",
+          "TotalAmount": { $sum: "$Coins"}
+        }},
+      
+      ]
+    );
+    return all;
+  }
+
+
+
 
   async getAllTodayTransactions(){
      const  todaytransactions:number = await  TransactionModel.find({

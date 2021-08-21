@@ -50,11 +50,18 @@ const count= async (req:Request, res:Response) => {
   }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
   };
 
+  const getAllDeposit= async (req:Request, res:Response) => {
+    try{
+    res.status(200).send({data:await transactionService.getAllDeposit()});
+  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+  };
+
 
 
 export default {
       transact,
       count,
       getAllTransactions,
-      getAllTodayTransactions
+      getAllTodayTransactions,
+      getAllDeposit
 }
