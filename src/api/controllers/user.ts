@@ -4,6 +4,7 @@ import { IUser } from '../../interfaces/IUser';
 import  Services from "../../services/"
 const nodemailer = require("nodemailer");
 const mailerService:any=new Services.MailerService()
+const mailService:any=new Services.MailService()
 const userService:any=new Services.UserService()
 
 
@@ -175,16 +176,22 @@ const send= async (req:any, res:Response) => {
           html:  body.message, // html body
         }
 
-      mailerService.send(mailOption)
-      .then((error: Error, info: any) => {
-          if (error) {
-              res.status(500).send({ message: "An error has occurred while sending!" })  
-            return console.log(error,"*********************");
-          }
-          console.log("Message sent: %s", info.messageId);
-          console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-          res.status(200).send({ message: "Successfully sent email" })
+      mailerService.send(mailOption,(error: Error, info: any) => {
+        if (error) {
+            res.status(500).send({ message: "An error has occurred while sending!" })  
+          return console.log(error,"*********************");
+        }
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        mailService.save({
+          subject: mailOption.subject,
+          message: mailOption.html,
+          status: 1,
+          to
         })
+        res.status(200).send({ message: "Successfully sent email" })
+      })
+      
       
   }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 

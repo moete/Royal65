@@ -8,19 +8,16 @@ export default class MailerService {
     this.transporter= nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
-        pool:true,
+        service: 'gmail',
         secure: false, // true for 465, false for other ports
         auth: {
           user: "dahtest1@gmail.com", // generated ethereal user
           pass: "Mohamed28243854", // generated ethereal password
         },
         
-        tls: {
-          rejectUnauthorized: false,
-        },
       });
   }
-  public async send(mailOptions:any) {
+  public async send(mailOptions:any,callback:any) {
     
 
     // send mail with defined transport object
@@ -33,6 +30,6 @@ export default class MailerService {
     };*/
 
     // send mail with defined transport object
-    return await this.transporter.sendMail(mailOptions);
+     await  this.transporter.sendMail(mailOptions,callback);
   }
 }

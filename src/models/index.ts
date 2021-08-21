@@ -9,6 +9,7 @@ db.user = require("./user");
 db.role = require("./role");
 db.game = require("./game");
 db.score = require("./score");
+db.mails = require("./mails");
 db.emailVerification = require("./emailVerification");
 
 db.ROLES = ["user", "admin"];

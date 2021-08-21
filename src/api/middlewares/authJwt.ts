@@ -8,7 +8,7 @@ const verifyToken = (req:any, res:any, next:any) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(403).send({ message: "Unauthorized!" });
+    return res.status(401).send({ message: "Unauthorized!" });
   }
 
   jwt.verify(token, config.SECRET, (err:any, decoded:any) => {
@@ -44,7 +44,7 @@ const isAdmin = (req:any, res:any, next:any) => {
           }
         }
 
-        res.status(403).send({ message: "Unauthorized!" });
+        res.status(401).send({ message: "Unauthorized!" });
         return;
       }
     );
