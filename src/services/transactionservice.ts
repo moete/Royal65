@@ -1,5 +1,10 @@
 import { Service } from "typedi";
 import { ITransaction } from "../interfaces/ITransaction";
+import  endOfDay  from 'date-fns/endOfDay';
+import   startOfDay   from 'date-fns/startOfDay';
+import startOfYesterday from 'date-fns/startOfYesterday';
+import endOfYesterday from 'date-fns/endOfYesterday';
+
 const db = require("../models");
 var bcrypt = require("bcryptjs");
 const TransactionModel = db.transaction;
@@ -26,5 +31,34 @@ export default class TransactionService {
     return all;
   }
 
+
+  async getAllTodayTransactions(){
+     const  todaytransactions:number = await  TransactionModel.find({
+      createdAt: {
+        $gte: startOfDay(new Date()),
+        $lte: endOfDay(new Date())
+      }
+    }).countDocuments({})
+     const  yesterdaytransactions:number = await  TransactionModel.find({
+      createdAt: {
+        $gte: startOfYesterday(),
+        $lte: endOfYesterday()
+      }
+    }).countDocuments({})
+    if (yesterdaytransactions == null )
+    {
+      return todaytransactions
+    }
+    else if (yesterdaytransactions == null && todaytransactions == null)
+    {
+      return 0
+    }
+    else 
+    {
+      return todaytransactions - yesterdaytransactions
+    }
+    
+    
+  }
   
 }
