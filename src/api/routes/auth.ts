@@ -29,9 +29,7 @@ export default  function(app:Router) {
   route.post(
     "/signup",
     [
-        upload.single('photo'),
-        middlewares.verifySignUp.checkDuplicateUsernameOrEmail,
-        middlewares.verifySignUp.checkRolesExisted
+        upload.single('photo')
     ],
     authController.signup
   );

@@ -30,8 +30,8 @@ function initial() {
     });
   }
 
-  export default async (): Promise<any> => {
-    const connection= await mongoose.connect(config.databaseURL as string, { useNewUrlParser: true,useUnifiedTopology: true ,useFindAndModify :false })
+export default async (): Promise<any> => {
+    const connection= await mongoose.connect(config.DATABASE_URL as string, { useNewUrlParser: true,useUnifiedTopology: true })
     initial()
     return connection.connection.db;
 }

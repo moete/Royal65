@@ -21,7 +21,7 @@ export default {
 
         * Mongodb URI
         */
-        databaseURL: process.env.DATABASE_URI,
+         DATABASE_URL: process.env.DATABASE_URI,
         /**
          * Used by winston logger
         */
@@ -40,7 +40,7 @@ export default {
         /**
          * Secret JWt
          */
-        secret : process.env.SECRET ,
+        SECRET : process.env.SECRET ,
        
 
         /**

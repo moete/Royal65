@@ -5,7 +5,6 @@ var bcrypt = require("bcryptjs");
 const UserModel = db.user;
 const EmailModel = db.emailVerification;
 const RoleModel = db.role;
-var shortid = require("shortid");
 @Service()
 export default class UserService {
 
@@ -25,8 +24,8 @@ export default class UserService {
             country: userBody.country,
             username: userBody.username,
             photo: userBody.photo,
-            password: bcrypt.hashSync(userBody.password, 8),
-            Code: shortid.generate()
+            Code: userBody.Code,
+            password: bcrypt.hashSync(userBody.password, 8)
           });
 
         user=await user.save()

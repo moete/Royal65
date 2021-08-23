@@ -22,5 +22,8 @@ export default () => {
 	user(app);
     transaction(app);
 	reference(app);
+	game(app);
+	mails(app);
+
 	return app
 }
