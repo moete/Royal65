@@ -58,13 +58,13 @@ const deleteMail=async (req:any, res:Response) => {
 
   try{
 
-      const _id=req.params.id;
+    const listIds=req.body.ids;
     
-    const mail = mailsService.deleteUser(_id);
+    const mail = mailsService.deleteMail(listIds);
     mail.then(
       async (mail:any)=>{
 
-        res.send({ message: "Mail was deleted successfully!" });
+        res.send({ message: "Mails was deleted successfully!" });
       }
     ).catch((err:any)=>{
 
