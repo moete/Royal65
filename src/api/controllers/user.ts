@@ -184,9 +184,10 @@ const send= async (req:any, res:Response) => {
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         mailService.save({
-          subject: mailOption.subject,
-          message: mailOption.html,
-          status: 1,
+          email_subject: mailOption.subject,
+          email_content: mailOption.html,
+          folder: 0,
+          read:false,
           to
         })
         res.status(200).send({ message: "Successfully sent email" })
