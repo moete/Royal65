@@ -21,7 +21,7 @@ export default {
 
         * Mongodb URI
         */
-         DATABASE_URL: process.env.DATABASE_URI,
+         DATABASE_URL: process.env.DATABASE_URL,
         /**
          * Used by winston logger
         */

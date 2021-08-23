@@ -2,7 +2,7 @@ import { Router } from 'express';
 import auth from './routes/auth';
 import user from './routes/user';
 import game from './routes/game';
-import mails from './routes/mailing';
+import mails from './routes/mail';
 import promo from './routes/promo';
 import paypal from './routes/paypal';
 import stripe from './routes/stripe';
@@ -23,7 +23,6 @@ export default () => {
     transaction(app);
 	reference(app);
 	game(app);
-	mails(app);
 
 	return app
 }
