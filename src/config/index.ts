@@ -27,16 +27,24 @@ export default {
         */
         logs: {
         level: process.env.LOG_LEVEL || 'silly',
-
+        },   
         /**
          * mode sandbox paypal
          */
-     
-
-        },   
         paypal : {
           mode : process.env.MODE ,
           client_id : process.env.CLIENT_ID,
           client_secret : process.env.SECRET  
-        }
-  };
+        },
+
+       
+
+        /**
+         * Stripe 
+         */
+        client_id : process.env.STRIPE_PUBLIC ,
+        client_secret : process.env.STRIPE_SECRET
+
+
+ 
+      };
