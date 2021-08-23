@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import PromoController from "../Controllers/promo";
-import multer from "multer";
+import multer = require("multer");
 const route = Router();
 
 export default function (app: Router) {

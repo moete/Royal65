@@ -2,12 +2,17 @@ export interface IUser {
     _id: string;
     name: string;
     email: string;
+    address: string;
     password: string;
-    salt: string;
+    country: string;
+    username: string;
+    photo:string;
   }
   
   export interface IUserInputDTO {
     name: string;
     email: string;
-    password: string;
+    address: string;
+    country: string;
+    username: string;
   }

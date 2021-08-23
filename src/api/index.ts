@@ -1,15 +1,22 @@
-import { Router } from "express";
-import recla from "./routes/recla";
-import promo from "./routes/promo";
-import paypal from "./routes/paypal";
-import stripe from "./routes/stripe";
+import { Router } from 'express';
+import auth from './routes/auth';
+import user from './routes/user';
+import game from './routes/game';
+import mails from './routes/mailing';
+import promo from './routes/promo';
+import paypal from './routes/paypal';
+import stripe from './routes/stripe';
+
+// guaranteed to get dependencies
 export default () => {
-    const app = Router();
-    recla(app)
+	const app = Router();
+	auth(app);
     promo(app)
     paypal(app)
     stripe(app)
+	user(app);
+	game(app);
+	mails(app);
 
-    return app ;
-
+	return app
 }

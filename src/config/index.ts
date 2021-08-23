@@ -37,13 +37,26 @@ export default {
           client_secret : process.env.SECRET  
         },
 
+        /**
+         * Secret JWt
+         */
+        secret : process.env.SECRET ,
        
 
         /**
          * Stripe 
          */
         client_id : process.env.STRIPE_PUBLIC ,
-        client_secret : process.env.STRIPE_SECRET
+        client_secret : process.env.STRIPE_SECRET,
+
+        api: {
+          prefix: '/api',
+          },
+          gameStatus:{
+            process:1,
+            finished:2,
+            open:0
+          }
 
 
  
