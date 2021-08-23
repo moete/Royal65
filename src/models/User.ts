@@ -40,6 +40,16 @@ const User = mongoose.model(
             type: String,
             required: true
           },
+          // Att added
+          wallet: {
+            type: Number,
+            default : 0
+          },
+            // changed code attribute into user
+           Code: {
+            type: String,
+            required: true
+          },
         roles: [
             {
             type: mongoose.Schema.Types.ObjectId,

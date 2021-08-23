@@ -15,3 +15,8 @@ db.emailVerification = require("./emailVerification");
 db.ROLES = ["user", "admin"];
 
 module.exports = db;
+db.transaction = require("./transaction")
+db.reference = require("./Reference")
+db.ROLES = ["user", "admin"];
+
+module.exports = db;

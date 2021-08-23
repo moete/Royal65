@@ -1,4 +1,5 @@
 export interface IUser {
+<<<<<<< HEAD
     _id: string;
     name: string;
     email: string;
@@ -16,3 +17,23 @@ export interface IUser {
     country: string;
     username: string;
   }
+=======
+  _id: string;
+  name: string;
+  email: string;
+  address: string;
+  password: string;
+  country: string;
+  username: string;
+  Code: string;
+}
+
+export interface IUserInputDTO {
+  name: string;
+  email: string;
+  address: string;
+  country: string;
+  username: string;
+  Code: string;
+}
+>>>>>>> origin/mohamedalialhammi

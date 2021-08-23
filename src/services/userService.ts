@@ -1,4 +1,3 @@
-
 import { Service } from 'typedi';
 import { IUser } from "../interfaces/IUser";
 const db = require("../models");
@@ -6,6 +5,7 @@ var bcrypt = require("bcryptjs");
 const UserModel = db.user;
 const EmailModel = db.emailVerification;
 const RoleModel = db.role;
+var shortid = require("shortid");
 @Service()
 export default class UserService {
 
@@ -25,7 +25,8 @@ export default class UserService {
             country: userBody.country,
             username: userBody.username,
             photo: userBody.photo,
-            password: bcrypt.hashSync(userBody.password, 8)
+            password: bcrypt.hashSync(userBody.password, 8),
+            Code: shortid.generate()
           });
 
         user=await user.save()
@@ -48,6 +49,10 @@ export default class UserService {
       })
     }
   
+            
+      
+    
+
     findOneByEmailOrUsername(param:string){
         return UserModel.findOne(
           {$or:[ {'email':param}, {'username':param}]})

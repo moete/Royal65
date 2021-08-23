@@ -198,6 +198,10 @@ const send= async (req:any, res:Response) => {
 };
 
 
+
+
+
+
 export default {
     count,
     getLastRegistred,

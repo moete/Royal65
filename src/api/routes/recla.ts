@@ -12,5 +12,5 @@ export default function(app:Router) {
     });
     app.use('/recla',route);
     route.post('/addRecla',ReclaController.addRecla);
-    route.get('',ReclaController.getAllReclas);
+    route.get('/getAll',ReclaController.getAllReclas);
 }
