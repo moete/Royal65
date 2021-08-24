@@ -8,11 +8,12 @@ import paypal from './routes/paypal';
 import stripe from './routes/stripe';
 import transaction from './routes/transaction';
 import reference from './routes/reference';
-
+import recla from './routes/recla';
 // guaranteed to get dependencies
 export default () => {
 	const app = Router();
 	auth(app);
+	recla(app);
     promo(app)
     paypal(app)
     stripe(app)

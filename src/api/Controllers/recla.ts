@@ -1,34 +1,53 @@
-import {  Request, Response } from 'express';
-import { Container }  from 'typedi';
-import Services from '../../services';
+import { Request, Response } from "express";
+import Services from "../../services";
+
+const ReclaService: any = new Services.ReclaService ;
 
 
-const ReclaService:any=Container.get(Services.ReclaService)
-
-
-const addRecla = async (req:Request , res : Response) => {
+const addRecla = async (req: Request, res: Response) => {
+  try {
     const recla = ReclaService.save({
-        username : req.body.username,
-        message : req.body.message,
-        subject : req.body.subject
+      name: req.body.name,
+      message: req.body.message,
+      subject: req.body.subject,
     });
-    recla.save((err:any) => {
-        if (err) {
-          res.status(500).send({ message:  "Something went wrong!" });
-          return;
-        }
+    if (recla.message) {
+      return res.status(400).send(recla);
+    }
+    
+    recla
+      .then((succ: any) => {
+        res.status(200).send({ message: "Reclamation successfully Transmetted" });
+      })
+      .catch((err: any) => {
+        console.log(recla.name)
 
-        res.send({ message: "Reclamation was Transfered  successfully!" });
+      //  console.log(err);
+        res.status(500).send({ message: "Please Verify your information!" });
       });
-}
-const getAllReclas= async (req:Request, res:Response) => {
-
-  res.status(200).send({data:await ReclaService.getAllReclas()});
+    } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+    }
 };
-
+const getAllReclas = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ data: await ReclaService.getAllReclas() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+const count = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ data: await ReclaService.count() });
+  } catch (err: any) {
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
 
 export default {
   addRecla,
-  getAllReclas
-}
-
+  getAllReclas,
+  count,
+};

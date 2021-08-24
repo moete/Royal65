@@ -1,23 +1,25 @@
 import { IRecla } from "../interfaces/IRecla";
-import mongoose = require('mongoose');
+import mongoose = require("mongoose");
 
-const Recla = new mongoose.Schema(
+const Recla = mongoose.model(
+  "Recla",
+  new mongoose.Schema(
     {
       name: {
         type: String,
-        required: [true, 'Please enter a full name'],
-        index: true,
+        required: true, 
       },
       subject: {
-        type: String ,
-        required : [true,'please enter a subject for your message'],
+        type: String,
+        required: [true, "please enter a subject for your message"],
       },
-      message : {
-          type : String ,
-          required : [true ,'please enter a valid message for your request']
-      }
+      message: {
+        type: String,
+        required: [true, "please enter a valid message for your request"],
+      },
     },
-    { timestamps: true },
-  );
+    { timestamps: true })
   
-  export default mongoose.model<IRecla& mongoose.Document>('Recla', Recla);
+);
+
+module.exports = Recla;

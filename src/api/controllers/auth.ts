@@ -1,5 +1,3 @@
-
-import { Container } from 'typedi';
 import config from '../../config';
 import {  Request, Response } from 'express';
 var jwt = require("jsonwebtoken");

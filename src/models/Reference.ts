@@ -1,4 +1,4 @@
-import mongoose = require('mongoose')
+import mongoose = require('mongoose');
 
 const Reference = mongoose.model(
     "Reference",
