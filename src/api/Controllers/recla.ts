@@ -1,25 +1,35 @@
 import {  Request, Response } from 'express';
-import { Container }  from 'typedi';
 import Services from '../../services';
 
 
-const ReclaService:any=Container.get(Services.ReclaService)
+const ReclaService:any= new Services.ReclaService() ;
 
 
 const addRecla = async (req:Request , res : Response) => {
+  try {
     const recla = ReclaService.save({
-        username : req.body.username,
-        message : req.body.message,
-        subject : req.body.subject
-    });
-    recla.save((err:any) => {
-        if (err) {
-          res.status(500).send({ message:  "Something went wrong!" });
-          return;
-        }
+      user : req.body.user,
+      message : req.body.message,
+      subject : req.body.subject
+  });
+  if (recla.message) {
+    return res.status(400).send(recla);
+  }
 
-        res.send({ message: "Reclamation was Transfered  successfully!" });
-      });
+  recla
+    .then((succ: any) => {
+      res.status(200).send({ message: "Reclamation successfully transmetted" });
+    })
+    .catch((err: any) => {
+      console.log(err);
+      res.status(500).send({ message: "Please Verify your information!" });
+    });
+  }  
+
+   catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
 }
 const getAllReclas= async (req:Request, res:Response) => {
 

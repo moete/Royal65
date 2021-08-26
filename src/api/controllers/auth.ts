@@ -1,7 +1,7 @@
 import config from '../../config';
 import {  Request, Response } from 'express';
 var jwt = require("jsonwebtoken");
-import  Services from "../../services/"
+import  Services from "../../services"
 const fs=require('fs')
 
 var shortid = require("shortid");

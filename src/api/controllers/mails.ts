@@ -1,6 +1,6 @@
 
 import {  Request, Response } from 'express';
-import  Services from "../../services/"
+import  Services from "../../services"
 const mailsService:any=new Services.MailService()
 
 

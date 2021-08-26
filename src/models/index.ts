@@ -10,8 +10,9 @@ db.role = require("./role");
 db.game = require("./game");
 db.score = require("./score");
 db.mails = require("./mails");
+db.recla = require("./Recla")
 db.emailVerification = require("./emailVerification");
-
+db.tournament = require("./tournament")
 db.ROLES = ["user", "admin"];
 
 module.exports = db;

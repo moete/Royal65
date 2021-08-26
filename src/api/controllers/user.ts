@@ -1,7 +1,7 @@
 
 import {  Request, Response } from 'express';
 import { IUser } from '../../interfaces/IUser';
-import  Services from "../../services/"
+import  Services from "../../services"
 const nodemailer = require("nodemailer");
 const mailerService:any=new Services.MailerService()
 const mailService:any=new Services.MailService()

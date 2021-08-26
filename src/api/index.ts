@@ -8,6 +8,7 @@ import paypal from './routes/paypal';
 import stripe from './routes/stripe';
 import transaction from './routes/transaction';
 import reference from './routes/reference';
+import recla from './routes/recla';
 
 // guaranteed to get dependencies
 export default () => {
@@ -15,6 +16,7 @@ export default () => {
 	auth(app);
     promo(app)
     paypal(app)
+	recla(app)
     stripe(app)
 	user(app);
 	game(app);

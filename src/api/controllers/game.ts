@@ -1,7 +1,7 @@
 
 import {  Request, Response } from 'express';
 
-import  Services from "../../services/"
+import  Services from "../../services"
 const gameService:any=new Services.GameService()
 
 
