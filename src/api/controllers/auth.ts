@@ -111,6 +111,7 @@ const signup = async (req:any, res:Response) => {
         res.status(200).send({
           id: user._id,
           username: user.username,
+          name: user.name,
           email: user.email,
           roles: authorities,
           accessToken: token,

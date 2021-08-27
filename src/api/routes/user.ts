@@ -23,7 +23,9 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsersEmails);
   route.get("/verifyEmail/:email/:token", userController.findEmailVerification);
 
-  route.post("/update",[middlewares.authJwt.verifyToken], userController.update);
+  route.post("/updateUserByAdmin",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.update);
+
+  route.post("/updateAdminPassword",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.updateAdminPassword);
 
   route.post("/blockUnblock",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.blockUnblock);
 

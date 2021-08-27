@@ -119,10 +119,8 @@ const gameService:any=new Services.GameService()
         try{
             const score=await gameService.addUpdateScore({
                 scoreId:req.body.scoreId,
-                score1:req.body.score1,
-                score2:req.body.score2,
-                team2:req.body.team2,
-                team1:req.body.team1,
+                score:req.body.score,
+                player:req.body.player,
                 game:req.body.game,
             })
             

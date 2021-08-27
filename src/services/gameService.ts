@@ -69,12 +69,11 @@ export default class GameService {
         let score=null;
         if(data.scoreId){
             score=ScoreModel.findById(data.scoreId);
+            score.score=data.score
         }else{
             score=new ScoreModel({
-                score1:data.score1,
-                score2:data.score2,
-                team2:data.team2,
-                team1:data.team1,
+                score:data.score,
+                player:data.player,
                 game:data.game,
             })
         }

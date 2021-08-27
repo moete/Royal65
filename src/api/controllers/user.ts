@@ -76,6 +76,34 @@ const blockUnblock=async (req:any, res:Response) => {
 
 }
 
+
+
+const updateAdminPassword=async (req:any, res:Response) => {
+
+  try{
+  
+    const userDTO=req.body;    
+    console.log(userDTO)
+    const userInfo:any={
+      password: userDTO.password
+    }
+    
+    const user = userService.updateAdminPassword(userDTO._id,userInfo);
+    user.then(
+      async (user:any)=>{
+        res.send({ message: "User was updated successfully!" });
+      }
+    ).catch((err:any)=>{
+
+      console.log(err);res.status(500).send({ message: "Please Verify your information!" });
+    })
+
+  }catch(err:any){
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+  
+}
+
 const update=async (req:any, res:Response) => {
 
   try{
@@ -213,5 +241,6 @@ export default {
     deleteUser,
     blockUnblock,
     getAllUsersEmails,
-    send
+    send,
+    updateAdminPassword
   }
