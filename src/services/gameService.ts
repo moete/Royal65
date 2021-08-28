@@ -3,7 +3,7 @@ import { Service } from 'typedi';
 import config from '../config';
 const db = require("../models");
 const gameStatus=config.gameStatus
-const UserModel = db.user;
+const GameTransactionModel = db.gameTransaction;
 const GameModel = db.game;
 const ScoreModel = db.score;
 //TODO handel message error
@@ -98,6 +98,28 @@ export default class GameService {
     deleteGame(_id:any){
         return GameModel.deleteOne({ _id });
     }
+
     
+    async saveTransaction(gameBody:any){
+        const isExists=await GameModel.find({status:{$ne:gameStatus.finished},_id:gameBody.gameId})
+        if(isExists.length ==0){
+            return {message:"Game Not found"};
+        }
+        const gameT = new GameTransactionModel({
+            amount: isExists[0].amount,
+            game: gameBody.gameId,
+            players: gameBody.userId
+          });
+        
+        return gameT.save()
+    }
+    
+    
+    async getTransactions(){
+        return GameTransactionModel.find({}).sort( '-createdAt' )
+    }
+    
+    
+
 
 }

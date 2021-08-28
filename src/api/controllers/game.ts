@@ -34,6 +34,31 @@ const gameService:any=new Services.GameService()
    
     };
 
+    
+    const saveTransaction= async (req:any, res:Response) => {
+        try{
+            const gameT=gameService.saveTransaction({
+                userId: req.userId,
+                gameId: req.body.gameId
+            })
+            if(gameT.message){
+                
+               return res.status(400).send(gameT);
+            }
+        
+            gameT.then(
+                (succ:any)=>{
+        
+                    res.status(200).send({message:"Game Transactions successfully created"});
+            }
+            ).catch((err:any)=>{
+        
+                console.log(err);
+                res.status(500).send({ message: "Please Verify your information!" });
+            })
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+   
+    };
         
 
     const deleteGame=async (req:any, res:Response) => {
@@ -69,6 +94,17 @@ const gameService:any=new Services.GameService()
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
        
     };
+
+    
+    const getAllTransactions= async (req:Request, res:Response) => {
+            
+        try{
+            
+            res.status(200).send({data:await gameService.getTransactions()});
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+       
+    };
+    
     
   
     const join= async (req:any, res:Response) => {
@@ -172,5 +208,7 @@ export default {
     addUpdateScore,
     getScoreByGameId,
     getScoresByUserId,
-    deleteGame
+    deleteGame,
+    saveTransaction,
+    getAllTransactions
   }

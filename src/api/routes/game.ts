@@ -17,8 +17,13 @@ export default function(app:Router) {
   route.post("/save",
   [middlewares.authJwt.verifyToken], gameController.save);
   
+  route.post("/saveTransaction",
+  [middlewares.authJwt.verifyToken], gameController.saveTransaction);
+  
   route.get("/getAll",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAll);
+  route.get("/getAllTransactions",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAllTransactions);
 
   
   route.post("/join",
