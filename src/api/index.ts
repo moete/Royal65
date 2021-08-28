@@ -3,7 +3,6 @@ import auth from './routes/auth';
 import user from './routes/user';
 import game from './routes/game';
 import mails from './routes/mail';
-import promo from './routes/promo';
 import paypal from './routes/paypal';
 import stripe from './routes/stripe';
 import transaction from './routes/transaction';
@@ -13,7 +12,6 @@ import reference from './routes/reference';
 export default () => {
 	const app = Router();
 	auth(app);
-    promo(app)
     paypal(app)
     stripe(app)
 	user(app);
