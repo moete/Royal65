@@ -25,7 +25,7 @@ export default function(app:Router) {
 
   route.post("/updateUserByAdmin",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.update);
 
-  route.post("/updateAdminPassword",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.updateAdminPassword);
+  route.post("/updateAdmin",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.updateAdmin);
 
   route.post("/blockUnblock",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.blockUnblock);
 

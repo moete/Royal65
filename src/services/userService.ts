@@ -41,7 +41,8 @@ export default class UserService {
     }
 
     
-    async updateAdminPassword(_id:any,userBody:IUser){
+    async updateAdmin(_id:any,userBody:IUser){
+      console.log(userBody, " *********")
       return UserModel.findOneAndUpdate({_id},userBody, {
         new: true
       })

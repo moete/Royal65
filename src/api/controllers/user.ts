@@ -2,6 +2,7 @@
 import {  Request, Response } from 'express';
 import { IUser } from '../../interfaces/IUser';
 import  Services from "../../services/"
+var bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const mailerService:any=new Services.MailerService()
 const mailService:any=new Services.MailService()
@@ -78,17 +79,22 @@ const blockUnblock=async (req:any, res:Response) => {
 
 
 
-const updateAdminPassword=async (req:any, res:Response) => {
+const updateAdmin=async (req:any, res:Response) => {
 
   try{
   
     const userDTO=req.body;    
-    console.log(userDTO)
-    const userInfo:any={
-      password: userDTO.password
+    let userInfo:any={
     }
+    if(userDTO.password)
+      userInfo.password=bcrypt.hashSync(userDTO.password, 8)
+    else
+      userInfo={
+        email: userDTO.email,
+        name: userDTO.name
+      }
     
-    const user = userService.updateAdminPassword(userDTO._id,userInfo);
+    const user = userService.updateAdmin(req.userId,userInfo);
     user.then(
       async (user:any)=>{
         res.send({ message: "User was updated successfully!" });
@@ -99,6 +105,7 @@ const updateAdminPassword=async (req:any, res:Response) => {
     })
 
   }catch(err:any){
+    console.log(err)
     res.status(500).send({ message: "An error has occurred!" });
   }
   
@@ -109,7 +116,7 @@ const update=async (req:any, res:Response) => {
   try{
   
     const userDTO=req.body;    
-    console.log(userDTO)
+    
     const userInfo:any={
       name: userDTO.name,
       address: userDTO.address,
@@ -242,5 +249,5 @@ export default {
     blockUnblock,
     getAllUsersEmails,
     send,
-    updateAdminPassword
+    updateAdmin
   }
