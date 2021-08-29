@@ -9,7 +9,7 @@ import PromotionService from "./PromotionService";
 import PaymentService from "./PaymentService";
 import TransactionService from './transactionservice' ;
 import ReferenceService from './referenceservice'
-import TournamentService from './tournamentService'
+import TournamentService from './tournamentservice'
 export default  {
     UserService,
     RoleService,
@@ -22,8 +22,5 @@ export default  {
     TransactionService,
     ReferenceService,
     TournamentService
-    
-    
-
   };
   

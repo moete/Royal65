@@ -10,7 +10,7 @@ const Addtournament = (req : Request , res : Response) => {
             price : req.body.price,
             status : req.body.status,
             start_date : req.body.start_date,
-            end_time : req.body.end_time,
+            end_time : req.body.end_time,        
             entry_fee : req.body.entry_fee,
             capacity : req.body.capacity,
             description : req.body.description

@@ -9,7 +9,7 @@ import stripe from './routes/stripe';
 import transaction from './routes/transaction';
 import reference from './routes/reference';
 import recla from './routes/recla';
-
+import tournament from './routes/tournament';
 // guaranteed to get dependencies
 export default () => {
 	const app = Router();
@@ -25,6 +25,6 @@ export default () => {
     transaction(app);
 	reference(app);
 	game(app);
-
+	tournament(app);
 	return app
 }

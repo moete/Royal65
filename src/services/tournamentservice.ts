@@ -10,12 +10,13 @@ export default class TournamentService {
             title :tournamentBody.title ,
             price : tournamentBody.price,
             status : tournamentBody.status,
-            start_date : tournamentBody.start_time,
-            end_time : tournamentBody.end_time,
+           start_date : tournamentBody.start_time,
+            end_time : tournamentBody.end_time,         
             entry_fee : tournamentBody.entry_fee,
             capacity : tournamentBody.capacity ,
             description : tournamentBody.description
         })
+        console.log(tournament)
         return tournament.save();
         
     }
