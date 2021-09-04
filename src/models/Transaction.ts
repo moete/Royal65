@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-const Double = require("@mongoosejs/double");
+var mongoose = require('mongoose')
+require('mongoose-double')(mongoose);
 
 const Transaction = mongoose.model(
   "Transaction",
@@ -12,11 +12,11 @@ const Transaction = mongoose.model(
         },
       ],
       Credit: {
-        type: Double,
+        type: mongoose.Schema.Types.Double,
         required: true,
       },
       Comission: {
-        type: Double,
+        type: mongoose.Schema.Types.Double,
         required: true,
       },
       Type: {

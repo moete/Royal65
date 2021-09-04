@@ -8,7 +8,7 @@ const verifyToken = (req:any, res:any, next:any) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(403).send({ message: "Unauthorized!" });
+    return res.status(401).send({ message: "Unauthorized!" });
   }
 
   jwt.verify(token, config.SECRET, (err:any, decoded:any) => {
@@ -44,15 +44,29 @@ const isAdmin = (req:any, res:any, next:any) => {
           }
         }
 
-        res.status(403).send({ message: "Unauthorized!" });
+        res.status(401).send({ message: "Unauthorized!" });
         return;
       }
     );
   });
 };
 
+
+const isUserExist = async (req:any, res:any, next:any) => {
+
+  const user=await User.findById(req.userId)
+  if(!user){
+    res.status(400).send({ message: "User doesn't exist" });
+    return;
+  }
+  next();
+  return;
+
+};
+
 const authJwt = {
   verifyToken,
   isAdmin
+  
 };
 module.exports = authJwt;

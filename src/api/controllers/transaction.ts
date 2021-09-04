@@ -11,7 +11,7 @@ const transact = (req:Request, res:Response) => {
       Type: req.body.Type,
       User: req.body.User,
       Credit: req.body.Credit,
-      Coins: req.body.Coins,
+      Comission: req.body.Comission,
     });
     if (transaction.message) {
       return res.status(400).send(transaction);

@@ -1,11 +1,9 @@
 import { Service } from "typedi";
 import { ITransaction } from "../interfaces/ITransaction";
-
-
-var startOfDay = require('date-fns/startOfDay')
-var endOfDay = require('date-fns/endOfDay')
-var startOfYesterday = require('date-fns/startOfYesterday')
-var endOfYesterday = require('date-fns/endOfYesterday')
+var  endOfDay   =require( 'date-fns/endOfDay');
+var   startOfDay    =require( 'date-fns/startOfDay');
+var startOfYesterday  =require( 'date-fns/startOfYesterday');
+var endOfYesterday =require( 'date-fns/endOfYesterday');
 
 const db = require("../models");
 var bcrypt = require("bcryptjs");
@@ -17,7 +15,7 @@ export default class TransactionService {
       Type: transactionBody.Type,
       User: transactionBody.User,
       Credit: transactionBody.Credit,
-      Coins: transactionBody.Coins,
+      Comission: transactionBody.Comission,
     });
 
     return transaction.save();

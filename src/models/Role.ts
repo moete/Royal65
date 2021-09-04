@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose = require('mongoose');
 const Role = mongoose.model(
     "Role",
     new mongoose.Schema({

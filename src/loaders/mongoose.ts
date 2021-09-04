@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose = require('mongoose') ;
 import config from '../config';
 const db = require("../models");
 const Role = db.role;
@@ -31,7 +31,6 @@ function initial() {
   }
 
 export default async (): Promise<any> => {
-  console.log(config.DATABASE_URL as string,"********************")
     const connection= await mongoose.connect(config.DATABASE_URL as string, { useNewUrlParser: true,useUnifiedTopology: true })
     initial()
     return connection.connection.db;

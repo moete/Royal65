@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose = require('mongoose') ;
 
 const User = mongoose.model(
     "User",
@@ -15,9 +15,18 @@ const User = mongoose.model(
             type: String,
             required: true
           },
+          photo: {
+              type: String,
+              dafault:"uploads/userImages/default.jpg"
+
+            },
+        verified:{
+              type: Boolean,
+              default: false
+          } ,
         active:{
             type: Boolean,
-            default: true
+            default: false
           } ,
         email: {
             type: String,

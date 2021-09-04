@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import cors from 'cors';
+import cors = require('cors');
 import routes from '../api';
 import config from '../config';
 

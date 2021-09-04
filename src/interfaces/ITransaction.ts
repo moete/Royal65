@@ -3,12 +3,13 @@ export interface ITransaction {
     Type: string;
     User: string;
     Credit: string;
-    Coins: string;
+    Comission: string;
   }
   
   export interface ITransactionDTO {
     Date: string;
     User: string;
-    Coins: string;
+    Credit: string;
+    Comission: string;
     Type: string;
   }
