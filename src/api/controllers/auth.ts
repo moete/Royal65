@@ -3,14 +3,13 @@ import {  Request, Response } from 'express';
 var jwt = require("jsonwebtoken");
 import  Services from "../../services/"
 const fs=require('fs')
-
-var shortid = require("shortid");
+var uniqid = require('uniqid'); 
 
 const userService:any=new Services.UserService()
 const roleService:any=new Services.RoleService()
 const expiresIn=86400;
 var bcrypt = require("bcryptjs"); 
-var shortid = require("shortid");
+
 
 const signup = async (req:any, res:Response) => {
     const userDTO = req.body;
@@ -39,7 +38,7 @@ const signup = async (req:any, res:Response) => {
       country: userDTO.country,
       photo,
       // changed code attribute into user
-      Code: shortid.generate(),
+      Code : uniqid(),
       password: userDTO.password
     });
     user.then(

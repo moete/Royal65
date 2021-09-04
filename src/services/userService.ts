@@ -133,6 +133,8 @@ export default class UserService {
       });
     }
 
-
+    async getUserByCode(Code:String){
+      const ref = await UserModel.find({Code});
+    }
   
 }

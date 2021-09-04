@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
 require('mongoose-double')(mongoose);
+
 const Reference = mongoose.model(
     "Reference",
     new mongoose.Schema({
@@ -18,7 +19,7 @@ const Reference = mongoose.model(
         Bonus:{
             type: mongoose.Schema.Types.Double,
             required: true
-          } ,
+          } 
         },{timestamps: true })
   );
   
