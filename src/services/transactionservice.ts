@@ -1,9 +1,11 @@
 import { Service } from "typedi";
 import { ITransaction } from "../interfaces/ITransaction";
-import  endOfDay  from 'date-fns/endOfDay';
-import   startOfDay   from 'date-fns/startOfDay';
-import startOfYesterday from 'date-fns/startOfYesterday';
-import endOfYesterday from 'date-fns/endOfYesterday';
+
+
+var startOfDay = require('date-fns/startOfDay')
+var endOfDay = require('date-fns/endOfDay')
+var startOfYesterday = require('date-fns/startOfYesterday')
+var endOfYesterday = require('date-fns/endOfYesterday')
 
 const db = require("../models");
 var bcrypt = require("bcryptjs");

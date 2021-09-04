@@ -17,7 +17,7 @@ export default {
      * Your  port
      */
      port: process.env.PORT,
-     DATABASE_URL:process.env.DATABASE_URL,
+     DATABASE_URL:process.env.DATABASE_URI,
      SECRET:process.env.SECRET,
      api: {
       prefix: '/api',
