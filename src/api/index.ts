@@ -24,7 +24,6 @@ export default () => {
 	user(app);
     transaction(app);
 	reference(app);
-	game(app);
 	tournament(app);
 	return app
 }

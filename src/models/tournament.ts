@@ -31,6 +31,17 @@ const Tournament = mongoose.model(
           "please enter the amount to start  for your tournament ",
         ],
       },
+      game: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Game",
+        required: true,
+      },
+      players: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
       capacity: {
         type: Number,
         required: true,

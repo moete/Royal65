@@ -1,4 +1,5 @@
 import { Router ,Request, Response, NextFunction} from 'express';
+import middlewares from '../middlewares';
 import tournamentController from '../controllers/tournament' 
 const route = Router();
 
@@ -12,8 +13,10 @@ export default function(app:Router) {
       });
        // add auth validation
       app.use('/tournaments', route);
-      route.post('/addTournament',tournamentController.Addtournament)
-      route.get('/getAll',tournamentController.getAllTournaments)
-    
+      route.post('/addTournament',middlewares.authJwt.isAdmin,tournamentController.Addtournament)
+      route.get('/getAll',middlewares.authJwt.isAdmin,tournamentController.getAllTournaments)
+      route.post('/join',tournamentController.join)
+      route.delete('/delete/:id',tournamentController.deleteTournament)
+      
 
 };
