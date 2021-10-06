@@ -12,10 +12,10 @@ const GameTransaction = mongoose.model(
           ref: "User",
           required: true
           },
-        game: 
+        match: 
             {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Game",
+            ref: "Match",
             required: true
             }
     }, { timestamps: true })

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import auth from './routes/auth';
 import user from './routes/user';
-import game from './routes/game';
+import match from './routes/match';
 import mails from './routes/mail';
 import paypal from './routes/paypal';
 import stripe from './routes/stripe';
@@ -15,12 +15,11 @@ export default () => {
     paypal(app)
     stripe(app)
 	user(app);
-	game(app);
+	match(app);
 	mails(app);
 	user(app);
     transaction(app);
 	reference(app);
-	game(app);
 
 	return app
 }

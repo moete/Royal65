@@ -2,12 +2,11 @@
 import {  Request, Response } from 'express';
 
 import  Services from "../../services/"
-const gameService:any=new Services.GameService()
-
+const matchService:any=new Services.MatchService()
 
     const save= async (req:any, res:Response) => {
         try{
-            const game=gameService.save({
+            const game=matchService.save({
                 amount: req.body.amount,
                 userId: req.userId,
                 free: req.body.free,
@@ -37,7 +36,7 @@ const gameService:any=new Services.GameService()
     
     const saveTransaction= async (req:any, res:Response) => {
         try{
-            const gameT=gameService.saveTransaction({
+            const gameT=matchService.saveTransaction({
                 userId: req.userId,
                 gameId: req.body.gameId
             })
@@ -67,7 +66,7 @@ const gameService:any=new Services.GameService()
 
             const _id=req.params.id;
             
-            const game = gameService.deleteGame(_id);
+            const game = matchService.deleteGame(_id);
             game.then(
             async (game:any)=>{
 
@@ -90,7 +89,7 @@ const gameService:any=new Services.GameService()
             
         try{
             
-            res.status(200).send({data:await gameService.getAll()});
+            res.status(200).send({data:await matchService.getAll()});
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
        
     };
@@ -100,7 +99,7 @@ const gameService:any=new Services.GameService()
             
         try{
             
-            res.status(200).send({data:await gameService.getTransactions()});
+            res.status(200).send({data:await matchService.getTransactions()});
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
        
     };
@@ -110,7 +109,7 @@ const gameService:any=new Services.GameService()
     const join= async (req:any, res:Response) => {
         
         try{
-            const game=await gameService.join({
+            const game=await matchService.join({
                 _id:req.body._id,
                 password:req.body.password,
                 userId:req.userId,
@@ -128,7 +127,7 @@ const gameService:any=new Services.GameService()
             
         try{
 
-            const game=await gameService.join({
+            const game=await matchService.join({
                 _id:req.body._id,
                 userId:req.userId,
             })
@@ -145,7 +144,7 @@ const gameService:any=new Services.GameService()
         try{
 
             
-            res.status(200).send({data:await gameService.getOpen()});
+            res.status(200).send({data:await matchService.getOpen()});
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
     };
@@ -153,7 +152,7 @@ const gameService:any=new Services.GameService()
     const addUpdateScore= async (req:Request, res:Response) => {
         
         try{
-            const score=await gameService.addUpdateScore({
+            const score=await matchService.addUpdateScore({
                 scoreId:req.body.scoreId,
                 score:req.body.score,
                 player:req.body.player,
@@ -175,7 +174,7 @@ const gameService:any=new Services.GameService()
         
         try{
             
-            const score=await gameService.getScoreByGameId(req.params.id)
+            const score=await matchService.getScoreByGameId(req.params.id)
             if(score)
                 res.status(200);
             else
@@ -190,7 +189,7 @@ const gameService:any=new Services.GameService()
         
         try{
             
-            const score=await gameService.getScoresByUserId(req.params.id)
+            const score=await matchService.getScoresByUserId(req.params.id)
             if(score)
                 res.status(200);
             else
@@ -199,6 +198,7 @@ const gameService:any=new Services.GameService()
 
     };
     
+
 export default {
     save,
     getAll,
@@ -210,5 +210,5 @@ export default {
     getScoresByUserId,
     deleteGame,
     saveTransaction,
-    getAllTransactions
+    getAllTransactions,
   }

@@ -7,15 +7,18 @@ const Score = mongoose.model(
             type: Number,
             required: true
           },
+        time: {
+            type: Number
+          },
         player: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
           required: true
           },
-        game: 
+        match: 
             {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Game",
+            ref: "Match",
             required: true
             }
     }, { timestamps: true })

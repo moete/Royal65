@@ -52,7 +52,7 @@ export default {
         api: {
           prefix: '/api',
           },
-          gameStatus:{
+          matchStatus:{
             process:1,
             finished:2,
             open:0

@@ -7,7 +7,7 @@ db.mongoose = mongoose;
 
 db.user = require("./user");
 db.role = require("./role");
-db.game = require("./game");
+db.match = require("./match");
 db.score = require("./score");
 db.mails = require("./mails");
 db.gameTransaction = require("./gameTransaction");

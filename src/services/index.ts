@@ -1,7 +1,7 @@
 
 import UserService from '../services/userService'
 import RoleService from '../services/roleService'
-import GameService from '../services/gameService'
+import MatchService from './matchService'
 import MailerService from '../services/mailerService'
 import MailService from '../services/mailsService'
 import ReclaService from "./ReclaService";
@@ -13,7 +13,7 @@ import ReferenceService from './referenceservice'
 export default  {
     UserService,
     RoleService,
-    GameService,
+    MatchService,
     MailerService,
     MailService, 
     ReclaService,
@@ -21,6 +21,7 @@ export default  {
     PaymentService,
     TransactionService,
     ReferenceService
+    
     
 
   };

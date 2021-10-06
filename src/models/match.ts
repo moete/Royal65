@@ -1,10 +1,10 @@
 import mongoose = require('mongoose')
 import config from '../config';
 const db = require("../models");
-const gameStatus=config.gameStatus
+const matchStatus=config.matchStatus
 
-const Game = mongoose.model(
-    "Game",
+const Match = mongoose.model(
+    "Match",
     new mongoose.Schema({
         free: {
             type: Boolean,
@@ -16,7 +16,7 @@ const Game = mongoose.model(
           },
         status:{
             type: Number,
-            default: gameStatus.open
+            default: matchStatus.open
           } ,
         private: {
             type: Boolean,
@@ -39,4 +39,4 @@ const Game = mongoose.model(
     }, { timestamps: true })
   );
   
-  module.exports = Game;
+  module.exports = Match;

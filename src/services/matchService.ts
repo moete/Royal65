@@ -2,21 +2,21 @@
 import { Service } from 'typedi';
 import config from '../config';
 const db = require("../models");
-const gameStatus=config.gameStatus
+const matchStatus=config.matchStatus
 const GameTransactionModel = db.gameTransaction;
-const GameModel = db.game;
+const MatchModel = db.match;
 const ScoreModel = db.score;
 //TODO handel message error
 @Service()
-export default class GameService {
+export default class MatchService {
 
 
     async save(gameBody:any){
-        const isExists=await GameModel.find({status:{$ne:gameStatus.finished},players:gameBody.userId})
+        const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},players:gameBody.userId})
         if(isExists.length !=0){
             return {message:"You are arealdy in game"};
         }
-        const game = new GameModel({
+        const game = new MatchModel({
             free: gameBody.free,
             amount: gameBody.amount,
             private: gameBody.private,
@@ -29,19 +29,19 @@ export default class GameService {
     
     
     async getAll(){
-      const all =await GameModel.find({}).sort( '-createdAt' )
+      const all =await MatchModel.find({}).sort( '-createdAt' )
       return  all;
     }
 
     async join(details:any){
-        const game=await GameModel.findById(details._id)
+        const game=await MatchModel.findById(details._id)
         if(!game)
             return null;
         if(((game.private && game.password==details.password) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
         {
                 game.players=[...game.players,details.userId]
                 if(game.players.length==game.capacity)
-                    game.status=gameStatus.process;
+                    game.status=matchStatus.process;
                 return await game.save()
         }
 
@@ -51,17 +51,17 @@ export default class GameService {
 
 
     async unJoin(details:any){
-        const game=await GameModel.findById(details._id)
+        const game=await MatchModel.findById(details._id)
         if(!game)
             return null;
         game.players=game.players.filter((playerId:any)=>playerId!=details.userId)
-        game.status=gameStatus.open;
+        game.status=matchStatus.open;
         return await game.save()
     }
     
     
     async getOpen(){
-        const all =await GameModel.find({private:false,status:gameStatus.open}).sort( '-createdAt' )
+        const all =await MatchModel.find({private:false,status:matchStatus.open}).sort( '-createdAt' )
         return  all;
     }
 
@@ -73,6 +73,7 @@ export default class GameService {
         }else{
             score=new ScoreModel({
                 score:data.score,
+                time:data.time,
                 player:data.player,
                 game:data.game,
             })
@@ -96,12 +97,12 @@ export default class GameService {
 
     
     deleteGame(_id:any){
-        return GameModel.deleteOne({ _id });
+        return MatchModel.deleteOne({ _id });
     }
 
     
     async saveTransaction(gameBody:any){
-        const isExists=await GameModel.find({status:{$ne:gameStatus.finished},_id:gameBody.gameId})
+        const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},_id:gameBody.gameId})
         if(isExists.length ==0){
             return {message:"Game Not found"};
         }
