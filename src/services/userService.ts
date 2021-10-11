@@ -1,3 +1,4 @@
+import { response } from 'express';
 import { Service } from 'typedi';
 import { IUser } from "../interfaces/IUser";
 const db = require("../models");
@@ -133,8 +134,16 @@ export default class UserService {
       });
     }
 
+    // ref 
     async getUserByCode(Code:String){
-      const ref = await UserModel.find({Code});
+      const ref = await UserModel.findOne({Code:Code});
+      
+      return ref ;
+    }
+
+    async getUserById(_id:String){
+      const user = await UserModel.findOne({_id});
+      return user
     }
   
 }

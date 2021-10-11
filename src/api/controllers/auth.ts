@@ -7,12 +7,18 @@ var uniqid = require('uniqid');
 
 const userService:any=new Services.UserService()
 const roleService:any=new Services.RoleService()
+const referenceService:any = new Services.ReferenceService()
 const expiresIn=86400;
 var bcrypt = require("bcryptjs"); 
 
 
 const signup = async (req:any, res:Response) => {
     const userDTO = req.body;
+    const refcode = req.query.code;
+    const code =  uniqid();
+    let userreferedfrom = await  userService.getUserByCode(refcode);
+    res.send(userreferedfrom)
+    
     let user=await userService.checkDuplicate(userDTO.email,userDTO.username);
     if(user){
       
@@ -29,7 +35,8 @@ const signup = async (req:any, res:Response) => {
     let photo=null
     if(req.file)
       photo=req.file.path
-    
+      // reference code in signup
+   
     user = userService.save({
       email: userDTO.email,
       name: userDTO.name,
@@ -38,7 +45,7 @@ const signup = async (req:any, res:Response) => {
       country: userDTO.country,
       photo,
       // changed code attribute into user
-      Code : uniqid(),
+      Code : code,
       password: userDTO.password
     });
     user.then(
@@ -52,15 +59,42 @@ const signup = async (req:any, res:Response) => {
               res.status(500).send({ message:  "Something went wrong!" });
               return;
             }
-
-            res.send({ message: "User was registered successfully!" });
+            if (refcode!=null){
+             
+              try {
+               
+                const reference = referenceService.save({
+                  ReferenceFrom: userreferedfrom,
+                  ReferenceTo: user,
+                  Bonus: 1,
+                });
+               
+                if (reference.message) {
+                  return res.status(400).send(reference);
+                }
+                reference
+                  .then((succ: any) => {
+                    res.status(200).send({ message: "reference successfully created" });
+                  })
+                  .catch((err: any) => {
+                    console.log(err);
+                    res.status(500).send({ message: "Please Verify your information!" });
+                  });
+              } catch (err: any) {
+                console.log(err);
+                res.status(500).send({ message: "An error has occurred!" });
+              }
+             
+            }
           });
       }
     ).catch((err:any)=>{
 
       console.log(err);res.status(500).send({ message: "Please Verify your information!" });
     })
-  
+    
+     
+    
   };
   
   const signin = (req:Request, res:Response) => {

@@ -22,7 +22,7 @@ export default function(app:Router) {
   route.get("/getAllUsersEmails",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsersEmails);
   route.get("/verifyEmail/:email/:token", userController.findEmailVerification);
-
+  route.get("/referceUser/:Code", userController.getUserByCode);
   route.post("/updateUserByAdmin",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.update);
 
   route.post("/updateAdmin",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.updateAdmin);

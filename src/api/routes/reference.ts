@@ -16,5 +16,6 @@ export default function(app:Router) {
       route.post("/saverefernce", refernceController.referencesave);
       route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], refernceController.count);
       route.get("/getAllReferences",[middlewares.authJwt.verifyToken],refernceController.getAllReferences);
+      
 
 };

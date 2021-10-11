@@ -16,4 +16,5 @@ export interface IUserInputDTO {
   address: string;
   country: string;
   username: string;
+  Code : string;
 }

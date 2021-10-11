@@ -232,8 +232,17 @@ const send= async (req:any, res:Response) => {
   }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
 };
+//conttt
+const getUserByCode=  async (req:Request, res:Response) => {
+  
+  const Code=req.params.Code;
+  try{
+    res.status(200).send({data:await userService.getUserByCode(Code)});
+  }catch(err:any){
+    res.status(500).send({ message: "An error has occurred!" });
+  }
 
-
+};
 
 
 
@@ -249,5 +258,6 @@ export default {
     blockUnblock,
     getAllUsersEmails,
     send,
-    updateAdmin
+    updateAdmin,
+    getUserByCode
   }
