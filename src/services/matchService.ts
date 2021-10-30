@@ -21,7 +21,7 @@ export default class MatchService {
             free: gameBody.free,
             amount: gameBody.amount,
             private: gameBody.private,
-            password: bcrypt.hashSync(gameBody.password, 8),
+            password: gameBody.password ? bcrypt.hashSync(gameBody.password, 8) : null,
             players: [gameBody.userId]
           });
         
@@ -41,11 +41,14 @@ export default class MatchService {
     }
 
     async join(details:any){
-        const game=await MatchModel.findById(details._id)
-        var passwordIsValid = bcrypt.compareSync(
+        const game=await MatchModel.findById(details._id);
+
+        var passwordIsValid =details.password ? bcrypt.compareSync(
             details.password,
             game.password
-          );
+          )
+          :
+          false;
     
         if(!game)
             return null;
@@ -54,7 +57,7 @@ export default class MatchService {
                 game.players=[...game.players,details.userId]
                 if(game.players.length==game.capacity)
                     game.status=matchStatus.process;
-                return await game.save()
+                return await game.save().then((t:any) => t.populate("players","photo name").execPopulate())
         }
 
         return null;

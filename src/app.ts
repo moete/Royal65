@@ -4,16 +4,16 @@ import express = require ('express');
 import config from './config';
 import http = require('http');
 
-
-
-
 async function startServer() {
 
   const app = express();
 
   const server = http.createServer(app);
   
-  await loadersInit({ expressApp: app,server });
+  const { io }=await loadersInit({ expressApp: app,server });
+
+  app.set('socket',io);
+
   app.use('/uploads', express.static('uploads'));
 
 

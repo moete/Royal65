@@ -1,18 +1,20 @@
 
 import {  Request, Response } from 'express';
-
 import  Services from "../../services/"
+import { PLAYERS_JOIN,START_GAME } from "../../config/types";
+
 const matchService:any=new Services.MatchService()
 
     const save= async (req:any, res:Response) => {
         try{
+            const body=req.body;
             const game=await matchService.save({
-                amount: req.body.amount,
+                amount: body.amount,
                 userId: req.userId,
-                free: req.body.free,
-                status: req.body.status,
-                password: req.body.password,
-                capacity: req.body.capacity
+                free: body.free,
+                status: body.status,
+                password: body.password,
+                capacity: body.capacity
             })
             if(game.message){
                return res.status(400).send(game);
@@ -28,6 +30,7 @@ const matchService:any=new Services.MatchService()
     };
 
     const getMatchByUser =  async (req:any, res:Response) => {
+        
         try{
             const myRoom=matchService.getMatchByUser(req.userId)
             
@@ -116,14 +119,18 @@ const matchService:any=new Services.MatchService()
     
   
     const join= async (req:any, res:Response) => {
-        //TODO 
+        
         try{
+            const socket =req.app.get('socket')
             const game=await matchService.join({
                 _id:req.body._id,
                 password:req.body.password,
                 userId:req.userId,
             })
             if(game){
+                
+                game.players.map((player:any)=>socket.emit(`${player._id}`,{type:PLAYERS_JOIN,data:game}))
+
                 res.status(200).send({message:"You Are successfully joined",game});
             }
             else

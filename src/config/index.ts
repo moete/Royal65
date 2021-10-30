@@ -56,6 +56,11 @@ export default {
             process:1,
             finished:2,
             open:0
+          },
+          gamesConfig:{
+            solitaire:{
+              capacity:2
+            }
           }
 
 

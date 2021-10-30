@@ -6,8 +6,11 @@ export default async ({ expressApp,server }:any) => {
   const mongoConnection = await mongooseLoader();
   console.log('MongoDB Initialized');
   await expressLoader({ app: expressApp });
-  await socketLoader({ app: server });
+  const io=await socketLoader({ app: server });
   console.log('Express Initialized');
 
+  return {
+    io
+  };
   
 }

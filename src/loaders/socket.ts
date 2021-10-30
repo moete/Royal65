@@ -1,4 +1,3 @@
-import http = require('http');
 const socketio = require('socket.io');
 const solitaireHandler = require("../socket/solitaireHandler");
 
@@ -29,6 +28,7 @@ export default ({ app }: { app: any }) => {
     console.log(`connect_error due to ${err.message}`);
   });
 
+  return io;
 
 
 }
