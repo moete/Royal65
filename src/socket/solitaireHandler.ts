@@ -21,9 +21,39 @@ module.exports = (io: any, client: any) => {
         client.emit("code", roomName)
 
     }
+    const handleGameEnd = (payload: any) => {
+        const state=solitaire.getState(payload.roomName)
+        console.log(solitaire.getStates(),state)
+        if(!state.playerOne)
+            state.playerOne=payload
+        else{
+            state.playerTwo=payload
+            state.finish=true
+            console.log("GAME END ",solitaire.getState(payload.roomName))
+              }
+        solitaire.setState(payload.roomName,state)
+
+    }
+    const handleGetState = (payload: any) => {
+        const room=solitaire.getState(payload.roomName)
+        console.log(payload.roomName,room=== undefined)
+        if(room === undefined){
+            io.to(payload.socketId).emit("initState",null);
+            return;
+        }
+        const state=room.state
+        if(!state.finish)
+            io.to(payload.socketId).emit("initState",state);
+        else
+            io.to(payload.socketId).emit("initState",null);
+
+    }
     const handleJoinSolitaireGame = (roomName: any) => {
         const room = io.sockets.adapter.rooms.get(roomName);
-        
+        if(room=== undefined){
+            client.emit('unknownCode');
+            return
+        }
         let numClients = room.size;
 
         if (numClients === 0) {
@@ -34,11 +64,13 @@ module.exports = (io: any, client: any) => {
             return;
         }
         client.join(roomName)
-        const state = solitaire.joinGame(client.id, roomName)
-        io.to(roomName).emit("state", state);
+        solitaire.joinGame(client.id, roomName)
+        io.to(roomName).emit("startGame", roomName);
 
     }
     client.on('newSolitaireGame', handleNewSolitaireGame);
     client.on('joinSolitaireGame', handleJoinSolitaireGame);
+    client.on('gameEnd', handleGameEnd);
+    client.on('getState', handleGetState);
 
 }

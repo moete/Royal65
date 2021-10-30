@@ -6,7 +6,7 @@ const matchService:any=new Services.MatchService()
 
     const save= async (req:any, res:Response) => {
         try{
-            const game=matchService.save({
+            const game=await matchService.save({
                 amount: req.body.amount,
                 userId: req.userId,
                 free: req.body.free,
@@ -15,24 +15,33 @@ const matchService:any=new Services.MatchService()
                 capacity: req.body.capacity
             })
             if(game.message){
-                
                return res.status(400).send(game);
             }
         
-            game.then(
-                (succ:any)=>{
-        
-                    res.status(200).send({message:"Game successfully created"});
-            }
-            ).catch((err:any)=>{
-        
-                console.log(err);
-                res.status(500).send({ message: "Please Verify your information!" });
-            })
+            if(game)
+                return res.status(200).send({message:"Game successfully created",match:game});
+            else
+                return  res.status(500).send({ message: "Please Verify your information!" });
+
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
    
     };
 
+    const getMatchByUser =  async (req:any, res:Response) => {
+        try{
+            const myRoom=matchService.getMatchByUser(req.userId)
+            
+            myRoom.then(
+                (myRoom:any)=>{
+                    res.status(200).send({room:myRoom});
+            }
+            ).catch((err:any)=>{
+                console.log(err);
+                res.status(500).send({ message: "An error has occurred!" });
+            })
+        }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
+   
+    };
     
     const saveTransaction= async (req:any, res:Response) => {
         try{
@@ -107,15 +116,16 @@ const matchService:any=new Services.MatchService()
     
   
     const join= async (req:any, res:Response) => {
-        
+        //TODO 
         try{
             const game=await matchService.join({
                 _id:req.body._id,
                 password:req.body.password,
                 userId:req.userId,
             })
-            if(game)
-                res.status(200).send({message:"You Are successfully joined"});
+            if(game){
+                res.status(200).send({message:"You Are successfully joined",game});
+            }
             else
                 res.status(400).send({message:"Please Verify your information!"});
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
@@ -139,11 +149,9 @@ const matchService:any=new Services.MatchService()
 
     };
     
-    const getOpen= async (req:Request, res:Response) => {
+    const getOpen= async (req:any, res:Response) => {
             
         try{
-
-            
             res.status(200).send({data:await matchService.getOpen()});
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
@@ -211,4 +219,5 @@ export default {
     deleteGame,
     saveTransaction,
     getAllTransactions,
+    getMatchByUser
   }

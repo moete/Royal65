@@ -1,6 +1,7 @@
 
 import { Service } from 'typedi';
 import config from '../config';
+var bcrypt = require("bcryptjs");
 const db = require("../models");
 const matchStatus=config.matchStatus
 const GameTransactionModel = db.gameTransaction;
@@ -20,13 +21,19 @@ export default class MatchService {
             free: gameBody.free,
             amount: gameBody.amount,
             private: gameBody.private,
-            password: gameBody.password,
+            password: bcrypt.hashSync(gameBody.password, 8),
             players: [gameBody.userId]
           });
         
         return game.save()
     }
     
+    async getMatchByUser(_id:any){
+        const myRoom =await MatchModel.findOne({players:_id})
+        .populate("players","photo name")
+        return  myRoom;
+      }
+  
     
     async getAll(){
       const all =await MatchModel.find({}).sort( '-createdAt' )
@@ -35,9 +42,14 @@ export default class MatchService {
 
     async join(details:any){
         const game=await MatchModel.findById(details._id)
+        var passwordIsValid = bcrypt.compareSync(
+            details.password,
+            game.password
+          );
+    
         if(!game)
             return null;
-        if(((game.private && game.password==details.password) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
+        if(((game.private && passwordIsValid) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
         {
                 game.players=[...game.players,details.userId]
                 if(game.players.length==game.capacity)

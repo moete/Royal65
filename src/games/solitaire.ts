@@ -1,7 +1,7 @@
 import utils from "../common/utils";
 export default class Solitaire {
-    states: {[key: string]: string} = {};
-    rooms:  {[key: string]: string} = {};
+    states: {[key: string]: any} = {};
+    rooms:  {[key: string]: any} = {};
     private options: any;
 
     constructor() {
@@ -15,14 +15,17 @@ export default class Solitaire {
                 waste_to_tableau: 5,
                 foundation_to_tableau: -15,
                 turn_card: 5
-            }
+            },
+            duration:240000
         }
     }
 
     newGame(clientId: any, roomName: any) {
-        const state = { ...this.options }
-        state.randomNumbers = utils.makeRandomNumbers(51)
-        this.states[roomName] = state
+        const state = { 
+            options:this.options,
+            randomNumbers:utils.makeRandomNumbers(51)
+         }
+        this.states[roomName] = {state,playerOne:null,playerTwo:null,finish:false}
         this.rooms[clientId] = roomName
         
     }
@@ -47,9 +50,14 @@ export default class Solitaire {
         return this.states[roomName]
     }
 
+    setState(roomName: any,state:any) {
+        return this.states[roomName]=state
+    }
+    
     getClientRoomName(clientId: any) {
         return this.rooms[clientId]
     }
+
     
 
 }

@@ -22,6 +22,8 @@ export default function(app:Router) {
   
   route.get("/getAll",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAll);
+  route.get("/getMatchByUser",
+  [middlewares.authJwt.verifyToken], gameController.getMatchByUser);
   route.get("/getAllTransactions",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAllTransactions);
 
@@ -34,8 +36,7 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken], gameController.unJoin);
 
   
-  route.get("/getOpen",
-  [middlewares.authJwt.verifyToken], gameController.getOpen);
+  route.get("/getOpen", gameController.getOpen);
 
   
   //TODO check who can use this route administrator or all
