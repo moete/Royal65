@@ -21,6 +21,7 @@ export default class MatchService {
             free: gameBody.free,
             amount: gameBody.amount,
             private: gameBody.private,
+            capacity: gameBody.capacity,
             password: gameBody.password ? bcrypt.hashSync(gameBody.password, 8) : null,
             players: [gameBody.userId]
           });
@@ -28,8 +29,16 @@ export default class MatchService {
         return game.save()
     }
     
+    async gameEnd(game_id:any){
+        const game=await MatchModel.findById(game_id)
+
+        game.status=matchStatus.finished
+        game.save()
+        return game;
+    }
+    
     async getMatchByUser(_id:any){
-        const myRoom =await MatchModel.findOne({players:_id})
+        const myRoom =await MatchModel.findOne({players:_id}).sort({createdAt: -1})
         .populate("players","photo name")
         return  myRoom;
       }
@@ -90,7 +99,7 @@ export default class MatchService {
                 score:data.score,
                 time:data.time,
                 player:data.player,
-                game:data.game,
+                match:data.match,
             })
         }
 
@@ -102,7 +111,7 @@ export default class MatchService {
     }
 
     async getScoreByGameId(id:any){
-        return await ScoreModel.findOne({game:id});
+        return await ScoreModel.find({});
     }
 
     async getScoresByUserId(id:any){

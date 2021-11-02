@@ -1,9 +1,9 @@
 
 import {  Request, Response } from 'express';
 import  Services from "../../services/"
-import { PLAYERS_JOIN,START_GAME } from "../../config/types";
-
 const matchService:any=new Services.MatchService()
+import { PLAYERS_JOIN,START_GAME,GET_STATE,JOIN_SOLITAIRE_GAME,GAME_END,NEW_SOLITAIRE_GAME} from "../../config/types";
+
 
     const save= async (req:any, res:Response) => {
         try{
@@ -20,8 +20,10 @@ const matchService:any=new Services.MatchService()
                return res.status(400).send(game);
             }
         
-            if(game)
+            if(game){
+                
                 return res.status(200).send({message:"Game successfully created",match:game});
+            }
             else
                 return  res.status(500).send({ message: "Please Verify your information!" });
 
@@ -129,8 +131,11 @@ const matchService:any=new Services.MatchService()
             })
             if(game){
                 
-                game.players.map((player:any)=>socket.emit(`${player._id}`,{type:PLAYERS_JOIN,data:game}))
-
+                game.players.map((player:any,index:any)=>{
+                    if(index!=game.players.length -1)
+                        socket.emit(`${player._id}`,{type:PLAYERS_JOIN,data:game})
+                })
+                socket.emit(`${game.players[0]._id}`,{type:JOIN_SOLITAIRE_GAME,data:game})
                 res.status(200).send({message:"You Are successfully joined",game});
             }
             else
@@ -186,10 +191,9 @@ const matchService:any=new Services.MatchService()
     
     
     const getScoreByGameId= async (req:Request, res:Response) => {
-        
+        console.log(" getScoreByGameId **********    "+req.params.id)
         try{
-            
-            const score=await matchService.getScoreByGameId(req.params.id)
+            const score= matchService.getScoreByGameId(req.params.id)
             if(score)
                 res.status(200);
             else

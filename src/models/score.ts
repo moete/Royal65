@@ -8,7 +8,7 @@ const Score = mongoose.model(
             required: true
           },
         time: {
-            type: Number
+            type: String
           },
         player: {
           type: mongoose.Schema.Types.ObjectId,

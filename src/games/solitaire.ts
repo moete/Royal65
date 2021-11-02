@@ -25,7 +25,7 @@ export default class Solitaire {
             options:this.options,
             randomNumbers:utils.makeRandomNumbers(51)
          }
-        this.states[roomName] = {state,playerOne:null,playerTwo:null,finish:false}
+        this.states[roomName] = {state,playerOne:{clientId},playerTwo:null,finish:false}
         this.rooms[clientId] = roomName
         
     }
@@ -33,6 +33,8 @@ export default class Solitaire {
 
     joinGame(clientId: any, roomName: any) {
         let state = this.states[roomName]
+        state.playerTwo={clientId}
+        this.setState(roomName,state)
         this.rooms[clientId] = roomName
         return state;
     }
@@ -56,6 +58,22 @@ export default class Solitaire {
     
     getClientRoomName(clientId: any) {
         return this.rooms[clientId]
+    }
+    
+    getClientInRoomName(roomName: any) {
+        let keys=Object.keys(this.rooms),i=0,clients:any=[]
+        while(i<keys.length && clients.length < 2 ){
+            if(this.rooms[keys[i]]===roomName)
+                clients.push(keys[i])
+            i++;
+        }
+
+        return clients;
+    }
+
+    removeGame(roomName: any,clients: any){
+        delete this.states[roomName]
+        clients.map((id:any)=> delete this.rooms[id])
     }
 
     
