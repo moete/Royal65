@@ -9,41 +9,57 @@ const solitaire = new Solitaire();
 module.exports = (io: any, client: any) => {
 
     const handleNewSolitaireGame = (payload: any) => {
-        console.log(payload," ********** ")
+        console.log(payload," handleNewSolitaireGame ")
         let roomName = payload.room_id;
-        solitaire.newGame(payload.client_id, roomName)
+        solitaire.newGame(payload.client, roomName)
         client.join(roomName)
 
     }
     const handleGameEnd = async (payload: any) => {
         const state=solitaire.getState(payload.roomName)
+        let scoreData=null
         console.log("ff ",state==null,payload.roomName,payload)
-        if(state.playerOne.clientId==payload.clientId)
-            state.playerOne=payload
-        else if(state.playerTwo.clientId==payload.clientId)
-            state.playerTwo=payload
+        if(state.playerOne.clientId==payload.clientId){
+            state.playerOne.score=payload.score
+            scoreData=state.playerOne
+         
+        }
+        else if(state.playerTwo.clientId==payload.clientId){
+            state.playerTwo.score=payload.score
+            scoreData=state.playerTwo
+        }
+        if(scoreData)
+            await matchService.addUpdateScore({
+                score:scoreData.score.score,
+                time:scoreData.score.pretyTime,
+                player:scoreData.clientId,
+                match:payload.roomName,
+            })
 
         if(state.playerOne.score && state.playerTwo.score){
             state.finish=true
             console.log("GAME END ",solitaire.getState(payload.roomName))
-            const clients=[];
+            const clients:any=[];
             clients.push(state.playerOne,state.playerTwo)
-            const game=await matchService.gameEnd(payload.roomName)
-            clients.map(async (elem:any)=>{
-                console.log("elem ",elem)
-                const score=await matchService.addUpdateScore({
-                    score:elem.score.score,
-                    time:elem.score.pretyTime,
-                    player:elem.clientId,
-                    match:elem.roomName,
-                })
+            clients.sort(function(a:any,b:any){
+                if ( a.score.score < b.score.score ){
+                    return 1;
+                  }
+                  if ( a.score.score > b.score.score ){
+                    return -1;
+                  }
+                  if ( a.score.pretyTime < b.score.pretyTime ){
+                    return -1;
+                  }
+                  if ( a.score.pretyTime > b.score.pretyTime ){
+                    return 1;
+                  }
                 
-                if(score){
-                    io.emit(elem.clientId,{type:GAME_END,data:game});
-                    return score;
-                }
-                else
-                    console.log("Error when  updating score : - state : ",state,", roomName : ",payload.roomName)
+                  return 0;
+            })
+            const game=await matchService.gameEnd(payload.roomName)
+            clients.forEach(async (elem:any)=>{
+                    io.emit(elem.clientId,{type:GAME_END,data:{clients,amount:game.amount,id:game._id}});
 
             })
             
@@ -61,9 +77,8 @@ module.exports = (io: any, client: any) => {
             io.emit(payload.userId,{type:INIT_STATE,data:null});
             return;
         }
-        const state=room.state
-        if(!state.finish)
-            io.emit(payload.userId,{type:INIT_STATE,data:state});
+        if(!room.finish && ( room.playerOne.clientId == payload.userId || room.playerTwo.clientId == payload.userId ))
+            io.emit(payload.userId,{type:INIT_STATE,data:room});
         else
             io.emit(payload.userId,{type:INIT_STATE,data:null});
 
@@ -72,23 +87,25 @@ module.exports = (io: any, client: any) => {
         console.log(payload," handleJoinSolitaireGame")
         const room = io.sockets.adapter.rooms.get(payload.roomName);
         if(room=== undefined){
-            io.emit(payload.client_id,{type:UNKNOWN_ROOM});
+            io.emit(payload.client._id,{type:UNKNOWN_ROOM});
+            console.log("1")
             return
         }
         let numClients = room.size;
 
         if (numClients === 0) {
-            io.emit(payload.client_id,{type:UNKNOWN_ROOM});
+            io.emit(payload.client._id,{type:UNKNOWN_ROOM});
+            console.log("2")
             return;
         } else if (numClients > 1) {
-            io.emit(payload.client_id,{type:TOO_MANY_PLAYERS});
+            io.emit(payload.client._id,{type:TOO_MANY_PLAYERS});
             return;
         }
         client.join(payload.roomName)
-        solitaire.joinGame(payload.client_id, payload.roomName)
+        solitaire.joinGame(payload.client, payload.roomName)
         const clients=solitaire.getClientInRoomName(payload.roomName);
         console.table(clients)
-        clients.map((clientId:any)=>{
+        clients.forEach((clientId:any)=>{
             io.emit(clientId,{type:START_GAME,data:{
                 game:payload.roomName,
                 userId:clientId

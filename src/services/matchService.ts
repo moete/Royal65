@@ -1,5 +1,6 @@
 
 import { Service } from 'typedi';
+import mongoose = require('mongoose') ;
 import config from '../config';
 var bcrypt = require("bcryptjs");
 const db = require("../models");
@@ -11,12 +12,22 @@ const ScoreModel = db.score;
 @Service()
 export default class MatchService {
 
+    async canCreateOrJoin(userId:any){
+        const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},players:userId})
+        if(isExists.length !=0){
+            const game =isExists[isExists.length-1]
+            const score=await this.getScoresByUserAndGameId(userId,game._id)
+            console.log(game,  score)
+            if(score==null)
+                return {message:"You are arealdy in game"};
+        }
+        return null;
+    }
 
     async save(gameBody:any){
-        const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},players:gameBody.userId})
-        if(isExists.length !=0){
-            return {message:"You are arealdy in game"};
-        }
+        const canCreate=await this.canCreateOrJoin(gameBody.userId)
+        if(canCreate)
+            return canCreate;
         const game = new MatchModel({
             free: gameBody.free,
             amount: gameBody.amount,
@@ -26,7 +37,7 @@ export default class MatchService {
             players: [gameBody.userId]
           });
         
-        return game.save()
+        return game.save().then((t:any) => t.populate("players","photo name").execPopulate());
     }
     
     async gameEnd(game_id:any){
@@ -50,6 +61,11 @@ export default class MatchService {
     }
 
     async join(details:any){
+        
+        const canCreate=await this.canCreateOrJoin(details.userId)
+        if(canCreate)
+            return canCreate;
+
         const game=await MatchModel.findById(details._id);
 
         var passwordIsValid =details.password ? bcrypt.compareSync(
@@ -111,12 +127,15 @@ export default class MatchService {
     }
 
     async getScoreByGameId(id:any){
-        return await ScoreModel.find({});
+        return await ScoreModel.find({"match":id}).sort({score: -1, time: 1}).populate("player","photo name");
     }
 
     async getScoresByUserId(id:any){
-        return await ScoreModel.find()
-        .or([{ team1: id}, { team2: id }]);
+        return await ScoreModel.find({player:id});
+    }
+
+    async getScoresByUserAndGameId(userid:any,gameId:any){
+        return await ScoreModel.findOne({match:gameId,player:userid});
     }
 
     

@@ -6,6 +6,7 @@ import { PLAYERS_JOIN,START_GAME,GET_STATE,JOIN_SOLITAIRE_GAME,GAME_END,NEW_SOLI
 
 
     const save= async (req:any, res:Response) => {
+        console.log("save ",req.body)
         try{
             const body=req.body;
             const game=await matchService.save({
@@ -121,7 +122,7 @@ import { PLAYERS_JOIN,START_GAME,GET_STATE,JOIN_SOLITAIRE_GAME,GAME_END,NEW_SOLI
     
   
     const join= async (req:any, res:Response) => {
-        
+        console.log("join ",req.body)
         try{
             const socket =req.app.get('socket')
             const game=await matchService.join({
@@ -131,7 +132,7 @@ import { PLAYERS_JOIN,START_GAME,GET_STATE,JOIN_SOLITAIRE_GAME,GAME_END,NEW_SOLI
             })
             if(game){
                 
-                game.players.map((player:any,index:any)=>{
+                game.players.forEach((player:any,index:any)=>{
                     if(index!=game.players.length -1)
                         socket.emit(`${player._id}`,{type:PLAYERS_JOIN,data:game})
                 })
@@ -191,13 +192,12 @@ import { PLAYERS_JOIN,START_GAME,GET_STATE,JOIN_SOLITAIRE_GAME,GAME_END,NEW_SOLI
     
     
     const getScoreByGameId= async (req:Request, res:Response) => {
-        console.log(" getScoreByGameId **********    "+req.params.id)
         try{
-            const score= matchService.getScoreByGameId(req.params.id)
+            const score= await matchService.getScoreByGameId(req.params.id)
             if(score)
-                res.status(200);
+               return res.status(200).send({data:score});
             else
-                res.status(400).send({message:"Please Verify your information!"});
+              return  res.status(400).send({message:"Please Verify your information!"});
 
         }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
 
