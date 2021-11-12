@@ -107,11 +107,11 @@ const deleteGame = async (req: any, res: Response) => {
                 res.send({ message: "Game was deleted successfully!" });
             }
         ).catch((err: any) => {
+            console.log(err)
             console.log(err); res.status(500).send({ message: "Please Verify your information!" });
         })
 
     } catch (err: any) {
-        console.log(err);
         res.status(500).send({ message: "An error has occurred!" });
     }
 
@@ -122,11 +122,8 @@ const deleteGame = async (req: any, res: Response) => {
 
 const getRoomById = async (req: Request, res: Response) => {
     try {
-        const room = await matchService.getRoomById(req.params.id)
-        if (room)
-            return res.status(200).send({ data: room });
-        else
-            return res.status(400).send({ message: "Please Verify your information!" });
+        const room = await matchService.getFinishedRoomById(req.params.id)
+        return res.status(200).send({ data: room });
 
     } catch (err: any) { console.log(err); res.status(500).send({ message: "An error has occurred!" }); }
 
