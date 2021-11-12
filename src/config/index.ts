@@ -59,6 +59,7 @@ export default {
           },
           gamesConfig:{
             solitaire:{
+              name:"Solitaire",
               capacity:2
             }
           }

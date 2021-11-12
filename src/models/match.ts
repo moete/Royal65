@@ -6,6 +6,9 @@ const matchStatus=config.matchStatus
 const Match = mongoose.model(
     "Match",
     new mongoose.Schema({
+        name: {
+          type: String
+        },
         free: {
             type: Boolean,
             default: true

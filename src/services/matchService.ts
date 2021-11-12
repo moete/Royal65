@@ -29,6 +29,7 @@ export default class MatchService {
         if(canCreate)
             return canCreate;
         const game = new MatchModel({
+            name: gameBody.name,
             free: gameBody.free,
             amount: gameBody.amount,
             private: gameBody.private,
@@ -48,6 +49,14 @@ export default class MatchService {
         return game;
     }
     
+
+    async myGames(_id:any){
+        const games =await ScoreModel.find({player:_id,match: { $ne: null }})
+            .sort({createdAt: -1})
+            .populate("match","amount name")
+        return  games;
+      }
+
     async getMatchByUser(_id:any){
         const myRoom =await MatchModel.findOne({players:_id}).sort({createdAt: -1})
         .populate("players","photo name")
@@ -121,6 +130,13 @@ export default class MatchService {
 
         return await score.save();
     }
+    
+
+    
+    async getRoomById(id:any){
+        return await MatchModel.findById(id).populate("players","photo name");
+    }
+
 
     async getScoreById(id:any){
         return await ScoreModel.findById(id);

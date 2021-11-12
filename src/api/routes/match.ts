@@ -46,7 +46,12 @@ export default function(app:Router) {
   
   route.get("/getScoreByGameId/:id",
   [middlewares.authJwt.verifyToken], gameController.getScoreByGameId);
+  route.get("/getRoomById/:id",
+  [middlewares.authJwt.verifyToken], gameController.getRoomById);
 
+  
+  route.get("/myGames",
+  [middlewares.authJwt.verifyToken], gameController.myGames);
   
   route.get("/getScoresByUserId/:id",
   [middlewares.authJwt.verifyToken], gameController.getScoresByUserId);
