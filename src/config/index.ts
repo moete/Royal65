@@ -51,7 +51,7 @@ export default {
   api: {
     prefix: "/api",
   },
-  gameStatus: {
+  matchStatus: {
     process: 1,
     finished: 2,
     open: 0,
@@ -60,5 +60,11 @@ export default {
     process: 1,
     finished: 2,
     open: 0,
+  },
+  gamesConfig: {
+    solitaire: {
+      name: "Solitaire",
+      capacity: 2,
+    },
   },
 };

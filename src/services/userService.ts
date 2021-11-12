@@ -41,6 +41,12 @@ export default class UserService {
     }
 
     
+    async updateAdmin(_id:any,userBody:IUser){
+      return UserModel.findOneAndUpdate({_id},userBody, {
+        new: true
+      })
+  }
+
     async update(_id:any,userBody:any){
 
       return UserModel.findOneAndUpdate({_id},userBody, {
