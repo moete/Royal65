@@ -20,6 +20,7 @@ const Tournament = mongoose.model(
       },
       start_time: {
         type: Date,
+        default : Date.now()
       },
       end_time: {
         type: Date,
@@ -30,6 +31,10 @@ const Tournament = mongoose.model(
           true,
           "please enter the amount to start  for your tournament ",
         ],
+      },
+      photo: {
+        type: String,
+        default:"uploads/tournamentImages/default.jpg"
       },
       game: {
         type: mongoose.Schema.Types.ObjectId,

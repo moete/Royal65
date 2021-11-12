@@ -5,6 +5,7 @@ export interface Itournament {
     start_time : Date;
     end_time : Date ;
     entry_fee : number ;
+    photo : String;
     game : Object ;
     capacity : number ;
     description  : String ;
@@ -15,6 +16,7 @@ export interface ItournamentDto {
     price  : number ;
     start_time : Date;
     game : Object ;
+    photo : String ;
     end_time : Date ;
     entry_fee : number ;
     capacity : number ;

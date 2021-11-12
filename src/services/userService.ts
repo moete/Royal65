@@ -20,11 +20,11 @@ export default class UserService {
         let user = new UserModel({
             email: userBody.email,
             name: userBody.name,
-            address: userBody.address,
-            country: userBody.country,
+         //   address: userBody.address,
+            //country: userBody.country,
             username: userBody.username,
-            photo: userBody.photo,
-            Code: userBody.Code,
+          //  photo: userBody.photo,
+            //Code: userBody.Code,
             password: bcrypt.hashSync(userBody.password, 8)
           });
 

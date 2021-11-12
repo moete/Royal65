@@ -17,7 +17,7 @@ const signup = async (req:any, res:Response) => {
     let user=await userService.checkDuplicate(userDTO.email,userDTO.username);
     if(user){
       
-      fs.unlink(req.file.path, (err:any) => {
+     /* fs.unlink(req.file.path, (err:any) => {
         if (err) {
           console.error(err)
           return
@@ -25,21 +25,22 @@ const signup = async (req:any, res:Response) => {
 
         //file removed
       })
+      */
       return   res.status(400).send({ message: "Failed! Username or Email is already in use!" });
     }
-    let photo=null
+  /*  let photo=null
     if(req.file)
       photo=req.file.path
-    
+    */
     user = userService.save({
       email: userDTO.email,
       name: userDTO.name,
       username: userDTO.username,
-      address: userDTO.address,
-      country: userDTO.country,
-      photo,
+    //  address: userDTO.address,
+   //   country: userDTO.country,
+      //  photo,
       // changed code attribute into user
-      Code: shortid.generate(),
+   //   Code: shortid.generate(),
       password: userDTO.password
     });
     user.then(
