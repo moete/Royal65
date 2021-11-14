@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Container } from "typedi";
-import Services from "../../services/";
+import Services from "../../services";
 
 const referenceService: any = new Services.ReferenceService();
 var shortid = require("shortid");

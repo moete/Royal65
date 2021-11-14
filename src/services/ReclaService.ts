@@ -1,24 +1,22 @@
 import { Service } from "typedi";
 import { IRecla, IReclaDto } from "../interfaces/IRecla";
 const db = require("../models");
-const ReclaModel = db.Recla;
+const ReclaModel = db.recla;
 
 @Service()
 export default class ReclaService {
-  static getAllReclas: any;
   save(ReclaBody: IRecla) {
     const recla = new ReclaModel({
-      username: ReclaBody.username,
+      user: ReclaBody.user,
       subject: ReclaBody.subject,
-      message: ReclaBody.subject,
+      message: ReclaBody.message,
     });
 
     return recla.save();
   }
 
     async getAllReclas() {
-    return await ReclaModel.find();
-   
+    return await ReclaModel.find(); 
   }
 
 

@@ -8,7 +8,6 @@ const mailerService:any=new Services.MailerService()
 const mailService:any=new Services.MailService()
 const userService:any=new Services.UserService()
 
-
 const getLastRegistred= async (req:Request, res:Response) => {
 
   try{
