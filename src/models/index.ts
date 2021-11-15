@@ -16,5 +16,6 @@ db.ROLES = ["user", "admin"];
 db.transaction = require("./transaction")
 db.reference = require("./Reference")
 db.tournamenttransaction = require('./tournamenttransaction');
+db.coins = require("./coins");
 
 module.exports = db;

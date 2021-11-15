@@ -36,6 +36,9 @@ export default {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.SECRET,
   },
+  /**
+   * stripe
+   */
 
   /**
    * Secret JWt
@@ -47,6 +50,7 @@ export default {
    */
   client_id: process.env.STRIPE_PUBLIC,
   client_secret: process.env.STRIPE_SECRET,
+  stripe_sk:process.env.STRIPE_SK,
 
   api: {
     prefix: "/api",

@@ -4,6 +4,8 @@ import Services from "../../services/"
 const matchService: any = new Services.MatchService()
 import { PLAYERS_JOIN, START_GAME, GET_STATE, JOIN_SOLITAIRE_GAME, GAME_END, NEW_SOLITAIRE_GAME } from "../../config/types";
 
+const db = require("../../models");
+const CoinModel = db.coins;
 
 const save = async (req: any, res: Response) => {
     console.log("save ", req.body)
@@ -35,7 +37,7 @@ const save = async (req: any, res: Response) => {
 
 
 const myGames = async (req: any, res: Response) => {
-
+    
     try {
         const myRoom = matchService.myGames(req.userId)
 
@@ -198,7 +200,6 @@ const unJoin = async (req: any, res: Response) => {
 };
 
 const getOpen = async (req: any, res: Response) => {
-
     try {
         res.status(200).send({ data: await matchService.getOpen() });
     } catch (err: any) { console.log(err); res.status(500).send({ message: "An error has occurred!" }); }
