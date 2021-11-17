@@ -61,7 +61,7 @@ module.exports = (io: any, client: any) => {
             })
             const game=await matchService.gameEnd(payload.roomName)
             clients.forEach(async (elem:any)=>{
-                    io.emit(elem.clientId,{type:GAME_END,data:{clients,amount:game.amount,id:game._id}});
+                    io.emit(elem.clientId,{type:GAME_END,data:{clients,game:game}});
 
             })
             

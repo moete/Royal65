@@ -98,7 +98,7 @@ const signup = async (req:any, res:Response) => {
         );
   
         if (!passwordIsValid) {
-          return res.status(401).send({
+          return res.status(404).send({
             accessToken: null,
             message: "Invalid Info!"
           });
