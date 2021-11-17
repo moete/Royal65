@@ -11,7 +11,7 @@ import TransactionService from './transactionservice' ;
 import ReferenceService from './referenceservice'
 
 export default  {
-    UserService,
+      UserService,
     RoleService,
     GameService,
     MailerService,

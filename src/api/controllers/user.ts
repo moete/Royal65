@@ -2,12 +2,12 @@
 import {  Request, Response } from 'express';
 import { IUser } from '../../interfaces/IUser';
 import  Services from "../../services/"
+
 var bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const mailerService:any=new Services.MailerService()
 const mailService:any=new Services.MailService()
 const userService:any=new Services.UserService()
-
 
 const getLastRegistred= async (req:Request, res:Response) => {
 
