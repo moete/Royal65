@@ -88,6 +88,8 @@ const updateAdmin=async (req:any, res:Response) => {
     }
     if(userDTO.password)
       userInfo.password=bcrypt.hashSync(userDTO.password, 8)
+    else if(userDTO.username)
+      userInfo.username=userDTO.username
     else
       userInfo={
         email: userDTO.email,

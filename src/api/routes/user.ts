@@ -30,8 +30,7 @@ export default function(app:Router) {
   route.post("/blockUnblock",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.blockUnblock);
 
 
-  route.post("/sendMail",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.send);
+  route.post("/sendMail",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.send);
 
   route.delete("/delete/:id",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.deleteUser);
 

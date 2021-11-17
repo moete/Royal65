@@ -1,7 +1,7 @@
 import config from '../../config';
 import {  Request, Response } from 'express';
 var jwt = require("jsonwebtoken");
-import  Services from "../../services/"
+import  Services from "../../services"
 const fs=require('fs')
 var uniqid = require('uniqid'); 
 
@@ -22,7 +22,7 @@ const signup = async (req:any, res:Response) => {
     let user=await userService.checkDuplicate(userDTO.email,userDTO.username);
     if(user){
       
-      fs.unlink(req.file.path, (err:any) => {
+     /* fs.unlink(req.file.path, (err:any) => {
         if (err) {
           console.error(err)
           return
@@ -30,22 +30,22 @@ const signup = async (req:any, res:Response) => {
 
         //file removed
       })
+      */
       return   res.status(400).send({ message: "Failed! Username or Email is already in use!" });
     }
-    let photo=null
+  /*  let photo=null
     if(req.file)
       photo=req.file.path
-      // reference code in signup
-   
+    */
     user = userService.save({
       email: userDTO.email,
       name: userDTO.name,
       username: userDTO.username,
-      address: userDTO.address,
-      country: userDTO.country,
-      photo,
+    //  address: userDTO.address,
+   //   country: userDTO.country,
+      //  photo,
       // changed code attribute into user
-      Code : code,
+   //   Code: shortid.generate(),
       password: userDTO.password
     });
     user.then(
@@ -98,9 +98,9 @@ const signup = async (req:any, res:Response) => {
   };
   
   const signin = (req:Request, res:Response) => {
-
-    console.log(req.body)
-    userService.findOneByEmailOrUsername(req.body.username)
+    let {username,isAdmin,password}=req.body
+    
+    userService.findOneByEmailOrUsername(username)
       .exec((err:any, user:any) => {
         if (err) {
           console.log(err);res.status(500).send({ message: "Something went wrong!" });
@@ -110,7 +110,6 @@ const signup = async (req:any, res:Response) => {
         if (!user) {
           return res.status(404).send({ message: "User Not found." });
         }
-        console.log(user.verified)
         if(!user.verified){
           return res.status(400).send({ message: "You need to verify your account." });
         }
@@ -118,10 +117,15 @@ const signup = async (req:any, res:Response) => {
           return res.status(400).send({ message: "Your account is suspended." });
         }
 
+        if(isAdmin  ){
+          const getAdmin=user.roles.filter((role:any)=>role.name === "admin" )
+          if(getAdmin.length == 0)
+            return res.status(401).send({ message: "Unauthorized" });
+        }
 
   
         var passwordIsValid = bcrypt.compareSync(
-          req.body.password,
+          password,
           user.password
         );
   
