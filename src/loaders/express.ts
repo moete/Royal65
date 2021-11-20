@@ -9,7 +9,18 @@ export default ({ app }: { app: express.Application }) => {
     // The magic package that prevents frontend developers going nuts
   // Alternate description:
   // Enable Cross Origin Resource Sharing to all origins by default
-  app.use(cors());
+  app.use(cors({
+    origin: '*',
+  
+    methods: [
+      'GET',
+      'POST',
+    ],
+  
+    allowedHeaders: [
+      'Content-Type',
+    ],
+  }));
   app.use(bodyParser.json());
   app.use(config.api.prefix, routes());
   app.get('/status', (req, res) => {
