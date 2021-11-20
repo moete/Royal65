@@ -4,7 +4,7 @@ const db:any = {};
 
 db.mongoose = mongoose;
 db.user = require("./User");
-db.role = require("./role");
+db.role = require("./Role");
 db.match = require("./match");
 db.score = require("./score");
 db.mails = require("./mails");
@@ -13,7 +13,7 @@ db.gameTransaction = require("./gameTransaction");
 db.emailVerification = require("./emailVerification");
 db.tournament = require("./tournament");
 db.ROLES = ["user", "admin"];
-db.transaction = require("./transaction")
+db.transaction = require("./Transaction")
 db.reference = require("./Reference")
 db.tournamenttransaction = require('./tournamenttransaction');
 db.coins = require("./coins");
