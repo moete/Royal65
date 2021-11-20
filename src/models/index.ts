@@ -3,7 +3,7 @@ mongoose.Promise = global.Promise;
 const db:any = {};
 
 db.mongoose = mongoose;
-db.user = require("./user");
+db.user = require("./User");
 db.role = require("./role");
 db.match = require("./match");
 db.score = require("./score");
