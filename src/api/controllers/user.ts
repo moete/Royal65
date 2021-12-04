@@ -2,12 +2,12 @@
 import {  Request, Response } from 'express';
 import { IUser } from '../../interfaces/IUser';
 import  Services from "../../services/"
+
 var bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const mailerService:any=new Services.MailerService()
 const mailService:any=new Services.MailService()
 const userService:any=new Services.UserService()
-
 
 const getLastRegistred= async (req:Request, res:Response) => {
 
@@ -88,6 +88,8 @@ const updateAdmin=async (req:any, res:Response) => {
     }
     if(userDTO.password)
       userInfo.password=bcrypt.hashSync(userDTO.password, 8)
+    else if(userDTO.username)
+      userInfo.username=userDTO.username
     else
       userInfo={
         email: userDTO.email,
@@ -244,6 +246,14 @@ const getUserByCode=  async (req:Request, res:Response) => {
 
 };
 
+const getWalletbyEmail= async (req:Request, res:Response) => {
+  const email = req.params.email;
+  try{
+    res.status(200).send({data:await userService.getWalletbyEmail(email)});
+  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!"+email });
+}
+  };
+
 
 
 
@@ -259,5 +269,6 @@ export default {
     getAllUsersEmails,
     send,
     updateAdmin,
-    getUserByCode
+    getUserByCode,
+    getWalletbyEmail
   }

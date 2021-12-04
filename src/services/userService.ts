@@ -21,11 +21,11 @@ export default class UserService {
         let user = new UserModel({
             email: userBody.email,
             name: userBody.name,
-            address: userBody.address,
-            country: userBody.country,
+         //   address: userBody.address,
+            //country: userBody.country,
             username: userBody.username,
-            photo: userBody.photo,
-            Code: userBody.Code,
+          //  photo: userBody.photo,
+            //Code: userBody.Code,
             password: bcrypt.hashSync(userBody.password, 8)
           });
 
@@ -43,7 +43,6 @@ export default class UserService {
 
     
     async updateAdmin(_id:any,userBody:IUser){
-      console.log(userBody, " *********")
       return UserModel.findOneAndUpdate({_id},userBody, {
         new: true
       })
@@ -144,6 +143,12 @@ export default class UserService {
     async getUserById(_id:String){
       const user = await UserModel.findOne({_id});
       return user
+    }
+
+    async getWalletbyEmail(email:String)
+    {
+      const user = await UserModel.findOne({email:email});
+      return user.wallet;
     }
   
 }

@@ -18,7 +18,7 @@ export default function(app:Router) {
   route.get("/getLastRegistred",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getLastRegistred);
   route.get("/getAllUsers",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsers);
+   userController.getAllUsers);
   route.get("/getAllUsersEmails",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsersEmails);
   route.get("/verifyEmail/:email/:token", userController.findEmailVerification);
@@ -30,9 +30,10 @@ export default function(app:Router) {
   route.post("/blockUnblock",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.blockUnblock);
 
 
-  route.post("/sendMail",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.send);
+  route.post("/sendMail",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.send);
 
   route.delete("/delete/:id",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.deleteUser);
+
+  route.get("/getwalletbyemail/:email", userController.getWalletbyEmail);
 
 };

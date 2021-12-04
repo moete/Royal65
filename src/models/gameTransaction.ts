@@ -1,14 +1,11 @@
 import mongoose = require('mongoose')
 
-const Score = mongoose.model(
-    "Score",
+const GameTransaction = mongoose.model(
+    "GameTransaction",
     new mongoose.Schema({
-        score: {
+        amount: {
             type: Number,
             required: true
-          },
-        time: {
-            type: String
           },
         player: {
           type: mongoose.Schema.Types.ObjectId,
@@ -24,4 +21,4 @@ const Score = mongoose.model(
     }, { timestamps: true })
   );
   
-  module.exports = Score;
+  module.exports = GameTransaction;

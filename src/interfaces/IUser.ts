@@ -8,6 +8,7 @@ export interface IUser {
   username: string;
   photo:string;
   Code : string;
+  wallet: Number,
 }
 
 export interface IUserInputDTO {
@@ -17,4 +18,5 @@ export interface IUserInputDTO {
   country: string;
   username: string;
   Code : string;
+  wallet : Number;
 }
