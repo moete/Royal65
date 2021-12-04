@@ -133,8 +133,8 @@ export default class MatchService {
     
 
     
-    async getRoomById(id:any){
-        return await MatchModel.findById(id).populate("players","photo name");
+    async getFinishedRoomById(id:any){
+        return await MatchModel.findOne({_id:id,status:matchStatus.finished}).populate("players","photo name");
     }
 
 

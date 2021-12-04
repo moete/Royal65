@@ -1,4 +1,3 @@
-import { IRecla } from "../interfaces/IRecla";
 import mongoose = require('mongoose');
 
 const Recla = mongoose.model(
