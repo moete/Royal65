@@ -18,8 +18,8 @@ export default ({ app }: { app: any }) => {
     solitaireHandler(io, socket);
 
     // Runs when client disconnects
-    socket.on('disconnect', () => {
-      console.log('disco ', socket.id)
+    socket.on('disconnect', (payload:any) => {
+      console.log('disco ', payload)
     });
   });
 

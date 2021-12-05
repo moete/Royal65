@@ -63,6 +63,7 @@ export default {
   tournamentStauts: {
     process: 1,
     finished: 2,
+    canceled: 3,
     open: 0,
   },
   gamesConfig: {

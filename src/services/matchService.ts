@@ -14,6 +14,7 @@ export default class MatchService {
 
     async canCreateOrJoin(userId:any){
         const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},players:userId})
+        console.table(isExists)
         if(isExists.length !=0){
             const game =isExists[isExists.length-1]
             const score=await this.getScoresByUserAndGameId(userId,game._id)
@@ -32,7 +33,8 @@ export default class MatchService {
             name: gameBody.name,
             free: gameBody.free,
             amount: gameBody.amount,
-            private: gameBody.private,
+            draw3:parseInt(gameBody.draw3),
+            private: gameBody.password ? true : false,
             capacity: gameBody.capacity,
             password: gameBody.password ? bcrypt.hashSync(gameBody.password, 8) : null,
             players: [gameBody.userId]
@@ -77,7 +79,7 @@ export default class MatchService {
 
         const game=await MatchModel.findById(details._id);
 
-        var passwordIsValid =details.password ? bcrypt.compareSync(
+        var passwordIsValid =game.private ? bcrypt.compareSync(
             details.password,
             game.password
           )
@@ -85,7 +87,7 @@ export default class MatchService {
           false;
     
         if(!game)
-            return null;
+            return  {message:"Game not found"};
         if(((game.private && passwordIsValid) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
         {
                 game.players=[...game.players,details.userId]
@@ -94,7 +96,7 @@ export default class MatchService {
                 return await game.save().then((t:any) => t.populate("players","photo name").execPopulate())
         }
 
-        return null;
+        return  {message:"Please verify your information"};
     }
 
 
@@ -152,6 +154,19 @@ export default class MatchService {
 
     async getScoresByUserAndGameId(userid:any,gameId:any){
         return await ScoreModel.findOne({match:gameId,player:userid});
+    }
+
+    
+    async deleteCurrentRoom(userId:any){
+        const game = await MatchModel.findOne({players:userId,status:matchStatus.open})
+        if(!game){
+            return {message:"Game Not Found"}
+        }
+        if(game.players[0]!=userId){
+            return {message:"Cannot remove this game"}
+        }
+        
+        return MatchModel.deleteOne({ _id:game._id });
     }
 
     

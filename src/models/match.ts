@@ -11,6 +11,10 @@ const Match = mongoose.model(
         },
         free: {
             type: Boolean,
+            default: false
+          },
+          draw3: {
+            type: Boolean,
             default: true
           },
         amount: {

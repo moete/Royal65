@@ -5,13 +5,18 @@ import Services from "../services/"
 const matchService: any = new Services.MatchService()
 
 const solitaire = new Solitaire();
-
+const  cronIds:any[]=[];
+const noScore={
+    score:0,
+    pretyTime:"04:00"
+}
 module.exports = (io: any, client: any) => {
 
     const handleNewSolitaireGame = (payload: any) => {
         console.log(payload, " handleNewSolitaireGame ", payload.room_id)
-        let roomName = payload.room_id;
-        solitaire.newGame(payload.client, roomName)
+        const roomName = payload.room._id;
+        const draw3 = payload.room.draw3;
+        solitaire.newGame(payload.client, roomName,draw3)
 
     }
     const handleGameEnd = async (payload: any) => {
@@ -43,6 +48,40 @@ module.exports = (io: any, client: any) => {
         }
 
     }
+    
+    const handleForceGameEnd = async (payload: any) => {
+        const state = solitaire.getState(payload.roomName)
+        let scoreData = null
+        if (!state.playerOne.score && !state.playerTwo.score ) {
+            //TODO
+            console.log("UPDATE BOTH")
+            return;
+        }
+        if (!state.playerOne.score) {
+            state.playerOne.score = noScore
+            scoreData = state.playerOne
+
+        }
+        else if (!state.playerTwo.score) {
+            state.playerTwo.score = noScore
+            scoreData = state.playerTwo
+        }
+        if (scoreData) {
+            await matchService.addUpdateScore({
+                score: scoreData.score.score,
+                time: scoreData.score.pretyTime,
+                player: scoreData.clientId,
+                match: payload.roomName,
+            })
+
+            solitaire.setState(payload.roomName, state)
+        }
+
+        if (state.playerOne.score && state.playerTwo.score) {
+            handleUpdateGame(payload.roomName)
+        }
+
+    }
     const handleGetState = (payload: any) => {
         const room = solitaire.getState(payload.roomName)
         console.log(payload.roomName, room === undefined)
@@ -54,10 +93,10 @@ module.exports = (io: any, client: any) => {
             if (!room.startTime) {
                 room.startTime = new Date().getTime();
                 room.endTime = room.startTime + room.state.options.duration;
-               /* const cronId=setTimeout(function () {
+                cronIds[payload.roomName]=setTimeout(function () {
                     console.log("cron job")
-                    handleUpdateGame(payload.roomName)
-                }, room.state.options.duration)*/
+                    handleForceGameEnd(payload)
+                }, room.state.options.duration+20000)
                 solitaire.setState(payload.roomName,room)
             }
             io.emit(payload.userId, { type: INIT_STATE, data: room });
@@ -67,6 +106,8 @@ module.exports = (io: any, client: any) => {
             io.emit(payload.userId, { type: INIT_STATE, data: null });
 
     }
+
+
     const handleJoinSolitaireGame = (payload: any) => {
         console.log(payload, " handleJoinSolitaireGame")
         const room = solitaire.getState(payload.roomName);
@@ -119,8 +160,10 @@ module.exports = (io: any, client: any) => {
             io.emit(elem.clientId, { type: GAME_END, data: { clients, game: game } });
 
         })
-        /*if(state.cron)
-            clearTimeout(state.cron)*/
+        if(cronIds[roomName]){
+            clearTimeout(cronIds[roomName])
+            delete cronIds[roomName]
+        }
         solitaire.removeGame(roomName, clients);
         return;
     }

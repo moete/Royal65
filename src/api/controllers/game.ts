@@ -18,7 +18,8 @@ const save = async (req: any, res: Response) => {
             status: body.status,
             password: body.password,
             capacity: body.capacity,
-            name: body.name
+            name: body.name,
+            draw3: body.draw3
         })
         if (game.message) {
             return res.status(400).send(game);
@@ -95,6 +96,34 @@ const saveTransaction = async (req: any, res: Response) => {
 
 };
 
+
+
+const deleteCurrentRoom = async (req: any, res: Response) => {
+
+    try {
+
+        const userId = req.userId;
+
+        const game = matchService.deleteCurrentRoom(userId);
+        console.log(game,!game.message)
+        if (game.message) {
+            return res.status(400).send(game);
+        }
+        game.then(
+            async (game: any) => {
+
+                res.send({ message: "Game was deleted successfully!" ,game});
+            }
+        ).catch((err: any) => {
+            console.log(err)
+            console.log(err); res.status(500).send({ message: "Please Verify your information!" });
+        })
+
+    } catch (err: any) {
+        res.status(500).send({ message: "An error has occurred!" });
+    }
+
+}
 
 const deleteGame = async (req: any, res: Response) => {
 
@@ -173,6 +202,7 @@ const join = async (req: any, res: Response) => {
                 if (index != game.players.length - 1)
                     socket.emit(`${player._id}`, { type: PLAYERS_JOIN, data: game })
             })
+            console.log("JOIN_SOLITAIRE_GAME ",game)
             socket.emit(`${game.players[0]._id}`, { type: JOIN_SOLITAIRE_GAME, data: game })
             res.status(200).send({ message: "You Are successfully joined", game });
         }
@@ -268,5 +298,6 @@ export default {
     getAllTransactions,
     getMatchByUser,
     myGames,
-    getRoomById
+    getRoomById,
+    deleteCurrentRoom
 }

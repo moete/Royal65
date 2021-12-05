@@ -20,9 +20,11 @@ export default class Solitaire {
         }
     }
 
-    newGame(client: any, roomName: any) {
+    newGame(client: any, roomName: any,draw3:any) {
+        const options={...this.options}
+        options.draw3=draw3
         const state = { 
-            options:this.options,
+            options,
             randomNumbers:utils.makeRandomNumbers(51)
          }
         this.states[roomName] = {state,playerOne:{clientId:client._id,name:client.name,photo:client.photo},playerTwo:null,finish:false}
