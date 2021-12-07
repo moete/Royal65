@@ -8,12 +8,16 @@ const matchStatus=config.matchStatus
 const GameTransactionModel = db.gameTransaction;
 const MatchModel = db.match;
 const ScoreModel = db.score;
+const UserModel = db.user;
 //TODO handel message error
 @Service()
 export default class MatchService {
 
-    async canCreateOrJoin(userId:any){
+    async canCreateOrJoin(userId:any,amount:any){
         const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},players:userId})
+        const user = await UserModel.findById(userId)
+        if(user.wallet < amount)
+            return {message:"Insufficient amount"};
         console.table(isExists)
         if(isExists.length !=0){
             const game =isExists[isExists.length-1]
@@ -26,7 +30,7 @@ export default class MatchService {
     }
 
     async save(gameBody:any){
-        const canCreate=await this.canCreateOrJoin(gameBody.userId)
+        const canCreate=await this.canCreateOrJoin(gameBody.userId,gameBody.amount)
         if(canCreate)
             return canCreate;
         const game = new MatchModel({
@@ -73,11 +77,11 @@ export default class MatchService {
 
     async join(details:any){
         
-        const canCreate=await this.canCreateOrJoin(details.userId)
+        const game=await MatchModel.findById(details._id);
+        const canCreate=await this.canCreateOrJoin(details.userId,game.amount)
         if(canCreate)
             return canCreate;
 
-        const game=await MatchModel.findById(details._id);
 
         var passwordIsValid =game.private ? bcrypt.compareSync(
             details.password,
