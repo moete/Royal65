@@ -95,8 +95,10 @@ export default class MatchService {
         if(((game.private && passwordIsValid) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
         {
                 game.players=[...game.players,details.userId]
-                if(game.players.length==game.capacity)
+                if(game.players.length==game.capacity){
+                    
                     game.status=matchStatus.process;
+                }
                 return await game.save().then((t:any) => t.populate("players","photo name").execPopulate())
         }
 
