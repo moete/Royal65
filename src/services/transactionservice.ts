@@ -10,17 +10,22 @@ var bcrypt = require("bcryptjs");
 const TransactionModel = db.transaction;
 @Service()
 export default class TransactionService {
-  save(transactionBody: ITransaction) {
+  save(transactionBody: any) {
     const transaction = new TransactionModel({
       Type: transactionBody.Type,
       User: transactionBody.User,
       Credit: transactionBody.Credit,
+      payment_intent: transactionBody.payment_intent,
       Comission: transactionBody.Comission,
     });
 
     return transaction.save();
   }
 
+  async findOneByIntent(payment_intent:any) {
+    const transaction = await TransactionModel.findOne({payment_intent});
+    return transaction;
+  }
   async count() {
     const count: Number = await TransactionModel.countDocuments({});
     return count;

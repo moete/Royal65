@@ -47,6 +47,16 @@ export default class UserService {
         new: true
       })
   }
+  
+  
+  async updateWallet({userId,amount}:any){
+    const user=await UserModel.findById(userId)
+    if(!user){
+      return {message:"User Not found"};
+    }
+    user.wallet= user.wallet + amount;
+    return await user.save();
+  }
 
     async update(_id:any,userBody:any){
 

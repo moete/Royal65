@@ -13,9 +13,12 @@ export default function (app: Router) {
     });
   
     app.use("/stripe", route);
-
+    
     route.post("/create-payment-intent",
     [middlewares.authJwt.verifyToken], stripeController.getClientSecret)
+
+    route.post("/confirmAndUpdate",
+    [middlewares.authJwt.verifyToken], stripeController.confirmAndUpdate)
 
 
 }
