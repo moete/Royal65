@@ -7,7 +7,7 @@ const ReclaModel = db.recla;
 export default class ReclaService {
   save(ReclaBody: IRecla) {
     const recla = new ReclaModel({
-      user: ReclaBody.user,
+      username: ReclaBody.username,
       subject: ReclaBody.subject,
       message: ReclaBody.message,
     });

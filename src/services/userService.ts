@@ -39,6 +39,33 @@ export default class UserService {
 
     return user;
   }
+  async updateProfile(_id: any, userBody: IUser) {
+    return UserModel.findOneAndUpdate({ _id }, userBody, {
+      new: true,
+    });
+  }
+  // async updateProfile(userBody: IUser) {
+  //   // let user = new UserModel({
+  //   //   email: userBody.email,
+  //   //   name: userBody.name,
+  //   //   address: userBody.address,
+  //   //   country: userBody.country,
+  //   //   username: userBody.username,
+  //   //   photo: userBody.photo,
+  //   //   password: bcrypt.hashSync(userBody.password, 8),
+  //   // });
+  //   // user.save();
+  //   // // user = await user.save();
+  //   // // if (user) {
+  //   // //   const email = new EmailModel({
+  //   // //     email: user.email,
+  //   // //     token:
+  //   // //       Math.random().toString(36).substr(2) +
+  //   // //       Math.random().toString(36).substr(2),
+  //   // //   });
+  //   // //   email.save();
+  //   // // }
+  // }
 
   async updateAdmin(_id: any, userBody: IUser) {
     return UserModel.findOneAndUpdate({ _id }, userBody, {

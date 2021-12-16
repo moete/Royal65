@@ -1,13 +1,13 @@
 
 export interface IRecla {
-    user : String ,
+    username : String ,
     subject : String ,
     message : String
 
 }
 
 export interface IReclaDto {
-    user : String,
+    username : String,
     subject : String,
     message:  String
 }

@@ -4,12 +4,12 @@ const Recla = mongoose.model(
   "Recla",
   new mongoose.Schema(
     {
-      user: [
+      username: 
         {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-        }
-    ],
+        type: String,
+         required : [true, 'please enter your username from here'], 
+      }
+    ,
       subject: {
         type: String ,
         required : [true,'please enter a subject for your message'],

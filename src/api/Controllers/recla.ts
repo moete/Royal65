@@ -8,7 +8,7 @@ const ReclaService:any= new Services.ReclaService() ;
 const addRecla = async (req:Request , res : Response) => {
   try {
     const recla = ReclaService.save({
-      user : req.body.user,
+      username : req.body.username,
       message : req.body.message,
       subject : req.body.subject
   });
