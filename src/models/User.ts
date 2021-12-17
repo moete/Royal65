@@ -1,4 +1,5 @@
-import mongoose = require('mongoose') ;
+var mongoose = require('mongoose') ;
+require('mongoose-double')(mongoose);
 
 const User = mongoose.model(
     "User",
@@ -13,12 +14,11 @@ const User = mongoose.model(
           },
         address: {
             type: String,
-            required: true
+        //required: true
           },
           photo: {
               type: String,
               dafault:"uploads/userImages/default.jpg"
-
             },
         verified:{
               type: Boolean,
@@ -34,7 +34,7 @@ const User = mongoose.model(
           },
         country: {
             type: String,
-            required: true
+        //     required: true
           },
         password: {
             type: String,
@@ -48,14 +48,19 @@ const User = mongoose.model(
             // changed code attribute into user
            Code: {
             type: String,
-            required: true
+     //       required: true
           },
         roles: [
             {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Role"
             }
-        ]
+        ],
+        //reference confirmation 
+        referenceconfirmation : {
+           type : Boolean,
+           default : false
+        }
     }, { timestamps: true })
   );
   
