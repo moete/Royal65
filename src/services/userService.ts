@@ -144,6 +144,10 @@ export default class UserService {
     return val;
   }
 
+    async getUserByCode(Code:String){
+      const ref = await UserModel.find({Code});
+    }
+  
   deleteUser(_id: any) {
     return UserModel.deleteOne({ _id });
   }

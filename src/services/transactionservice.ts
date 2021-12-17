@@ -15,7 +15,7 @@ export default class TransactionService {
       Type: transactionBody.Type,
       User: transactionBody.User,
       Credit: transactionBody.Credit,
-      Coins: transactionBody.Coins,
+      Comission: transactionBody.Comission,
     });
 
     return transaction.save();
