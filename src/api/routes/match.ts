@@ -17,8 +17,15 @@ export default function(app:Router) {
   route.post("/save",
   [middlewares.authJwt.verifyToken], gameController.save);
   
+  route.post("/saveTransaction",
+  [middlewares.authJwt.verifyToken], gameController.saveTransaction);
+  
   route.get("/getAll",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAll);
+  route.get("/getMatchByUser",
+  [middlewares.authJwt.verifyToken], gameController.getMatchByUser);
+  route.get("/getAllTransactions",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.getAllTransactions);
 
   
   route.post("/join",
@@ -29,8 +36,7 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken], gameController.unJoin);
 
   
-  route.get("/getOpen",
-  [middlewares.authJwt.verifyToken], gameController.getOpen);
+  route.get("/getOpen", gameController.getOpen);
 
   
   //TODO check who can use this route administrator or all
@@ -40,7 +46,12 @@ export default function(app:Router) {
   
   route.get("/getScoreByGameId/:id",
   [middlewares.authJwt.verifyToken], gameController.getScoreByGameId);
+  route.get("/getRoomById/:id",
+  [middlewares.authJwt.verifyToken], gameController.getRoomById);
 
+  
+  route.get("/myGames",
+  [middlewares.authJwt.verifyToken], gameController.myGames);
   
   route.get("/getScoresByUserId/:id",
   [middlewares.authJwt.verifyToken], gameController.getScoresByUserId);
