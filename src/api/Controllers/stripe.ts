@@ -16,7 +16,7 @@ const getClientSecret = async (req:any,res:any) =>{
                 ],
             });
 
-            return res.send({
+            return res.send({   
                 clientSecret: paymentIntent.client_secret,
             });
 

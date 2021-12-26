@@ -17,5 +17,6 @@ db.transaction = require("./transaction")
 db.reference = require("./Reference")
 db.tournamenttransaction = require('./tournamenttransaction');
 db.coins = require("./coins");
+db.withdrawal = require("./Withdrawal");
 
 module.exports = db;

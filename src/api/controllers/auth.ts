@@ -1,15 +1,14 @@
 import config from "../../config";
 import { Request, Response } from "express";
 var jwt = require("jsonwebtoken");
-import  Services from "../../services/"
-const fs=require('fs')
-var uniqid = require('uniqid'); 
+import Services from "../../services/";
+const fs = require("fs");
+var uniqid = require("uniqid");
 
-const userService:any=new Services.UserService()
-const roleService:any=new Services.RoleService ()
-const expiresIn=86400;
-var bcrypt = require("bcryptjs"); 
-
+const userService: any = new Services.UserService();
+const roleService: any = new Services.RoleService();
+const expiresIn = 86400;
+var bcrypt = require("bcryptjs");
 
 const signup = async (req: any, res: Response) => {
   const userDTO = req.body;
@@ -72,9 +71,9 @@ const signup = async (req: any, res: Response) => {
       .exec((err:any, user:any) => {
     */
   user = userService.save({
+    username: userDTO.username,
     email: userDTO.email,
     //  name: userDTO.name,
-    username: userDTO.username,
     //  address: userDTO.address,
     country: userDTO.country,
     //  photo,
@@ -93,7 +92,9 @@ const signup = async (req: any, res: Response) => {
           return;
         }
 
-        res.send({ message: "User was registered successfully!" });
+        res.send({
+          message: "You were registered successfully , Try to log In !",
+        });
       });
     })
     .catch((err: any) => {

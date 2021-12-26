@@ -12,7 +12,7 @@ if (!envFound) {
 }
 //const databaseURL: any = process.env.MONGODB_URI
 
-export default {
+  export default {
   /**
    * Your  port
    */
