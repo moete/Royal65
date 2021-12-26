@@ -91,7 +91,11 @@ export default class TransactionService {
   }
 
 
-
+  async getTransactionbyemail(User:any)
+  {
+    const transaction = await TransactionModel.find({User:User});
+    return transaction;
+  }
 
   async getAllTodayTransactions(){
      const  todaytransactions:number = await  TransactionModel.find({

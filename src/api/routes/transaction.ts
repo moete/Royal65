@@ -21,5 +21,6 @@ export default function(app:Router) {
       route.get("/getAllDeposit",transactionController.getAllDeposit);
       route.get("/getallwithdrawal",transactionController.getallwithdrawal);
       route.get("/getallBonus",transactionController.getallBonus);
-
+      route.get("/gettransactionUser/:User",transactionController.getTransactionbyuser);
+      
 };

@@ -36,13 +36,52 @@ const signup = async (req: any, res: Response) => {
   /*  let photo=null
     if(req.file)
       photo=req.file.path
+    
+    user = userService.save({
+      email: userDTO.email,
+      name: userDTO.name,
+      username: userDTO.username,
+      address: userDTO.address,
+      country: userDTO.country,
+      photo,
+      // changed code attribute into user
+      Code : uniqid(),
+      password: userDTO.password
+    });
+    user.then(
+      async (user:any)=>{
+
+          const role=await roleService.findOneByName("user")
+          
+          user.roles = [role._id];
+          user.save((err:any) => {
+            if (err) {
+              res.status(500).send({ message:  "Something went wrong!" });
+              return;
+            }
+
+            res.send({ message: "User was registered successfully!" });
+          });
+      }
+    ).catch((err:any)=>{
+
+      console.log(err);res.status(500).send({ message: "Please Verify your information!" });
+    })
+  
+  };
+  
+  const signin = (req:Request, res:Response) => {
+
+    console.log(req.body)
+    userService.findOneByEmailOrUsername(req.body.username)
+      .exec((err:any, user:any) => {
     */
   user = userService.save({
     email: userDTO.email,
-    name: userDTO.name,
+    //  name: userDTO.name,
     username: userDTO.username,
     //  address: userDTO.address,
-    //   country: userDTO.country,
+    country: userDTO.country,
     //  photo,
     // changed code attribute into user
     //   Code: shortid.generate(),
@@ -86,6 +125,8 @@ const signup = async (req: any, res: Response) => {
             res.status(500).send({ message: "An error has occurred!" });
           }
         }
+
+        res.send({ message: "User was registered successfully!" });
       });
     })
     .catch((err: any) => {
