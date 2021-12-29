@@ -35,8 +35,11 @@ export default function(app:Router) {
   route.post("/unJoin",
   [middlewares.authJwt.verifyToken], gameController.unJoin);
 
+  route.post("/deleteCurrentRoom",
+  [middlewares.authJwt.verifyToken], gameController.deleteCurrentRoom);
   
-  route.get("/getOpen", gameController.getOpen);
+  route.get("/getOpen",
+  [middlewares.authJwt.verifyToken], gameController.getOpen);
 
   
   //TODO check who can use this route administrator or all

@@ -8,12 +8,17 @@ const matchStatus=config.matchStatus
 const GameTransactionModel = db.gameTransaction;
 const MatchModel = db.match;
 const ScoreModel = db.score;
+const UserModel = db.user;
 //TODO handel message error
 @Service()
 export default class MatchService {
 
-    async canCreateOrJoin(userId:any){
+    async canCreateOrJoin(userId:any,amount:any){
         const isExists=await MatchModel.find({status:{$ne:matchStatus.finished},players:userId})
+        const user = await UserModel.findById(userId)
+        if(user.wallet < amount)
+            return {message:"Insufficient amount"};
+        console.table(isExists)
         if(isExists.length !=0){
             const game =isExists[isExists.length-1]
             const score=await this.getScoresByUserAndGameId(userId,game._id)
@@ -25,14 +30,15 @@ export default class MatchService {
     }
 
     async save(gameBody:any){
-        const canCreate=await this.canCreateOrJoin(gameBody.userId)
+        const canCreate=await this.canCreateOrJoin(gameBody.userId,gameBody.amount)
         if(canCreate)
             return canCreate;
         const game = new MatchModel({
             name: gameBody.name,
             free: gameBody.free,
             amount: gameBody.amount,
-            private: gameBody.private,
+            draw3:parseInt(gameBody.draw3),
+            private: gameBody.password ? true : false,
             capacity: gameBody.capacity,
             password: gameBody.password ? bcrypt.hashSync(gameBody.password, 8) : null,
             players: [gameBody.userId]
@@ -71,13 +77,13 @@ export default class MatchService {
 
     async join(details:any){
         
-        const canCreate=await this.canCreateOrJoin(details.userId)
+        const game=await MatchModel.findById(details._id);
+        const canCreate=await this.canCreateOrJoin(details.userId,game.amount)
         if(canCreate)
             return canCreate;
 
-        const game=await MatchModel.findById(details._id);
 
-        var passwordIsValid =details.password ? bcrypt.compareSync(
+        var passwordIsValid =game.private ? bcrypt.compareSync(
             details.password,
             game.password
           )
@@ -85,16 +91,18 @@ export default class MatchService {
           false;
     
         if(!game)
-            return null;
+            return  {message:"Game not found"};
         if(((game.private && passwordIsValid) || !game.private) && game.players.length!=game.capacity && !game.players.includes(details.userId))
         {
                 game.players=[...game.players,details.userId]
-                if(game.players.length==game.capacity)
+                if(game.players.length==game.capacity){
+                    
                     game.status=matchStatus.process;
+                }
                 return await game.save().then((t:any) => t.populate("players","photo name").execPopulate())
         }
 
-        return null;
+        return  {message:"Please verify your information"};
     }
 
 
@@ -152,6 +160,19 @@ export default class MatchService {
 
     async getScoresByUserAndGameId(userid:any,gameId:any){
         return await ScoreModel.findOne({match:gameId,player:userid});
+    }
+
+    
+    async deleteCurrentRoom(userId:any){
+        const game = await MatchModel.findOne({players:userId,status:matchStatus.open})
+        if(!game){
+            return {message:"Game Not Found"}
+        }
+        if(game.players[0]!=userId){
+            return {message:"Cannot remove this game"}
+        }
+        
+        return MatchModel.deleteOne({ _id:game._id });
     }
 
     
