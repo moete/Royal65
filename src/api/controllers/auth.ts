@@ -92,41 +92,8 @@ const signup = async (req: any, res: Response) => {
           return;
         }
 
-<<<<<<< HEAD
-        res.send({
-          message: "You were registered successfully , Try to log In !",
-=======
-  
-        var passwordIsValid = bcrypt.compareSync(
-          password,
-          user.password
-        );
-  
-        if (!passwordIsValid) {
-          return res.status(404).send({
-            accessToken: null,
-            message: "Invalid Info!"
-          });
-        }
-  
-        var token = jwt.sign({ id: user.id }, config.SECRET, {
-          expiresIn // 24 hours
-        });
-  
-        var authorities = [];
-  
-        for (let i = 0; i < user.roles.length; i++) {
-          authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-        }
         res.status(200).send({
-          id: user._id,
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
-          expiresIn
->>>>>>> origin/amine
+          message: "You were registered successfully , Try to log In !",
         });
       });
     })
