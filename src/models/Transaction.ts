@@ -15,13 +15,17 @@ const Transaction = mongoose.model(
         type: mongoose.Schema.Types.Double,
         required: true,
       },
+      payment_intent:{
+        type: String,
+        required: true,
+      },
       Comission: {
         type: mongoose.Schema.Types.Double,
-        required: true,
+        required: false,
       },
       Type: {
         type: String,
-        required: true,
+        required: true
       },
     },
     { timestamps: true }

@@ -7,11 +7,17 @@ var uniqid = require("uniqid");
 
 const userService: any = new Services.UserService();
 const roleService: any = new Services.RoleService();
+const referenceService: any = new Services.ReferenceService();
 const expiresIn = 86400;
 var bcrypt = require("bcryptjs");
 
 const signup = async (req: any, res: Response) => {
   const userDTO = req.body;
+  const refcode = req.query.code;
+  const code = uniqid();
+  // let userreferedfrom = await userService.getUserByCode(refcode);
+  // res.send(userreferedfrom);
+
   let user = await userService.checkDuplicate(userDTO.email, userDTO.username);
   if (user) {
     /* fs.unlink(req.file.path, (err:any) => {
@@ -91,6 +97,34 @@ const signup = async (req: any, res: Response) => {
           res.status(500).send({ message: "Something went wrong!" });
           return;
         }
+        // if (refcode != null) {
+        //   try {
+        //     const reference = referenceService.save({
+        //       ReferenceFrom: userreferedfrom,
+        //       ReferenceTo: user,
+        //       Bonus: 1,
+        //     });
+
+        //     if (reference.message) {
+        //       return res.status(400).send(reference);
+        //     }
+        //     reference
+        //       .then((succ: any) => {
+        //         res
+        //           .status(200)
+        //           .send({ message: "reference successfully created" });
+        //       })
+        //       .catch((err: any) => {
+        //         console.log(err);
+        //         res
+        //           .status(500)
+        //           .send({ message: "Please Verify your information!" });
+        //       });
+        //   } catch (err: any) {
+        //     console.log(err);
+        //     res.status(500).send({ message: "An error has occurred!" });
+        //   }
+        // }
 
         res.status(200).send({
           message: "You were registered successfully , Try to log In !",
@@ -139,27 +173,39 @@ const signin = (req: Request, res: Response) => {
         message: "Invalid Info!",
       });
     }
-
-    var token = jwt.sign({ id: user.id }, config.SECRET, {
-      expiresIn, // 24 hours
-    });
-
-    var authorities = [];
-
-    for (let i = 0; i < user.roles.length; i++) {
-      authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+        var passwordIsValid = bcrypt.compareSync(
+          password,
+          user.password
+        );
+  
+        if (!passwordIsValid) {
+          return res.status(404).send({
+            accessToken: null,
+            message: "Invalid Info!"
+          });
+        }
+  
+        var token = jwt.sign({ id: user.id }, config.SECRET, {
+          expiresIn // 24 hours
+        });
+  
+        var authorities = [];
+  
+        for (let i = 0; i < user.roles.length; i++) {
+          authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+        }
+        res.status(200).send({
+          id: user._id,
+          username: user.username,
+          name: user.name,
+          email: user.email,
+          roles: authorities,
+          accessToken: token,
+          expiresIn
+        });
+      });
     }
-    res.status(200).send({
-      id: user._id,
-      username: user.username,
-      name: user.name,
-      email: user.email,
-      roles: authorities,
-      accessToken: token,
-      expiresIn,
-    });
-  });
-};
+
 
 export default {
   signin,

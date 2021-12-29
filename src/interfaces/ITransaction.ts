@@ -4,6 +4,7 @@ export interface ITransaction {
     User: string;
     Credit: string;
     Comission: string;
+    payment_intent:string;
   }
   
   export interface ITransactionDTO {

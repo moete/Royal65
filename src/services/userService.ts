@@ -1,4 +1,5 @@
-import { Service } from "typedi";
+import { response } from 'express';
+import { Service } from 'typedi';
 import { IUser } from "../interfaces/IUser";
 const db = require("../models");
 var bcrypt = require("bcryptjs");
@@ -78,6 +79,16 @@ export default class UserService {
       new: true,
     });
   }
+  
+  
+  async updateWallet({userId,amount}:any){
+    const user=await UserModel.findById(userId)
+    if(!user){
+      return {message:"User Not found"};
+    }
+    user.wallet= user.wallet + amount;
+    return await user.save();
+  }
 
   findOneByEmailOrUsername(param: string) {
     return UserModel.findOne({
@@ -144,8 +155,22 @@ export default class UserService {
     return val;
   }
 
+    // ref 
     async getUserByCode(Code:String){
-      const ref = await UserModel.find({Code});
+      const ref = await UserModel.findOne({Code:Code});
+      
+      return ref ;
+    }
+
+    async getUserById(_id:String){
+      const user = await UserModel.findOne({_id});
+      return user
+    }
+
+    async getWalletbyEmail(email:String)
+    {
+      const user = await UserModel.findOne({email:email});
+      return user.wallet;
     }
   
   deleteUser(_id: any) {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IUser } from "../../interfaces/IUser";
 import Services from "../../services/";
-import UserService from "../../services/userService";
+
 var bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const mailerService: any = new Services.MailerService();
@@ -89,6 +89,32 @@ const blockUnblock = async (req: any, res: Response) => {
     res.status(500).send({ message: "An error has occurred!" });
   }
 };
+
+
+
+
+const updateWallet=async (req:any, res:Response) => {
+
+  try{
+
+    const {amount}=req.body;
+    const user = userService.updateWallet({amount,userId:req.userId});
+    user.then(
+      async (user:any)=>{
+        res.send({ message: "Wallet was updated successfully!" });
+      }
+    ).catch((err:any)=>{
+
+      console.log(err);res.status(500).send({ message: "Please Verify your information!" });
+    })
+
+  }catch(err:any){
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+
+}
+
+
 
 const updateAdmin = async (req: any, res: Response) => {
   try {
@@ -224,6 +250,17 @@ const send = async (req: any, res: Response) => {
     res.status(500).send({ message: "An error has occurred!" });
   }
 };
+//conttt
+const getUserByCode=  async (req:Request, res:Response) => {
+  
+  const Code=req.params.Code;
+  try{
+    res.status(200).send({data:await userService.getUserByCode(Code)});
+  }catch(err:any){
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+
+};
 
 export default {
   count,
@@ -238,4 +275,5 @@ export default {
   send,
   updateAdmin,
   updateProfile,
+  getUserByCode
 };
