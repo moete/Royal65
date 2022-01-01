@@ -19,6 +19,6 @@ export default function(app:Router) {
 
   route.get("/getById/:id",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], mailController.getById);
 
-  route.delete("/delete/:id",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], mailController.deleteMail);
+  route.post("/delete",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], mailController.deleteMail);
 
 };

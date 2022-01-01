@@ -1,17 +1,16 @@
-import {  Request, Response } from 'express';
-import { Container } from 'typedi';
-import  Services from "../../services/"
+import { Request, Response } from "express";
+import { Container } from "typedi";
+import Services from "../../services";
 
-const transactionService:any= new Services.TransactionService();
+const transactionService: any = new Services.TransactionService();
 
-
-const transact = (req:Request, res:Response) => {
+const transact = (req: Request, res: Response) => {
   try {
     const transaction = transactionService.save({
       Type: req.body.Type,
       User: req.body.User,
       Credit: req.body.Credit,
-      Coins: req.body.Coins,
+      Comission: req.body.Comission,
     });
     if (transaction.message) {
       return res.status(400).send(transaction);
@@ -31,49 +30,81 @@ const transact = (req:Request, res:Response) => {
   }
 };
 
+const count = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ data: await transactionService.count() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
 
-const count= async (req:Request, res:Response) => {
+const getAllTransactions = async (req: Request, res: Response) => {
+  try {
+    res
+      .status(200)
+      .send({ data: await transactionService.getAllTransactions() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+
+const getAllTodayTransactions = async (req: Request, res: Response) => {
+  try {
+    res
+      .status(200)
+      .send({ data: await transactionService.getAllTodayTransactions() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+
+const getAllDeposit = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ data: await transactionService.getAllDeposit() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+const getallwithdrawal = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ data: await transactionService.getallwithdrawal() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+const getallBonus = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ data: await transactionService.getallBonus() });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+
+
+const getTransactionbyuser=  async (req:Request, res:Response) => {
+  
+  const User =req.params.User;
   try{
-        res.status(200).send({data:await transactionService.count()});
-      }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
-  };
+    res.status(200).send({data:await transactionService.getTransactionbyemail(User)});
+  }catch(err:any){
+    res.status(500).send({ message: "An error has occurred!" });
+  }
 
-  const getAllTransactions= async (req:Request, res:Response) => {
-    try{
-    res.status(200).send({data:await transactionService.getAllTransactions()});
-  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
-  };
-
-  const getAllTodayTransactions= async (req:Request, res:Response) => {
-    try{
-    res.status(200).send({data:await transactionService.getAllTodayTransactions()});
-  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
-  };
-
-  const getAllDeposit= async (req:Request, res:Response) => {
-    try{
-    res.status(200).send({data:await transactionService.getAllDeposit()});
-  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
-  };
-  const getallwithdrawal= async (req:Request, res:Response) => {
-    try{
-    res.status(200).send({data:await transactionService.getallwithdrawal()});
-  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
-  };
-  const getallBonus= async (req:Request, res:Response) => {
-    try{
-    res.status(200).send({data:await transactionService.getallBonus()});
-  }catch(err:any){console.log(err);res.status(500).send({ message: "An error has occurred!" });}
-  };
-
-
+};
 
 export default {
-      transact,
-      count,
-      getAllTransactions,
-      getAllTodayTransactions,
-      getAllDeposit,
-      getallwithdrawal,
-      getallBonus
-}
+  transact,
+  count,
+  getAllTransactions,
+  getAllTodayTransactions,
+  getAllDeposit,
+  getallwithdrawal,
+  getallBonus,
+  getTransactionbyuser
+};

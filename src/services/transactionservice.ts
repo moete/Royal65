@@ -1,26 +1,31 @@
 import { Service } from "typedi";
 import { ITransaction } from "../interfaces/ITransaction";
-import  endOfDay  from 'date-fns/endOfDay';
-import   startOfDay   from 'date-fns/startOfDay';
-import startOfYesterday from 'date-fns/startOfYesterday';
-import endOfYesterday from 'date-fns/endOfYesterday';
+var  endOfDay   =require( 'date-fns/endOfDay');
+var   startOfDay    =require( 'date-fns/startOfDay');
+var startOfYesterday  =require( 'date-fns/startOfYesterday');
+var endOfYesterday =require( 'date-fns/endOfYesterday');
 
 const db = require("../models");
 var bcrypt = require("bcryptjs");
 const TransactionModel = db.transaction;
 @Service()
 export default class TransactionService {
-  save(transactionBody: ITransaction) {
+  save(transactionBody: any) {
     const transaction = new TransactionModel({
       Type: transactionBody.Type,
       User: transactionBody.User,
       Credit: transactionBody.Credit,
-      Coins: transactionBody.Coins,
+      payment_intent: transactionBody.payment_intent,
+      Comission: transactionBody.Comission,
     });
 
     return transaction.save();
   }
 
+  async findOneByIntent(payment_intent:any) {
+    const transaction = await TransactionModel.findOne({payment_intent});
+    return transaction;
+  }
   async count() {
     const count: Number = await TransactionModel.countDocuments({});
     return count;
@@ -86,7 +91,11 @@ export default class TransactionService {
   }
 
 
-
+  async getTransactionbyemail(User:any)
+  {
+    const transaction = await TransactionModel.find({User:User});
+    return transaction;
+  }
 
   async getAllTodayTransactions(){
      const  todaytransactions:number = await  TransactionModel.find({

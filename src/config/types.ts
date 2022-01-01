@@ -1,0 +1,10 @@
+
+export const PLAYERS_JOIN = 'PLAYERS_JOIN'
+export const START_GAME = 'START_GAME'
+export const NEW_SOLITAIRE_GAME ='newSolitaireGame'
+export const JOIN_SOLITAIRE_GAME = 'joinSolitaireGame'
+export const GAME_END = 'gameEnd'
+export const GET_STATE ='getState'
+export const INIT_STATE= 'initState'
+export const UNKNOWN_ROOM= 'unknownRoom'
+export const TOO_MANY_PLAYERS= 'tooManyPlayers'

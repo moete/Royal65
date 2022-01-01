@@ -8,12 +8,12 @@ const MailModel = db.mails;
 @Service()
 export default class MailService {
 
-
     async save(mailBody:any){
         const mail = new MailModel({
-            subject: mailBody.subject,
-            message: mailBody.message,
-            status: mailBody.status,
+          email_subject: mailBody.email_subject,
+          email_content: mailBody.email_content,
+          folder: mailBody.folder,
+          read: mailBody.read,
             to: mailBody.to
           });
         
@@ -39,8 +39,13 @@ export default class MailService {
     }
     
     
-    deleteMail(_id:any){
-        return MailModel.deleteOne({ _id });
+    deleteMail(listId:any){
+        return MailModel.deleteMany(
+          {
+            _id: {
+              $in:listId
+            }
+          });
     }
     
 

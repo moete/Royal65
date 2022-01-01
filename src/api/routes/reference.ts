@@ -13,8 +13,9 @@ export default function(app:Router) {
       });
       // add auth validation
       app.use('/reference', route);
-      route.post("/saverefernce",[middlewares.authJwt.verifyToken], refernceController.referencesave);
+      route.post("/saverefernce", refernceController.referencesave);
       route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], refernceController.count);
       route.get("/getAllReferences",[middlewares.authJwt.verifyToken],refernceController.getAllReferences);
+      
 
 };

@@ -1,14 +1,15 @@
 export interface IUser {
-    _id: string;
-    name: string;
-    email: string;
-    address: string;
-    password: string;
-    country: string;
-    username: string;
-    photo:string;
-  }
-  
+  _id: string;
+  name: string;
+  email: string;
+  address: string;
+  password: string;
+  country: string;
+  username: string;
+  photo:string;
+  Code : string;
+  wallet: Number,
+}
 
 export interface IUserInputDTO {
   name: string;
@@ -16,5 +17,6 @@ export interface IUserInputDTO {
   address: string;
   country: string;
   username: string;
-  Code: string;
+  Code : string;
+  wallet : Number;
 }

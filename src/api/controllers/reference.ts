@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { Container } from "typedi";
-import Services from "../../services/";
+import Services from "../../services";
+
 
 const referenceService: any = new Services.ReferenceService();
+const userService : any = new Services.UserService();
 var shortid = require("shortid");
-
+const formulebonus = 2;
 const referencesave = (req: Request, res: Response) => {
+      
   try {
     const reference = referenceService.save({
       ReferenceFrom: req.body.ReferenceFrom,
@@ -15,7 +18,6 @@ const referencesave = (req: Request, res: Response) => {
     if (reference.message) {
       return res.status(400).send(reference);
     }
-
     reference
       .then((succ: any) => {
         res.status(200).send({ message: "reference successfully created" });

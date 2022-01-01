@@ -1,14 +1,15 @@
-import { IRecla } from "../interfaces/IRecla";
-import mongoose = require("mongoose");
+import mongoose = require('mongoose');
 
 const Recla = mongoose.model(
   "Recla",
   new mongoose.Schema(
     {
-      name: {
+      username: 
+        {
         type: String,
-        required: true, 
-      },
+         required : [true, 'please enter your username from here'], 
+      }
+    ,
       subject: {
         type: String,
         required: [true, "please enter a subject for your message"],
@@ -18,8 +19,9 @@ const Recla = mongoose.model(
         required: [true, "please enter a valid message for your request"],
       },
     },
-    { timestamps: true })
-  
+
+  {timestamps: true })
 );
 
 module.exports = Recla;
+

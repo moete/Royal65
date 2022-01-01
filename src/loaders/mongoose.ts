@@ -1,37 +1,40 @@
-import mongoose = require('mongoose') ;
-import config from '../config';
+import mongoose = require("mongoose");
+import config from "../config";
 const db = require("../models");
 const Role = db.role;
 
 function initial() {
-    Role.estimatedDocumentCount((err:any, count:any) => {
-      if (!err && count === 0) {
-        new Role({
-          name: "user"
-        }).save((err:any) => {
-          if (err) {
-            console.log("error", err);
-          }
-  
-          console.log("added 'user' to roles collection");
-        });
-  
-  
-        new Role({
-          name: "admin"
-        }).save((err:any) => {
-          if (err) {
-            console.log("error", err);
-          }
-  
-          console.log("added 'admin' to roles collection");
-        });
-      }
-    });
-  }
+  Role.estimatedDocumentCount((err: any, count: any) => {
+    if (!err && count === 0) {
+      new Role({
+        name: "user",
+      }).save((err: any) => {
+        if (err) {
+          console.log("error", err);
+        }
 
-  export default async (): Promise<any> => {
-    const connection= await mongoose.connect(config.databaseURL as string, { useNewUrlParser: true,useUnifiedTopology: true ,useFindAndModify :false })
-    initial()
-    return connection.connection.db;
+        console.log("added 'user' to roles collection");
+      });
+
+      new Role({
+        name: "admin",
+      }).save((err: any) => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("added 'admin' to roles collection");
+      });
+    }
+  });
 }
+
+export default async (): Promise<any> => {
+  const connection = await mongoose.connect(config.DATABASE_URL as string, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify : false
+  });
+  initial();
+  return connection.connection.db;
+};
