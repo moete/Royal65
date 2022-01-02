@@ -6,7 +6,7 @@ const User = mongoose.model(
     {
       name: {
         type: String,
-       // required: true,
+        // required: true,
       },
       username: {
         type: String,
@@ -34,7 +34,7 @@ const User = mongoose.model(
       },
       country: {
         type: String,
-       // required: true
+        // required: true
       },
       password: {
         type: String,
@@ -49,6 +49,10 @@ const User = mongoose.model(
       Code: {
         type: String,
         //       required: true
+      },
+      ConfirmationCode: {
+        type: String,
+        unique: true,
       },
       roles: [
         {

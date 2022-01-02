@@ -14,7 +14,8 @@ export default function(app:Router) {
   app.use('/mail', route);
   
   route.get("/getAllMails",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], mailController.getAll);
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+   mailController.getAll);
   route.post("/update",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], mailController.update);
 
   route.get("/getById/:id",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], mailController.getById);
