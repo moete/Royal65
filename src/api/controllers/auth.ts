@@ -15,6 +15,12 @@ const signup = async (req: any, res: Response) => {
   const userDTO = req.body;
   const refcode = req.query.code;
   const code = uniqid();
+  const characters =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let token = "";
+  for (let i = 0; i < 25; i++) {
+    token += characters[Math.floor(Math.random() * characters.length)];
+  }
   // let userreferedfrom = await userService.getUserByCode(refcode);
   // res.send(userreferedfrom);
 
@@ -127,7 +133,7 @@ const signup = async (req: any, res: Response) => {
         // }
 
         res.status(200).send({
-          message: "You were registered successfully , Try to log In !",
+          message: "You were registered successfully , we have just to review you current state !",
         });
       });
     })
@@ -173,39 +179,35 @@ const signin = (req: Request, res: Response) => {
         message: "Invalid Info!",
       });
     }
-        var passwordIsValid = bcrypt.compareSync(
-          password,
-          user.password
-        );
-  
-        if (!passwordIsValid) {
-          return res.status(404).send({
-            accessToken: null,
-            message: "Invalid Info!"
-          });
-        }
-  
-        var token = jwt.sign({ id: user.id }, config.SECRET, {
-          expiresIn // 24 hours
-        });
-  
-        var authorities = [];
-  
-        for (let i = 0; i < user.roles.length; i++) {
-          authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-        }
-        res.status(200).send({
-          id: user._id,
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
-          expiresIn
-        });
+    var passwordIsValid = bcrypt.compareSync(password, user.password);
+
+    if (!passwordIsValid) {
+      return res.status(404).send({
+        accessToken: null,
+        message: "Invalid Info!",
       });
     }
 
+    var token = jwt.sign({ id: user.id }, config.SECRET, {
+      expiresIn, // 24 hours
+    });
+
+    var authorities = [];
+
+    for (let i = 0; i < user.roles.length; i++) {
+      authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+    }
+    res.status(200).send({
+      id: user._id,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      roles: authorities,
+      accessToken: token,
+      expiresIn,
+    });
+  });
+};
 
 export default {
   signin,
