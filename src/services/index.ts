@@ -11,6 +11,7 @@ import TransactionService from './transactionservice' ;
 import ReferenceService from './referenceservice'
 import TournamentService from './tournamentservice'
 import CoinService from './CoinService'
+import ForgotPasswordService from './ForgotPasswordService'
 export default  {
       UserService,
     RoleService,
@@ -23,6 +24,7 @@ export default  {
     TransactionService,
     ReferenceService,
     TournamentService,
-    CoinService
+    CoinService,
+    ForgotPasswordService
   };
   

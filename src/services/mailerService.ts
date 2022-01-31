@@ -6,14 +6,12 @@ export default class MailerService {
   transporter:any;
   constructor() {
     this.transporter= nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        service: 'gmail',
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: "dahtest1@gmail.com", // generated ethereal user
-          pass: "Mohamed28243854", // generated ethereal password
-        },
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+          user: 'tatyana.fahey@ethereal.email',
+          pass: 'bCujKSrjBQmftMVjvG'
+      }
         
       });
   }

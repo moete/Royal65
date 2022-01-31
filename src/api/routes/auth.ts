@@ -35,5 +35,5 @@ export default  function(app:Router) {
     authController.signup
   );
   route.post("/signin", authController.signin);
-
+  route.post("/forgotpassword", authController.forgotpassword);
 };
