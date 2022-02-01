@@ -6,6 +6,7 @@ var bcrypt = require("bcryptjs");
 const UserModel = db.user;
 const EmailModel = db.emailVerification;
 const RoleModel = db.role;
+const ForgotPasswordModel = db.forgotPassword;
 @Service()
 export default class UserService {
   async checkDuplicate(email: string, username: string) {
@@ -167,6 +168,11 @@ export default class UserService {
       return user
     }
 
+    async getUserByEmail(email:String){
+      const user = await UserModel.findOne({email});
+      return user
+    }
+
     async getWalletbyEmail(email:String)
     {
       const user = await UserModel.findOne({email:email});
@@ -176,6 +182,15 @@ export default class UserService {
   deleteUser(_id: any) {
     return UserModel.deleteOne({ _id });
   }
+
+  
+
+
+async updateProfilePassword(email: any, userBody: IUser) {
+  return UserModel.findOneAndUpdate({ email }, userBody, {
+    new: true,
+  });
+}
 
   async deleteEmailVerfication(_id: any) {
     const val = await EmailModel.deleteOne({ _id }, function (err: any) {

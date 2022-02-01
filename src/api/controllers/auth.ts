@@ -173,84 +173,125 @@ const signin = (req: Request, res: Response) => {
         message: "Invalid Info!",
       });
     }
-        var passwordIsValid = bcrypt.compareSync(
-          password,
-          user.password
-        );
-  
-        if (!passwordIsValid) {
-          return res.status(404).send({
-            accessToken: null,
-            message: "Invalid Info!"
-          });
-        }
-  
-        var token = jwt.sign({ id: user.id }, config.SECRET, {
-          expiresIn // 24 hours
-        });
-  
-        var authorities = [];
-  
-        for (let i = 0; i < user.roles.length; i++) {
-          authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-        }
-        res.status(200).send({
-          id: user._id,
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
-          expiresIn
-        });
+    var passwordIsValid = bcrypt.compareSync(password, user.password);
+
+    if (!passwordIsValid) {
+      return res.status(404).send({
+        accessToken: null,
+        message: "Invalid Info!",
       });
     }
 
-    const forgotpassword = async (req: any, res: Response) => {
-        var  recepient = req.body.email;
-        let token = uniqid();
-        console.log(recepient);
-        userService.findOneByEmail(recepient).exec((err: any, user: any) => {
-          if (!user) {
-            return res.status(404).send({ message: "User Not found." });
-          }
-          else 
-          {
-            ForgotPasswordService.save({
-              email: recepient,
-              token: token,
-            });
-            const mailOption = {
-              from: '"Royal65 Contact 👻" <contact@boitesetmoteurs.com>', // sender address
-              to : recepient, // list of receivers
-              subject: "ForgotPassword", // Subject line
-              text: "http://localhost:3000/"+recepient+"/"+token, // html body
-            };
-            console.log(mailOption)
-            mailerService.send(mailOption, (error: Error, info: any) => {
-              if (error) {
-                res
-                  .status(500)
-                  .send({ message: "An error has occurred while sending!" });
-                return console.log(error, "*********************");
-              }
-              console.log("Message sent: %s", info.messageId);
-              console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-              mailService.save({
-                email_subject: mailOption.subject,
-                email_content: mailOption.text,
-                folder: 0,
-                read: false,
-                to : mailOption.to,
-              });
-              res.status(200).send({ message: "Successfully sent email" });
-            });
-          }
-        });
-    }
+    var token = jwt.sign({ id: user.id }, config.SECRET, {
+      expiresIn, // 24 hours
+    });
 
+    var authorities = [];
+
+    for (let i = 0; i < user.roles.length; i++) {
+      authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+    }
+    res.status(200).send({
+      id: user._id,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      roles: authorities,
+      accessToken: token,
+      expiresIn,
+    });
+  });
+};
+
+const forgotpassword = async (req: any, res: Response) => {
+  var recepient = req.body.email;
+  let token = uniqid();
+  console.log(recepient);
+  userService.findOneByEmail(recepient).exec((err: any, user: any) => {
+    if (!user) {
+      return res.status(404).send({ message: "User Not found." });
+    } else {
+      ForgotPasswordService.save({
+        email: recepient,
+        token: token,
+      });
+      const mailOption = {
+        from: '"Royal65 Contact 👻" <contact@boitesetmoteurs.com>', // sender address
+        to: recepient, // list of receivers
+        subject: "ForgotPassword", // Subject line
+        text: "http://localhost:3000/#/?email=" + recepient + "&token=" + token, // html body
+      };
+      console.log(mailOption);
+      mailerService.send(mailOption, (error: Error, info: any) => {
+        if (error) {
+          res
+            .status(500)
+            .send({ message: "An error has occurred while sending!" });
+          return console.log(error, "*********************");
+        }
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        mailService.save({
+          email_subject: mailOption.subject,
+          email_content: mailOption.text,
+          folder: 0,
+          read: false,
+          to: mailOption.to,
+        });
+        res.status(200).send({ message: "Successfully sent email" });
+      });
+    }
+  });
+};
+
+const resetpassword = async (req: any, res: Response) => {
+  console.log(req.body);
+  var  token = req.body.token;
+  ForgotPasswordService.getforgotpasswordbyToken(token).exec((err: any, forgotpass: any) => {
+    if (err) {
+      res
+        .status(500)
+        .send({ message: "An error has occurred while sending!" });
+      return console.log(err, "*********************");
+    }
+      if (!forgotpass) {
+        return res.status(404).send({ message: "No request found" });
+      } else {
+     
+       userService.findOneByEmail(req.body.email).exec((err: any, user: any) => {
+        console.log(user);
+        if (!user)
+        {
+          return res.status(404).send({message : "no user"})
+
+        }
+        if (!req.body.password)
+        {
+          return res.status(404).send({message : "no password"})
+        }
+        user.password = bcrypt.hashSync(req.body.password, 8)
+       
+        const userupdate = userService.updateProfile(user._id, user);
+        userupdate
+          .then(async (user: any) => {
+            res.send({ message: "User was updated successfully!" });
+          })
+          .catch((err: any) => {
+            console.log(err);
+            res
+              .status(500)
+              .send({ message: "Please Verify your information!" });
+          });
+        });
+        
+       
+      }
+        
+    });
+};
 export default {
   signin,
   signup,
-  forgotpassword
+  forgotpassword,
+  resetpassword
 };

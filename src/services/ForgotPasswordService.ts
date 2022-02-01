@@ -25,6 +25,12 @@ export default class ForgotPasswordService {
             }
           });
     }
+
+     getforgotpasswordbyToken(token:any)
+  {
+    return PasswordModal.findOne({token:token});
+    
+  }
     
 
 }
