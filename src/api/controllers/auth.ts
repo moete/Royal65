@@ -4,13 +4,15 @@ var jwt = require("jsonwebtoken");
 import Services from "../../services/";
 const fs = require("fs");
 var uniqid = require("uniqid");
-
+const nodemailer = require("nodemailer");
 const userService: any = new Services.UserService();
 const roleService: any = new Services.RoleService();
 const referenceService: any = new Services.ReferenceService();
+const ForgotPasswordService: any = new Services.ForgotPasswordService();
 const expiresIn = 86400;
 var bcrypt = require("bcryptjs");
-
+const mailService: any = new Services.MailService();
+const mailerService: any = new Services.MailerService();
 const signup = async (req: any, res: Response) => {
   const userDTO = req.body;
   const refcode = req.query.code;
@@ -208,8 +210,51 @@ const signin = (req: Request, res: Response) => {
     });
   });
 };
+const forgotpassword = async (req: any, res: Response) => {
+        var  recepient = req.body.email;
+        let token = uniqid();
+        console.log(recepient);
+        userService.findOneByEmail(recepient).exec((err: any, user: any) => {
+          if (!user) {
+            return res.status(404).send({ message: "User Not found." });
+          }
+          else 
+          {
+            ForgotPasswordService.save({
+              email: recepient,
+              token: token,
+            });
+            const mailOption = {
+              from: '"Royal65 Contact 👻" <contact@boitesetmoteurs.com>', // sender address
+              to : recepient, // list of receivers
+              subject: "ForgotPassword", // Subject line
+              text: "http://localhost:3000/"+recepient+"/"+token, // html body
+            };
+            console.log(mailOption)
+            mailerService.send(mailOption, (error: Error, info: any) => {
+              if (error) {
+                res
+                  .status(500)
+                  .send({ message: "An error has occurred while sending!" });
+                return console.log(error, "*********************");
+              }
+              console.log("Message sent: %s", info.messageId);
+              console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+              mailService.save({
+                email_subject: mailOption.subject,
+                email_content: mailOption.text,
+                folder: 0,
+                read: false,
+                to : mailOption.to,
+              });
+              res.status(200).send({ message: "Successfully sent email" });
+            });
+          }
+        });
+    }
 
 export default {
   signin,
   signup,
+  forgotpassword
 };

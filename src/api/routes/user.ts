@@ -11,19 +11,36 @@ export default function (app: Router) {
     );
     next();
   });
-  app.use('/user', route);
-  
-  route.get("/statistcsByCountry",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.statistcsByCountry);
-  route.get("/count",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.count);
-  route.get("/getLastRegistred",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getLastRegistred);
-  route.get("/getAllUsers",
-   userController.getAllUsers);
-  route.get("/getAllUsersEmails",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getAllUsersEmails);
+  app.use("/user", route);
+
+  route.get(
+    "/statistcsByCountry",
+    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+    userController.statistcsByCountry
+  );
+  route.get(
+    "/count",
+    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+    userController.count
+  );
+  route.get(
+    "/getLastRegistred",
+    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+    userController.getLastRegistred
+  );
+  route.get("/getAllUsers", userController.getAllUsers);
+  route.get(
+    "/getAllUsersEmails",
+    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+    userController.getAllUsersEmails
+  );
   route.get("/verifyEmail/:email/:token", userController.findEmailVerification);
   route.get("/referceUser/:Code", userController.getUserByCode);
-  route.post("/updateUserByAdmin",[middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.update);
+  route.post(
+    "/updateUserByAdmin",
+    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+    userController.update
+  );
 
   route.get(
     "/statistcsByCountry",
@@ -72,21 +89,17 @@ export default function (app: Router) {
 
   route.post(
     "/sendMail",
-    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+    // [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
     userController.send
   );
-
-  
-
-};
-  route.delete(
-    "/delete/:id",
-    [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-    userController.deleteUser
-  );
-  route.post(
-    "/updateProfile",
-    [middlewares.authJwt.verifyToken],
-    userController.updateProfile
-  );
-
+}
+route.delete(
+  "/delete/:id",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  userController.deleteUser
+);
+route.post(
+  "/updateProfile",
+  [middlewares.authJwt.verifyToken],
+  userController.updateProfile
+);
