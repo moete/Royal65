@@ -209,6 +209,7 @@ const signin = (req: Request, res: Response) => {
       username: user.username,
       name: user.name,
       email: user.email,
+      wallet : user.wallet,
       roles: authorities,
       accessToken: token,
       expiresIn,

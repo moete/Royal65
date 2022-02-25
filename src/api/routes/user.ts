@@ -62,6 +62,13 @@ export default function (app: Router) {
     // [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
     userController.getAllUsers
   );
+  
+
+  route.get(
+    "/getwalletbyemail/:email",
+    userController.getWalletbyEmail
+  );
+
   route.get(
     "/getAllUsersEmails",
     [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
