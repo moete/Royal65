@@ -1,5 +1,9 @@
 import config from "../../config";
 import { Request, Response } from "express";
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID);
+const db = require("../../models");
+const UserModel = db.User;
 var jwt = require("jsonwebtoken");
 import Services from "../../services/";
 const fs = require("fs");
@@ -135,7 +139,8 @@ const signup = async (req: any, res: Response) => {
         // }
 
         res.status(200).send({
-          message: "You were registered successfully , we have just to review you current state !",
+          message:
+            "You were registered successfully , we have just to review you current state !",
         });
       });
     })
@@ -254,52 +259,66 @@ const forgotpassword = async (req: any, res: Response) => {
 
 const resetpassword = async (req: any, res: Response) => {
   console.log(req.body);
-  var  token = req.body.token;
-  ForgotPasswordService.getforgotpasswordbyToken(token).exec((err: any, forgotpass: any) => {
-    if (err) {
-      res
-        .status(500)
-        .send({ message: "An error has occurred while sending!" });
-      return console.log(err, "*********************");
-    }
+  var token = req.body.token;
+  ForgotPasswordService.getforgotpasswordbyToken(token).exec(
+    (err: any, forgotpass: any) => {
+      if (err) {
+        res
+          .status(500)
+          .send({ message: "An error has occurred while sending!" });
+        return console.log(err, "*********************");
+      }
       if (!forgotpass) {
         return res.status(404).send({ message: "No request found" });
       } else {
-     
-       userService.findOneByEmail(req.body.email).exec((err: any, user: any) => {
-        console.log(user);
-        if (!user)
-        {
-          return res.status(404).send({message : "no user"})
+        userService
+          .findOneByEmail(req.body.email)
+          .exec((err: any, user: any) => {
+            console.log(user);
+            if (!user) {
+              return res.status(404).send({ message: "no user" });
+            }
+            if (!req.body.password) {
+              return res.status(404).send({ message: "no password" });
+            }
+            user.password = bcrypt.hashSync(req.body.password, 8);
 
-        }
-        if (!req.body.password)
-        {
-          return res.status(404).send({message : "no password"})
-        }
-        user.password = bcrypt.hashSync(req.body.password, 8)
-       
-        const userupdate = userService.updateProfile(user._id, user);
-        userupdate
-          .then(async (user: any) => {
-            res.send({ message: "User was updated successfully!" });
-          })
-          .catch((err: any) => {
-            console.log(err);
-            res
-              .status(500)
-              .send({ message: "Please Verify your information!" });
+            const userupdate = userService.updateProfile(user._id, user);
+            userupdate
+              .then(async (user: any) => {
+                res.send({ message: "User was updated successfully!" });
+              })
+              .catch((err: any) => {
+                console.log(err);
+                res
+                  .status(500)
+                  .send({ message: "Please Verify your information!" });
+              });
           });
-        });
-        
-       
       }
-        
-    });
+    }
+  );
+};
+const GoogleSignIn = async (req: any, res: Response) => {
+  const { token } = req.body;
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.CLIENT_ID,
+  });
+  const { name, email, picture } = ticket.getPayload();
+  const user = await UserModel.user.upsert({
+    where: { email: email },
+    update: { name, picture },
+    create: { name, email, picture },
+  });
+
+  res.status(201);
+  res.json(user);
 };
 export default {
   signin,
   signup,
   forgotpassword,
-  resetpassword
+  resetpassword,
+  GoogleSignIn,
 };
