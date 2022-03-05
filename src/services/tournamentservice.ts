@@ -31,8 +31,8 @@ export default class TournamentService {
   async getTournamentById(id: any) {
     return await tournamentModel.findById(id);
   }
-  async getByTitle(title : String) {
-    return await tournamentModel.findOne({"title" : 'Soolitaire tournament'})
+  async getByTitle(title: String) {
+    return await tournamentModel.findOne({ title: "Soolitaire tournament" });
   }
   async getAllActiveTounaments() {
     return await tournamentModel.find({ status: 1 });

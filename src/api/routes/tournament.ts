@@ -13,7 +13,9 @@ export default function(app:Router) {
       });
        // add auth validation
       app.use('/tournaments', route);
-      route.post('/addTournament',middlewares.authJwt.isAdmin,tournamentController.Addtournament)
+      route.post('/addTournament',
+      // middlewares.authJwt.isAdmin,
+      tournamentController.Addtournament)
       route.get('/getById/:id',tournamentController.getTournamentById)
       route.get('/getByTitle/:title',tournamentController.getTournamentByTitle);
       route.get('/getAll',tournamentController.getAllTournaments)

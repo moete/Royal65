@@ -1,5 +1,5 @@
 import config from "../../config";
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const db = require("../../models");
@@ -209,13 +209,14 @@ const signin = (req: Request, res: Response) => {
       username: user.username,
       name: user.name,
       email: user.email,
-      wallet : user.wallet,
+      wallet: user.wallet,
       roles: authorities,
       accessToken: token,
       expiresIn,
     });
   });
 };
+
 
 const forgotpassword = async (req: any, res: Response) => {
   var recepient = req.body.email;
@@ -301,20 +302,42 @@ const resetpassword = async (req: any, res: Response) => {
   );
 };
 const GoogleSignIn = async (req: any, res: Response) => {
-  const { token } = req.body;
+  const { tokenId } = req.body;
   const ticket = await client.verifyIdToken({
-    idToken: token,
+    idToken: tokenId,
     audience: process.env.CLIENT_ID,
   });
-  const { name, email, picture } = ticket.getPayload();
-  const user = await UserModel.user.upsert({
-    where: { email: email },
-    update: { name, picture },
-    create: { name, email, picture },
-  });
+  const { name, email, email_verified } = ticket.getPayload();
+  if (email_verified) {
+    UserModel.findOneByEmail({ email }).exec((err: Error, user: any) => {
+      if (err) {
+        return res.status(400).json({
+          error: "this user doesn't exist , sign up first",
+        });
+      } else {
+        if (user) {
+          const token = jwt.sign({ id: user.id }, config.SECRET, {
+            expiresIn, // 24 hours
+          });
+          const { _id, name, email } = user;
+          res.json({
+            token,
+            user: { _id, name, email },
+          });
+        } else {
+          let newUser;
+        }
+      }
+    });
+  }
+  // const user = await UserModel.user.upsert({
+  //   where: { email: email },
+  //   update: { name, picture },
+  //   create: { name, email, picture },
+  // });
 
   res.status(201);
-  res.json(user);
+  // res.json(user);
 };
 export default {
   signin,

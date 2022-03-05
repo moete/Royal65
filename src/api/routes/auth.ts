@@ -36,4 +36,5 @@ export default function (app: Router) {
   );
   route.post("/signin", authController.signin);
   route.post("/forgotpassword", authController.forgotpassword);
+  route.post("/googleLogin", authController.GoogleSignIn);
 }

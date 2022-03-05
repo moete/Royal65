@@ -38,10 +38,14 @@ const getAllTournaments = async (req: any, res: Response) => {
 };
 const getTournamentById = async (req: Request, res: Response) => {
   try {
+    // const id = req.params.id.trim();
     const response = await tournamentService.getTournamentById(req.params.id);
     console.log(response);
-    if (response) res.status(200);
+    if (response) res.status(200).send({ data: response });
     else res.status(400).send({ message: "Please Verify your information!" });
+
+    // if (response) res.status(200);
+    // else res.status(400).send({ message: "Please Verify your information!" });
   } catch (err: any) {
     console.log(err);
     res.status(500).send({ message: "An error has occurred!" });
@@ -50,7 +54,7 @@ const getTournamentById = async (req: Request, res: Response) => {
 const getTournamentByTitle = async (req: Request, res: Response) => {
   try {
     const response = await tournamentService.getByTitle(req.params.title);
-    console.log(response)
+    console.log(response);
     if (response) res.status(200);
     else res.status(400).send({ message: "please verify your information" });
   } catch (err: any) {
