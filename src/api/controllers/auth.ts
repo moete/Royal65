@@ -217,7 +217,6 @@ const signin = (req: Request, res: Response) => {
   });
 };
 
-
 const forgotpassword = async (req: any, res: Response) => {
   var recepient = req.body.email;
   let token = uniqid();
