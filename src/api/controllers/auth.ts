@@ -17,6 +17,7 @@ const expiresIn = 86400;
 var bcrypt = require("bcryptjs");
 const mailService: any = new Services.MailService();
 const mailerService: any = new Services.MailerService();
+
 const signup = async (req: any, res: Response) => {
   const userDTO = req.body;
   const refcode = req.query.code;
@@ -27,8 +28,6 @@ const signup = async (req: any, res: Response) => {
   for (let i = 0; i < 25; i++) {
     token += characters[Math.floor(Math.random() * characters.length)];
   }
-  // let userreferedfrom = await userService.getUserByCode(refcode);
-  // res.send(userreferedfrom);
 
   let user = await userService.checkDuplicate(userDTO.email, userDTO.username);
   if (user) {
@@ -45,58 +44,10 @@ const signup = async (req: any, res: Response) => {
       .status(400)
       .send({ message: "Failed! Username or Email is already in use!" });
   }
-  /*  let photo=null
-    if(req.file)
-      photo=req.file.path
-    
-    user = userService.save({
-      email: userDTO.email,
-      name: userDTO.name,
-      username: userDTO.username,
-      address: userDTO.address,
-      country: userDTO.country,
-      photo,
-      // changed code attribute into user
-      Code : uniqid(),
-      password: userDTO.password
-    });
-    user.then(
-      async (user:any)=>{
-
-          const role=await roleService.findOneByName("user")
-          
-          user.roles = [role._id];
-          user.save((err:any) => {
-            if (err) {
-              res.status(500).send({ message:  "Something went wrong!" });
-              return;
-            }
-
-            res.send({ message: "User was registered successfully!" });
-          });
-      }
-    ).catch((err:any)=>{
-
-      console.log(err);res.status(500).send({ message: "Please Verify your information!" });
-    })
-  
-  };
-  
-  const signin = (req:Request, res:Response) => {
-
-    console.log(req.body)
-    userService.findOneByEmailOrUsername(req.body.username)
-      .exec((err:any, user:any) => {
-    */
   user = userService.save({
     username: userDTO.username,
     email: userDTO.email,
-    //  name: userDTO.name,
-    //  address: userDTO.address,
     country: userDTO.country,
-    //  photo,
-    // changed code attribute into user
-    //   Code: shortid.generate(),
     password: userDTO.password,
   });
   user
@@ -109,34 +60,6 @@ const signup = async (req: any, res: Response) => {
           res.status(500).send({ message: "Something went wrong!" });
           return;
         }
-        // if (refcode != null) {
-        //   try {
-        //     const reference = referenceService.save({
-        //       ReferenceFrom: userreferedfrom,
-        //       ReferenceTo: user,
-        //       Bonus: 1,
-        //     });
-
-        //     if (reference.message) {
-        //       return res.status(400).send(reference);
-        //     }
-        //     reference
-        //       .then((succ: any) => {
-        //         res
-        //           .status(200)
-        //           .send({ message: "reference successfully created" });
-        //       })
-        //       .catch((err: any) => {
-        //         console.log(err);
-        //         res
-        //           .status(500)
-        //           .send({ message: "Please Verify your information!" });
-        //       });
-        //   } catch (err: any) {
-        //     console.log(err);
-        //     res.status(500).send({ message: "An error has occurred!" });
-        //   }
-        // }
 
         res.status(200).send({
           message:
