@@ -15,9 +15,8 @@ async function startServer() {
 
   app.use("/uploads", express.static("uploads"));
 
-
-  app.listen(config.port, ()=>{
-    console.log(`Your server is running on port ${config.port}!`);
+  server.listen(config.port || 8000, () => {
+    console.log(`Your server is ready on port ${config.port} !`);
   });
 }
 
