@@ -33,7 +33,8 @@ export default async (): Promise<any> => {
   const connection = await mongoose.connect(config.DATABASE_URL as string, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify : false
+    useFindAndModify: false,
+    useCreateIndex: true,
   });
   initial();
   return connection.connection.db;
