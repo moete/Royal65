@@ -65,7 +65,17 @@ const count = async (req: Request, res: Response) => {
   }
 };
 
+const getWalletbyEmail = async (req: Request, res: Response) => {
+  const  email = req.params.email
+  try {
+    res.status(200).send({ wallet : await userService.getWalletbyEmail(email) });
+  } catch (err: any) {
+    res.status(500).send({ message: "An error has occurred!" });
+  }
+};
+
 const statistcsByCountry = async (req: Request, res: Response) => {
+
   try {
     res.status(200).send({ data: await userService.statistcsByCountry() });
   } catch (err: any) {
@@ -275,5 +285,6 @@ export default {
   send,
   updateAdmin,
   updateProfile,
-  getUserByCode
+  getUserByCode,
+  getWalletbyEmail
 };
