@@ -32,6 +32,7 @@ export default class MatchService {
             name: gameBody.name,
             free: gameBody.free,
             amount: gameBody.amount,
+            draw3: gameBody.draw3,
             private: gameBody.private,
             capacity: gameBody.capacity,
             password: gameBody.password ? bcrypt.hashSync(gameBody.password, 8) : null,

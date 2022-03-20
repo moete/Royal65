@@ -21,6 +21,10 @@ const Match = mongoose.model(
             type: Number,
             default: matchStatus.open
           } ,
+        draw3: {
+          type: Boolean,
+          default: false
+        },
         private: {
             type: Boolean,
             default: false

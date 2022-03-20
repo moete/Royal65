@@ -15,6 +15,7 @@ const save = async (req: any, res: Response) => {
             amount: body.amount,
             userId: req.userId,
             free: body.free,
+            draw3: body.draw3,
             status: body.status,
             password: body.password,
             capacity: body.capacity,
