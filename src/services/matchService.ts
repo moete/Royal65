@@ -111,7 +111,17 @@ export default class MatchService {
     
     
     async getOpen(){
-        const all =await MatchModel.find({private:false,status:matchStatus.open}).sort( '-createdAt' )
+        const all =await MatchModel.find({
+            $or: [
+              { status: matchStatus.process },
+              { status: matchStatus.open }
+            ]
+          ,private:false}).sort( '-createdAt' )
+        return  all;
+    }
+
+    async getProcess(){
+        const all =await MatchModel.find({private:false,status:matchStatus.process}).sort( '-createdAt' )
         return  all;
     }
 
@@ -156,8 +166,8 @@ export default class MatchService {
     }
 
     
-    deleteGame(_id:any){
-        return MatchModel.deleteOne({ _id });
+    async deleteGame(_id:any){
+        return await MatchModel.deleteOne({ _id });
     }
 
     

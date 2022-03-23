@@ -38,7 +38,7 @@ export default function(app:Router) {
   
   route.get("/getOpen", gameController.getOpen);
 
-  
+  route.get("/getProcess", gameController.getProcess);
   //TODO check who can use this route administrator or all
   route.post("/addUpdateScore",
   [middlewares.authJwt.verifyToken], gameController.addUpdateScore);
@@ -57,8 +57,8 @@ export default function(app:Router) {
   [middlewares.authJwt.verifyToken], gameController.getScoresByUserId);
 
   
-  route.delete("/delete/:id",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], gameController.deleteGame);
+  route.delete("/delete",
+   gameController.deleteGame);
 
 
 };
