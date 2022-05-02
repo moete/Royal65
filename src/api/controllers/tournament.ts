@@ -40,7 +40,6 @@ const getTournamentById = async (req: Request, res: Response) => {
   try {
     // const id = req.params.id.trim();
     const response = await tournamentService.getTournamentById(req.params.id);
-    console.log(response);
     if (response) res.status(200).send({ data: response });
     else res.status(400).send({ message: "Please Verify your information!" });
 

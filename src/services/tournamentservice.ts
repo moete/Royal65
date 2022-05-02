@@ -2,15 +2,32 @@ import config from "../config";
 import { Service } from "typedi";
 import { Itournament } from "../interfaces/ITournament";
 const db = require("../models");
-const tournamentModel = db.tournament;
+const TournamentModel = db.tournament;
 const TournamentTransactionModel = db.tournamenttransaction;
-const userModel = db.user;
+const UserModel = db.user;
+const TournamentUserJoinModel = db.tournamentuserjoin;
 const tournamentStatus = config.tournamentStauts;
 
 Service();
 export default class TournamentService {
+
+  async cannotJoin(userId: any, tournament: any, tournamentId: any) {
+    if (tournament.players.length >= tournament.capacity) return { message: "Tournament closed!" }
+    const isAlreadyJoined = await TournamentUserJoinModel.findOne({
+      status: { $ne: tournamentStatus.finished },
+      player: userId,
+      tournament: tournamentId
+    });
+
+    if (isAlreadyJoined) return { message: 'You are already joined!' }
+    const user = await UserModel.findById(userId);
+    if (user.wallet < tournament.entry_fee) return { message: "Insufficient amount" };
+
+    return null;
+  }
+
   async save(tournamentBody: any) {
-    const tournament = new tournamentModel({
+    const tournament = new TournamentModel({
       title: tournamentBody.title,
       price: tournamentBody.price,
       status: tournamentBody.status,
@@ -26,38 +43,39 @@ export default class TournamentService {
     return tournament.save();
   }
   async getAllTournaments() {
-    return await tournamentModel.find();
+    return await TournamentModel.find();
   }
   async getTournamentById(id: any) {
-    return await tournamentModel.findById(id);
+    return await TournamentModel.findById(id);
   }
   async getByTitle(title: String) {
-    return await tournamentModel.findOne({ title: "Soolitaire tournament" });
+    return await TournamentModel.findOne({ title: "Soolitaire tournament" });
   }
   async getAllActiveTounaments() {
-    return await tournamentModel.find({ status: 1 });
+    return await TournamentModel.find({ status: 1 });
   }
-  async joinTournament(active: any) {
-    const tournament = await tournamentModel.findById(active._id);
-    const UserId = await userModel.findById(active._id);
-    let dateObj = Date.now() - tournament.start_time;
-    if (!tournament) return null;
+  async joinTournament(userId: any, tournamentId: any) {
+    const tournamentObj = await TournamentModel.findById(tournamentId);
+    const tournament = new TournamentModel(tournamentObj);
+    const user = await UserModel.findById(userId);
 
-    if (
-      tournament.players.length != tournament.capacity &&
-      dateObj &&
-      UserId.wallet > tournament.entry_fee
-    ) {
-      tournament.players = [...tournament.players, active.userID];
-      if (tournament.players.length == tournament.capacity)
-        tournament.status = tournamentStatus.process;
-      return await tournament.save();
-    }
+    if (!tournament) return { message: 'Cannot find tournament!' };
+    const cannotJoin = await this.cannotJoin(userId, tournament, tournament._id);
+    if (cannotJoin) return cannotJoin;
 
-    return null;
+    const eligibleRounds = tournament.capacity - tournament.players.length;
+    const joiningOrder = tournament.players.length + 1;
+
+    const tournamentUserJoin = new TournamentUserJoinModel({
+      tournament: tournamentId,
+      player : userId,
+      joining_order: joiningOrder,
+      eligible_rounds_count: eligibleRounds,
+    })
+    return await tournamentUserJoin.save().then((t: any) => t.populate("player", "tournament").execPopulate());;
   }
   async saveTransaction(tournamentBody: any) {
-    const isExists = await tournamentModel.find({
+    const isExists = await TournamentModel.find({
       status: { $ne: tournamentStatus.finished },
       _id: tournamentBody._id,
     });
@@ -71,10 +89,10 @@ export default class TournamentService {
     });
   }
   async deleteTournament(_id: any) {
-    return await tournamentModel.deleteOne({ _id });
+    return await TournamentModel.deleteOne({ _id });
   }
   async unjoinTournament(details: any) {
-    const tournament = await tournamentModel.findById(details._id);
+    const tournament = await TournamentModel.findById(details._id);
     if (!tournament) return null;
     tournament.players = tournament.players.filter(
       (playerId: any) => playerId != details.userId
@@ -83,7 +101,7 @@ export default class TournamentService {
     return await tournament.save();
   }
   async getOpenTournament() {
-    const all = await tournamentModel.find({
+    const all = await TournamentModel.find({
       private: false,
       status: tournamentStatus.open,
     });

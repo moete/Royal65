@@ -12,6 +12,7 @@ db.recla = require("./Recla");
 db.gameTransaction = require("./gameTransaction");
 db.emailVerification = require("./emailVerification");
 db.tournament = require("./tournament");
+db.tournamentUserJoin = require("./tournamentUserJoin");
 db.ROLES = ["user", "admin"];
 db.transaction = require("./Transaction")
 db.reference = require("./Reference")
